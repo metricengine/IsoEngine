@@ -12,12 +12,13 @@ if(CMAKE_CONFIGURATION_TYPES)
 	mark_as_advanced(CMAKE_CONFIGURATION_TYPES)
 endif()
 
-include_directories("${PROJECT_BINARY_DIR}")
-
 set(CMAKE_CXX_STANDARD 11)
-
-add_executable(isoengine main.cpp)
 set(EXECUTABLE_NAME "isoengine")
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
+file(GLOB_RECURSE sources      src/*.cpp)
+add_executable(isoengine ${sources})
+
 
 # Detect and add SFML
 # Add directory containing FindSFML.cmake to module path
@@ -28,3 +29,6 @@ if(SFML_FOUND)
   include_directories(${SFML_INCLUDE_DIR})
   target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
 endif()
+
+# C++ source code
+# add_subdirectory(src)
