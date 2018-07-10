@@ -1,0 +1,8 @@
+BasedOnStyle: "LLVM"
+PointerAlignment: "Middle"
+AccessModifierOffset: -4
+AllowShortIfStatementsOnASingleLine: false
+BreakBeforeBraces: "Linux"
+ColumnLimit: 0
+IndentCaseLabels: false
+IndentWidth: 4
