@@ -15,6 +15,13 @@ endif()
 set(CMAKE_CXX_STANDARD 17)
 set(EXECUTABLE_NAME "isoengine")
 
+if (CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -Wall -Werror")
+endif()
+if (MSVC)
+    set(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} /W4 -Werror")
+endif()
+
 include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE sources      src/*.cpp)
 add_executable(isoengine ${sources})
