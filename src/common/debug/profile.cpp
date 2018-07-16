@@ -1,4 +1,5 @@
 #include "isoengine/common/debug/profile.h"
+#include "isoengine/common/consoletable.h"
 #include <array>
 #include <set>
 
@@ -24,21 +25,25 @@ void ProfileManager::showResult()
     auto cmp = [](const ValType & a, const ValType & b) { return a.second.total > b.second.total; };
     std::set<ValType, decltype(cmp)> resultByValue(result.begin(), result.end(), cmp);
 
-    std::array<std::string, 7> header = {"Name", "Count", "Average", "Min", "Max", "Total", "%"};
-    std::array<int, header.size()> colLengths;
-    for (size_t i = 0; i < colLengths.size(); ++i)
-        colLengths[i] = header[i].size();
-
     std::cout << "Global time duration (ms): " << globalDuration.count() << std::endl;
 
+    ConsoleTable table{"Name", "Count", "Average", "Min", "Max", "Total", "%"};
+    table.reserve(resultByValue.size());
+
     for (auto iter : resultByValue) {
-        std::cout << iter.first << " count: " << iter.second.count;
-        std::cout << " average: " << iter.second.total.count() / iter.second.count;
-        std::cout << " min: " << iter.second.min.count();
-        std::cout << " max: " << iter.second.max.count();
-        std::cout << " total: " << iter.second.total.count();
-        std::cout << " %: " << iter.second.total.count() / globalDuration.count() << std::endl;
+        std::vector<std::string> row;
+        row.reserve(table.headerSize());
+        row.push_back(iter.first);
+        row.push_back(std::to_string(iter.second.count));
+        row.push_back(std::to_string(static_cast<long double>(iter.second.total.count() / iter.second.count)));
+        row.push_back(std::to_string(iter.second.min.count()));
+        row.push_back(std::to_string(iter.second.max.count()));
+        row.push_back(std::to_string(iter.second.total.count()));
+        row.push_back(std::to_string(static_cast<long double>(iter.second.total.count()) / globalDuration.count() * 100));
+        table.addRow(row);
     }
+
+    table.display(std::cout);
 }
 
 ProfileManager & ProfileManager::getInstance()
@@ -61,8 +66,9 @@ void ProfileManager::addItem(const Profiler & profiler)
         ProfileItem item(1, profiler.duration);
         result.insert(std::make_pair(profiler.name, item));
         // If start was not used, implicitly start tracking
-        if (globalBegin == TimePoint{})
+        if (globalBegin == TimePoint{} || profiler.begin < globalBegin) {
             globalBegin = profiler.begin;
+        }
     }
 }
 
