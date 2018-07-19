@@ -5,7 +5,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(800, 600), "IsoEngine");
 
     sf::Texture texture;
-    texture.loadFromFile("../res/textures/dummy.png");
+    texture.loadFromFile("res/textures/dummy.png");
     texture.setSmooth(true);
     sf::Sprite sprite;
     sprite.setTexture(texture);
