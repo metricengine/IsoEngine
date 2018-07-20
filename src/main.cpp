@@ -1,11 +1,11 @@
+#include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
 
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(800, 600), "IsoEngine");
 
-    sf::Texture texture;
-    texture.loadFromFile("res/textures/dummy.png");
+    iso::Texture texture{iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png")};
     texture.setSmooth(true);
     sf::Sprite sprite;
     sprite.setTexture(texture);
