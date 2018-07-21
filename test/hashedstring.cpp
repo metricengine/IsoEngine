@@ -20,4 +20,16 @@ int main()
 
     std::cout << val1 << std::endl;
     std::cout << val2 << std::endl;
+
+    // Switch case
+    switch (HashedString("whatever")) {
+    case HASH("notthis"):
+        std::cout << "Should not print this" << std::endl;
+        break;
+    case HASH("whatever"):
+        std::cout << "It works!" << std::endl;
+        break;
+    default:
+        std::cout << "Oops! Something went terribly wrong!" << std::endl;
+    }
 }

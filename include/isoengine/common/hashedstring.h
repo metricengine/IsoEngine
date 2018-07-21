@@ -21,20 +21,20 @@ class HashedString
     };
 
 public:
-    HashedString(StringWrapper sw)
-    {
-        hash = math::calculateHash(sw.str);
-    }
+    HashedString(StringWrapper sw) : hash(math::calculateHash(sw.str)), rawStr(sw.str) {}
 
     template <size_t N>
-    constexpr HashedString(const char (&str)[N]) : rawStr(str)
+    constexpr HashedString(const char (&str)[N]) : hash(HASH(str)), rawStr(str) {}
+
+    constexpr size_t getHash() const
     {
-        hash = HASH(str);
+        return hash;
     }
 
-    constexpr size_t getHash() const { return hash; }
-
-    const char * getCStr() const { return rawStr; }
+    const char * getCStr() const
+    {
+        return rawStr;
+    }
 
     inline bool operator==(const HashedString & other)
     {
@@ -46,8 +46,13 @@ public:
         return hash != other.hash;
     }
 
+    constexpr operator size_t()
+    {
+        return hash;
+    }
+
 private:
-    size_t hash;
+    const size_t hash;
     const char * rawStr;
 };
 
