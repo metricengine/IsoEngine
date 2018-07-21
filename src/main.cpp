@@ -1,3 +1,4 @@
+#include "isoengine/render/sprite.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
 
@@ -7,7 +8,7 @@ int main()
 
     iso::Texture texture{iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png")};
     texture.setSmooth(true);
-    sf::Sprite sprite;
+    iso::Sprite sprite;
     sprite.setTexture(texture);
     sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
 
@@ -26,8 +27,8 @@ int main()
 
         window.clear(sf::Color::White);
 
-        sprite.setPosition(sf::Vector2f(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
-        window.draw(sprite);
+        sprite.setPosition(iso::math::Vector2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
+        window.draw(sprite.getSprite());
         window.display();
     }
 
