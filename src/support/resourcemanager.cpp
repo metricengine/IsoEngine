@@ -10,15 +10,15 @@ ResourceManager & ResourceManager::getInstance()
     return instance;
 }
 
-Texture & ResourceManager::getTexture(const std::string & filename)
+Texture & ResourceManager::getTexture(const HashedString & filename)
 {
-    auto iter = textures.insert(std::make_pair(filename, Texture{}));
+    auto iter = textures.insert(std::make_pair(filename.getHash(), Texture{}));
     // If already exists, return
     if (!iter.second)
         return iter.first->second;
     // Inserted new, load
     Texture & texture = iter.first->second;
-    if (!texture.loadFromFile(filename))
+    if (!texture.loadFromFile(std::string(filename.getCStr())))
         throw std::invalid_argument("ResourceManager::getTexture(): invalid filename");
     return texture;
 }
