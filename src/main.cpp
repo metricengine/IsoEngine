@@ -1,10 +1,12 @@
 #include "isoengine/render/sprite.h"
+#include "isoengine/render/window.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
+#include <iostream>
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "IsoEngine");
+    iso::Window window("IsoEngine");
 
     iso::Texture texture{iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png")};
     texture.setSmooth(true);
@@ -27,8 +29,8 @@ int main()
 
         window.clear(sf::Color::White);
 
-        sprite.setPosition({sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y});
-        window.draw(sprite.getSprite());
+        sprite.setPosition({sf::Mouse::getPosition(window.getWindow()).x, sf::Mouse::getPosition(window.getWindow()).y});
+        window.draw(sprite);
         window.display();
     }
 
