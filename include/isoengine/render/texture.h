@@ -3,6 +3,7 @@
 
 #include "isoengine/math/vector2.h"
 #include <SFML/Graphics/Texture.hpp>
+#include <string>
 
 namespace iso
 {
@@ -14,9 +15,13 @@ private:
 
 public:
     Texture() = default;
+
     bool loadFromFile(const std::string & filename);
+
     void setSmooth(bool smooth);
+
     iso::math::Vector2 getSize();
+
     const sf::Texture & getTexture() const
     {
         return texture;
