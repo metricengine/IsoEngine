@@ -10,7 +10,7 @@ int main()
     texture.setSmooth(true);
     iso::Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setOrigin(texture.getSize().x / 2, texture.getSize().y / 2);
+    sprite.setOrigin(texture.getSize() / 2);
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -27,7 +27,7 @@ int main()
 
         window.clear(sf::Color::White);
 
-        sprite.setPosition(iso::math::Vector2(sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y));
+        sprite.setPosition({sf::Mouse::getPosition(window).x, sf::Mouse::getPosition(window).y});
         window.draw(sprite.getSprite());
         window.display();
     }

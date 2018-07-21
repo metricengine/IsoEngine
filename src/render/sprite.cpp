@@ -2,9 +2,9 @@
 
 namespace iso
 {
-void Sprite::setOrigin(float x, float y)
+void Sprite::setOrigin(const iso::math::Vector2 & vector)
 {
-    sprite.setOrigin(x, y);
+    sprite.setOrigin(vector.x, vector.y);
 }
 
 void Sprite::setPosition(const iso::math::Vector2 & vector)

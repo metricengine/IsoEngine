@@ -15,7 +15,7 @@ private:
 
 public:
     void setTexture(const iso::Texture & texture);
-    void setOrigin(float x, float y);
+    void setOrigin(const iso::math::Vector2 & vector);
     void setPosition(const iso::math::Vector2 & vector);
     const sf::Sprite & getSprite() const
     {
