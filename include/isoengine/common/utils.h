@@ -10,6 +10,12 @@
 #include "debug/assert.h"
 #include "debug/profile.h"
 
+#define PROFILE_FUNCTION _PROFILE_FUNCTION
+#define PROFILE_BLOCK(name) _PROFILE_BLOCK(name)
+#define DEBUG_LOG(msg, level) _DEBUG_LOG(msg, level)
+#define ASSERT(expr, msg) _ASSERT(expr, msg)
+#define UNUSED(x) _UNUSED(x)
+
 template <typename... Args>
 std::string stringify(Args const &... args)
 {
@@ -17,12 +23,6 @@ std::string stringify(Args const &... args)
     int a[] = {0, ((void)(oss << args), 0)...};
     return oss.str();
 }
-
-#define PROFILE_FUNCTION _PROFILE_FUNCTION
-#define PROFILE_BLOCK(name) _PROFILE_BLOCK(name)
-#define DEBUG_LOG(msg, level) _DEBUG_LOG(msg, level)
-#define ASSERT(expr, msg) _ASSERT(expr, msg)
-#define UNUSED(x) _UNUSED(x)
 
 // Macro implementations
 

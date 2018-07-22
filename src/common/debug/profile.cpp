@@ -2,6 +2,29 @@
 #include "isoengine/common/consoletable.h"
 #include <array>
 #include <set>
+#include <sstream>
+
+namespace
+{
+std::string durationToString(const Duration & duration)
+{
+    std::ostringstream oss;
+    auto durMicro = duration.count();
+    // 1 - 1000 us
+    if (durMicro < 1000)
+        oss << durMicro << " us";
+    // 1 - 1000 ms
+    else if (durMicro < 1000 * 1000)
+        oss << (long double)durMicro / 1000 << " ms";
+    // 1 - 60 s
+    else if (durMicro < 60 * 1000 * 1000)
+        oss << (long double)durMicro / (1000 * 1000) << " s";
+    // 1 - 60 m
+    else if (durMicro < 60l * 60 * 1000 * 1000)
+        oss << (long double)durMicro / (60 * 1000 * 1000) << " m";
+    return oss.str();
+}
+} // namespace
 
 void ProfileManager::start()
 {
@@ -25,7 +48,7 @@ void ProfileManager::showResult()
     auto cmp = [](const ValType & a, const ValType & b) { return a.second.total > b.second.total; };
     std::set<ValType, decltype(cmp)> resultByValue(result.begin(), result.end(), cmp);
 
-    std::cout << "Global time duration (ms): " << globalDuration.count() << std::endl;
+    std::cout << "Global time duration (ms): " << durationToString(globalDuration) << std::endl;
 
     ConsoleTable table{"Name", "Count", "Average", "Min", "Max", "Total", "%"};
     table.reserve(resultByValue.size());
@@ -35,10 +58,10 @@ void ProfileManager::showResult()
         row.reserve(table.headerSize());
         row.push_back(iter.first);
         row.push_back(std::to_string(iter.second.count));
-        row.push_back(std::to_string(static_cast<long double>(iter.second.total.count() / iter.second.count)));
-        row.push_back(std::to_string(iter.second.min.count()));
-        row.push_back(std::to_string(iter.second.max.count()));
-        row.push_back(std::to_string(iter.second.total.count()));
+        row.push_back(durationToString(iter.second.total / iter.second.count));
+        row.push_back(durationToString(iter.second.min));
+        row.push_back(durationToString(iter.second.max));
+        row.push_back(durationToString(iter.second.total));
         row.push_back(std::to_string(static_cast<long double>(iter.second.total.count()) / globalDuration.count() * 100));
         table.addRow(row);
     }
