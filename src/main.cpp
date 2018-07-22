@@ -12,7 +12,9 @@ int main()
     texture.setSmooth(true);
     iso::Sprite sprite;
     sprite.setTexture(texture);
-    sprite.setOrigin(texture.getSize() / 2);
+    sprite.setScale(0.5, 0.5);
+
+    float zoom = 1;
 
     while (window.isOpen()) {
         sf::Event event{};
@@ -25,12 +27,35 @@ int main()
                 sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
                 window.setView(sf::View(visibleArea));
             }
+
+            if (event.type == sf::Event::MouseWheelScrolled) {
+                sf::View view = window.getView();
+                if (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel) {
+                    if (event.mouseWheelScroll.delta == 1) {
+                        zoom *= 0.9;
+                        view.zoom(zoom);
+                        window.setView(view);
+                    } else if (event.mouseWheelScroll.delta == -1) {
+                        zoom *= 1.1;
+                        view.zoom(zoom);
+                        window.setView(view);
+                    }
+                }
+            }
+
+            if (event.type == sf::Event::MouseMoved) {
+                sf::View view = window.getView();
+                view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
+                window.setView(view);
+            }
         }
 
         window.clear(sf::Color::White);
 
-        sprite.setPosition({sf::Mouse::getPosition(window.getWindow()).x, sf::Mouse::getPosition(window.getWindow()).y});
-        window.draw(sprite);
+        for (int i = 0; i < 2; ++i) {
+            sprite.setPosition({i * 512, 0});
+            window.draw(sprite);
+        }
         window.display();
     }
 

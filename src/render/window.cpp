@@ -32,6 +32,11 @@ void Window::setView(sf::View view)
     window.setView(view);
 }
 
+const sf::View & Window::getView()
+{
+    return window.getView();
+}
+
 void Window::display()
 {
     window.display();

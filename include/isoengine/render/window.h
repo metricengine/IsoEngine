@@ -18,6 +18,7 @@ public:
     void close();
     bool pollEvent(sf::Event & event);
     void setView(sf::View view);
+    const sf::View & getView();
     void clear(sf::Color color);
     void display();
     void draw(const Sprite & sprite);

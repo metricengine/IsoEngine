@@ -17,6 +17,7 @@ public:
     void setTexture(const iso::Texture & texture);
     void setOrigin(const iso::math::Vector2 & vector);
     void setPosition(const iso::math::Vector2 & vector);
+    void setScale(float x, float y);
     const sf::Sprite & getSprite() const
     {
         return sprite;
