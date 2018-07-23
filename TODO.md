@@ -1,7 +1,6 @@
 # TODO
 - Sprite based animation
 - Frame control in rendering
-- Extend Vector2
 - Customize rendering process to a greater degree
 # Links, Research
 - <https://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511>

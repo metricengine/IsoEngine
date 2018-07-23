@@ -2,12 +2,12 @@
 
 namespace iso
 {
-void Sprite::setOrigin(const iso::math::Vector2 & vector)
+void Sprite::setOrigin(const iso::math::Vector2f & vector)
 {
     sprite.setOrigin(vector.x, vector.y);
 }
 
-void Sprite::setPosition(const iso::math::Vector2 & vector)
+void Sprite::setPosition(const iso::math::Vector2f & vector)
 {
     sprite.setPosition(vector.x, vector.y);
 }

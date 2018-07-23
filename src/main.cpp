@@ -8,6 +8,13 @@ int main()
 {
     iso::Window window("IsoEngine");
 
+    // Try narrowing
+    iso::math::Vector2l longVec{0, 5};
+    std::cin >> longVec.x >> longVec.y;
+    // iso::math::Vector2i intVec(longVec);
+    auto intVec = iso::math::Vector2i::cast<int>(longVec);
+    std::cout << intVec.x;
+
     iso::Texture texture{iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png")};
     texture.setSmooth(true);
     iso::Sprite sprite;
@@ -53,7 +60,7 @@ int main()
         window.clear(sf::Color::White);
 
         for (int i = 0; i < 2; ++i) {
-            sprite.setPosition({i * 512, 0});
+            sprite.setPosition({i * 512.f, 0.f});
             window.draw(sprite);
         }
         window.display();

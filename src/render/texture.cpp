@@ -13,7 +13,7 @@ void Texture::setSmooth(bool smooth)
     texture.setSmooth(smooth);
 }
 
-iso::math::Vector2 Texture::getSize()
+iso::math::Vector2u Texture::getSize()
 {
     return {texture.getSize().x, texture.getSize().y};
 }

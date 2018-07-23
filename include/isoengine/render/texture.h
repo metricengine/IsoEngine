@@ -20,7 +20,7 @@ public:
 
     void setSmooth(bool smooth);
 
-    iso::math::Vector2 getSize();
+    iso::math::Vector2u getSize();
 
     const sf::Texture & getTexture() const
     {
