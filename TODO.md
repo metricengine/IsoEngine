@@ -1,6 +1,8 @@
 # TODO
-- Resource Manager singleton
-- A simple Render Engine that displays a sprite in a window with a steady frame rate
+- Sprite based animation
+- Frame control in rendering
+- Extend Vector2
+- Customize rendering process to a greater degree
 # Links, Research
 - <https://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511>
 - <https://www.reddit.com/r/gamedev/comments/6cmnwf/how_to_create_an_isometric_world_without_tiles>
