@@ -17,22 +17,22 @@ public:
     template <typename U>
     Vector2(const Vector2<U> & other) : x{other.x}, y{other.y} {}
 
-    inline Vector2<T> operator+(const Vector2<T> & rhs)
+    inline Vector2<T> operator+(const Vector2<T> & rhs) const
     {
         return {x + rhs.x, y + rhs.y};
     }
 
-    inline Vector2<T> operator-(const Vector2<T> & rhs)
+    inline Vector2<T> operator-(const Vector2<T> & rhs) const
     {
         return {x - rhs.x, y - rhs.y};
     }
 
-    inline Vector2<T> operator*(T mul)
+    inline Vector2<T> operator*(T mul) const
     {
         return {x * mul, y * mul};
     }
 
-    inline Vector2<T> operator/(T div)
+    inline Vector2<T> operator/(T div) const
     {
         return {x / div, y / div};
     }
@@ -63,16 +63,6 @@ public:
         x /= div;
         y /= div;
         return *this;
-    }
-
-    friend inline Vector2<T> & operator+(const Vector2<T> & left, const Vector2<T> & right)
-    {
-        return {left.x + right.x, left.y + right.y};
-    }
-
-    friend inline Vector2<T> & operator-(const Vector2<T> & left, const Vector2<T> & right)
-    {
-        return {left.x - right.x, left.y - right.y};
     }
 
     friend inline bool operator==(const Vector2<T> & lhs, const Vector2<T> & rhs)

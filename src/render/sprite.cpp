@@ -17,8 +17,14 @@ void Sprite::setTexture(const iso::Texture & texture)
     sprite.setTexture(texture.getTexture());
 }
 
+void Sprite::setTextureRect(const iso::math::Recti & rect)
+{
+    sprite.setTextureRect({rect.x, rect.y, rect.width, rect.height});
+}
+
 void Sprite::setScale(float x, float y)
 {
     sprite.setScale(x, y);
 }
+
 } // namespace iso
