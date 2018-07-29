@@ -1,6 +1,9 @@
 #include "isoengine/highlevel/engine.h"
+#include "isoengine/common/clock.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
+
+#include <iostream>
 
 namespace iso
 {
@@ -18,17 +21,19 @@ Engine::Engine() : window{"IsoEngine"}
 
 void Engine::run()
 {
-    sf::Clock clock;
+    Clock<std::chrono::microseconds> clock;
     float dt{};
 
     while (window.getWindow().isOpen()) {
         handleInput();
-        dt += clock.restart().asSeconds();
 
-        while (dt > timePerFrame) {
+        dt += clock.restart() / 1000000.f;
+
+        while (dt >= timePerFrame) {
             dt -= timePerFrame;
             update(timePerFrame);
         }
+
         render();
     }
 }
