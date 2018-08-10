@@ -14,7 +14,7 @@ void Animation::setFrame(Sprite & sprite, float time)
 {
     // normalized time
     float t{time / duration};
-    int currentFrame{static_cast<int>(t * frames.size())};
+    size_t currentFrame{static_cast<size_t>(t * frames.size())};
 
     if (loop)
         currentFrame %= frames.size();
