@@ -33,7 +33,7 @@ class ProfileManager
         Duration max;
     };
     struct CompareCStr {
-        inline bool operator()(const char * first, const char * second)
+        inline bool operator()(const char * first, const char * second) const
         {
             return strcmp(first, second) < 0;
         }
