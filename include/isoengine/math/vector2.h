@@ -1,6 +1,8 @@
 #ifndef VECTOR2_H
 #define VECTOR2_H
 
+#include <cmath>
+
 namespace iso::math
 {
 template <typename T>
@@ -35,6 +37,11 @@ public:
     inline Vector2<T> operator/(T div) const
     {
         return {x / div, y / div};
+    }
+
+    inline T length() const
+    {
+        return std::sqrt(x * x + y * y);
     }
 
     inline Vector2<T> & operator+=(const Vector2<T> & rhs)

@@ -36,17 +36,17 @@ public:
         return rawStr;
     }
 
-    inline bool operator==(const HashedString & other)
+    inline bool operator==(const HashedString & other) const
     {
         return hash == other.hash;
     }
 
-    inline bool operator!=(const HashedString & other)
+    inline bool operator!=(const HashedString & other) const
     {
         return hash != other.hash;
     }
 
-    constexpr operator size_t()
+    constexpr operator size_t() const
     {
         return hash;
     }
