@@ -2,7 +2,6 @@
 #include "isoengine/common/clock.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
-
 #include <iostream>
 
 namespace iso
@@ -11,10 +10,6 @@ namespace iso
 Engine::Engine() : window{"IsoEngine"}
 {
     iso::Texture & texture = iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png");
-    iso::Texture & textureCrystal = iso::ResourceManager::getInstance().getTexture("res/textures/crystal.png");
-    iso::ResourceManager::getInstance().addAnimation("crystal", iso::Animation(textureCrystal, iso::math::Vector2i(0, 0), iso::math::Vector2i(32, 32), 8, 1, true));
-    texture.setSmooth(true);
-
     bgSprite.setTexture(texture);
     bgSprite.setScale(0.5, 0.5);
 }
@@ -38,15 +33,39 @@ void Engine::run()
     }
 }
 
+void Engine::addEventHandler(EventHandler eventHandler)
+{
+    eventHandlers.push_back(eventHandler);
+}
+
+void Engine::registerCommand(HashedString command)
+{
+    commandQueue.registerCommand(command);
+}
+
+void Engine::addCommandHandler(CommandHandler cmdHandler)
+{
+    commandHandlers.push_back(cmdHandler);
+}
+
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
+{
+    gameObjects.push_back(gameObject);
+    gameObject->setCommandQueue(&commandQueue);
+}
+
 void Engine::handleInput()
 {
-    sf::Event event{};
+    Event engineEvent;
+    sf::Event & event = engineEvent.event;
     while (window.pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window.close();
         }
 
         if (event.type == sf::Event::MouseButtonPressed) {
+            engineEvent.type = EventType::Mouse;
+
             auto sceneCoords = window.getWindow().mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
 
             iso::Animator animator;
@@ -81,13 +100,33 @@ void Engine::handleInput()
             view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
             window.setView(view);
         }
+
+        if (event.type == sf::Event::KeyPressed) {
+            engineEvent.type = EventType::Key;
+        }
+    }
+    for (auto handler : eventHandlers) {
+        handler(engineEvent);
     }
 }
 
 void Engine::update(float dt)
 {
+    while (!commandQueue.isEmpty()) {
+        auto cmd = commandQueue.popCommand();
+        auto & sender = *cmd.first;
+        auto & cmdType = *cmd.second.get();
+
+        for (auto cmdHandler : commandHandlers)
+            cmdHandler(sender, cmdType);
+        for (auto gameObject : gameObjects)
+            if (commandQueue.objectListensToCommand(*gameObject, cmdType))
+                gameObject->handleCommand(sender, cmdType);
+    }
     for (auto & animator : animators)
         animator.update(dt);
+    for (auto gameObject : gameObjects)
+        gameObject->update(dt);
 }
 
 void Engine::render()
@@ -101,6 +140,8 @@ void Engine::render()
 
     for (auto & animator : animators)
         window.draw(animator.getSprite());
+    for (auto & gameObject : gameObjects)
+        window.draw(gameObject->getSprite());
 
     window.display();
 }

@@ -10,9 +10,6 @@ namespace iso
 
 class Sprite
 {
-private:
-    sf::Sprite sprite;
-
 public:
     void setTexture(const iso::Texture & texture);
     void setTextureRect(const iso::math::Recti & rect);
@@ -20,10 +17,14 @@ public:
     void setPosition(const iso::math::Vector2f & vector);
     void setScale(float x, float y);
     void setSize(const iso::math::Vector2f & size);
+    math::Vector2f getPosition() const;
     const sf::Sprite & getSprite() const
     {
         return sprite;
     }
+
+private:
+    sf::Sprite sprite;
 };
 
 } // namespace iso
