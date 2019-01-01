@@ -1,12 +1,8 @@
 # TODO
+- Make animation setting process easier?
 - Customize rendering process to a greater degree
-- Add a high level game object class
-    - It should be easy and implementation independent to add objects to engine
-- Create a method to register events, ability to add user-implemented event handling
-    - Command pattern based event handling?
-    - Categories of game objects to be handled in the same way
-- Use culling in rendering
 - Add layers for rendering
+- Use culling in rendering
 - Implement isometric projection
 # Links, Research
 - <https://gamedevelopment.tutsplus.com/tutorials/creating-isometric-worlds-a-primer-for-game-developers--gamedev-6511>
