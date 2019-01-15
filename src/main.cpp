@@ -3,8 +3,9 @@
 #include <iostream>
 
 struct MovementEvent {
-    MovementEvent(iso::GameObject & player,
-                  iso::GameObject & portal) : player(player), portal(portal) {}
+    MovementEvent(iso::Engine & engine,
+                  iso::GameObject & player,
+                  iso::GameObject & portal) : engine(engine), player(player), portal(portal) {}
 
     void operator()(const iso::Event & event)
     {
@@ -13,8 +14,17 @@ struct MovementEvent {
                 player.move({-5, 0});
             else if (event.event.key.code == sf::Keyboard::Right)
                 player.move({5, 0});
+            else if (event.event.key.code == sf::Keyboard::Space) {
+                following = !following;
+                if (following) {
+                    engine.cameraStopFollowing();
+                } else {
+                    engine.cameraFollowObject(&player);
+                }
+            }
+
             auto posDiff = player.getPosition() - portal.getPosition();
-            if (posDiff.length() <= 10) {
+            if (posDiff.length() <= 5) {
                 player.sendCommand(std::make_shared<iso::Command>("close"));
             } else {
                 player.sendCommand(std::make_shared<iso::Command>("open"));
@@ -22,6 +32,8 @@ struct MovementEvent {
         }
     }
 
+    bool following = false;
+    iso::Engine & engine;
     iso::GameObject & player;
     iso::GameObject & portal;
 };
@@ -106,12 +118,10 @@ int main()
         engine.addGameObject(bgTile, "background");
     }
 
-    // engine.addGameObject(player);
-    // engine.addGameObject(portal);
     engine.registerCommand("close");
     engine.registerCommand("open");
     portal->setCommandTypes({"close", "open"});
-    engine.addEventHandler(MovementEvent(*player, *portal));
+    engine.addEventHandler(MovementEvent(engine, *player, *portal));
     engine.addEventHandler(MouseEvent(engine));
     engine.addCommandHandler(CentererCommandListener());
 

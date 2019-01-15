@@ -9,6 +9,8 @@ namespace iso
 
 Engine::Engine(std::initializer_list<HashedString> layerNames) : window{"IsoEngine"}, scene{layerNames}
 {
+    auto center = window.getView().getCenter();
+    camera.pos = {center.x, center.y};
 }
 
 void Engine::run()
@@ -52,6 +54,31 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
     gameObject->setCommandQueue(&commandQueue);
 }
 
+void Engine::moveCamera(Vector2f dir)
+{
+    if (camera.following) {
+        return;
+    }
+    // TODO: check boundries
+    camera.pos += dir;
+}
+
+void Engine::zoomCamera(float scale)
+{
+    // TODO: reasonable constaints
+    camera.zoom *= scale;
+}
+
+void Engine::cameraFollowObject(const GameObject * obj)
+{
+    camera.following = obj;
+}
+
+void Engine::cameraStopFollowing()
+{
+    camera.following = nullptr;
+}
+
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
 {
     scene.getLayer(layerName).addChild(gameObject);
@@ -70,14 +97,6 @@ void Engine::handleInput()
 
         if (event.type == sf::Event::MouseButtonPressed) {
             engineEvent.type = EventType::Mouse;
-
-            auto sceneCoords = window.getWindow().mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
-
-            // iso::Animator animator;
-            // animator.getSprite().setPosition({sceneCoords.x, sceneCoords.y});
-            // animator.setAnimation(iso::ResourceManager::getInstance().getAnimation("crystal"));
-            // animator.setAnimationSpeed((rand() % 200) / 200.f + 0.5f);
-            // animators.push_back(std::move(animator));
         }
 
         if (event.type == sf::Event::Resized) {
@@ -86,16 +105,11 @@ void Engine::handleInput()
         }
 
         if (event.type == sf::Event::MouseWheelScrolled) {
-            sf::View view = window.getView();
             if (event.mouseWheelScroll.wheel == sf::Mouse::HorizontalWheel) {
                 if (event.mouseWheelScroll.delta == 1) {
-                    zoom *= 0.9;
-                    view.zoom(zoom);
-                    window.setView(view);
+                    camera.zoom *= 0.9;
                 } else if (event.mouseWheelScroll.delta == -1) {
-                    zoom *= 1.1;
-                    view.zoom(zoom);
-                    window.setView(view);
+                    camera.zoom *= 1.1;
                 }
             }
         }
@@ -108,9 +122,20 @@ void Engine::handleInput()
 
         if (event.type == sf::Event::KeyPressed) {
             engineEvent.type = EventType::Key;
+            constexpr float delta = 5.f;
+
+            if (event.key.code == sf::Keyboard::J) {
+                moveCamera({-delta, 0});
+            } else if (event.key.code == sf::Keyboard::L) {
+                moveCamera({delta, 0});
+            } else if (event.key.code == sf::Keyboard::I) {
+                moveCamera({0, -delta});
+            } else if (event.key.code == sf::Keyboard::K) {
+                moveCamera({0, delta});
+            }
         }
     }
-    for (auto handler : eventHandlers) {
+    for (auto & handler : eventHandlers) {
         handler(engineEvent);
     }
 }
@@ -134,6 +159,16 @@ void Engine::update(float dt)
 
 void Engine::render()
 {
+    sf::View view = window.getView();
+    if (camera.following != nullptr) {
+        auto pos = camera.following->getSprite().getPosition();
+        view.setCenter(pos.x, pos.y);
+    } else {
+        view.setCenter(camera.pos.x, camera.pos.y);
+    }
+    view.zoom(camera.zoom);
+    window.setView(view);
+
     window.clear(sf::Color::White);
 
     scene.draw(window);

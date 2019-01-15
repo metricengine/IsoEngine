@@ -24,8 +24,18 @@ public:
     void addCommandHandler(CommandHandler cmdHandler);
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
+    void moveCamera(Vector2f dir);
+    void zoomCamera(float scale);
+    void cameraFollowObject(const GameObject * obj);
+    void cameraStopFollowing();
 
 private:
+    struct Camera {
+        float zoom = 1;
+        Vector2f pos;
+        const GameObject * following = nullptr;
+    };
+
     // I/O
     std::vector<EventHandler> eventHandlers;
     std::vector<CommandHandler> commandHandlers;
@@ -34,9 +44,9 @@ private:
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     CommandQueue commandQueue;
     // Rendering
+    Camera camera;
     Window window;
     RenderScene scene;
-    float zoom = 1;
 
     void handleInput();
     void update(float dt);

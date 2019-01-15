@@ -1,11 +1,13 @@
 # TODO
 - Setting size of sprite/game object
+    - Seperate world coordinates from scene coordinates
 - Relative positioning of child nodes in SceneNode
     - Change SetPosition
 - Manage life cycle of game objects (who's the owner)
+    - Remove the bunch of shared_ptrs
 - Event type handling compile time
+- Customize events (e.g. shortcuts, mouse keys), handle most common events internally
 - Seperate SFML specific implementations from abstract
-- Camera control (zoom, move in 4 directions)
 - Use culling in rendering
 - Make it easy to create grid
 - Implement isometric projection
