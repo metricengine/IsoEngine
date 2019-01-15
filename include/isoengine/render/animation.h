@@ -15,13 +15,20 @@ class Animation
 {
 public:
     Animation(const Texture & texture, const Vector2i & firstFrame, const Vector2i & frameSize, int numFrames, float duration, bool loop);
-    void setFrame(Sprite & sprite, float time);
+    virtual void setFrame(Sprite & sprite, float time);
 
-private:
+protected:
     std::vector<Recti> frames;
     const Texture & texture;
     float duration;
     bool loop;
+};
+
+class StaticAnimation : public Animation
+{
+public:
+    StaticAnimation(const Texture & texture, const Vector2i frameSize) : Animation(texture, {0, 0}, frameSize, 1, 0, false){};
+    void setFrame(Sprite & sprite, float time) override;
 };
 
 } // namespace iso

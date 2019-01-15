@@ -21,6 +21,8 @@ std::string stringify(Args const &... args)
 {
     std::ostringstream oss;
     int a[] = {0, ((void)(oss << args), 0)...};
+    // To suppress "unused" warning
+    (void)(a);
     return oss.str();
 }
 

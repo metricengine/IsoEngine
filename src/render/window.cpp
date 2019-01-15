@@ -42,8 +42,9 @@ void Window::display()
     window.display();
 }
 
-void Window::draw(const iso::Sprite & sprite)
+void Window::draw(const Sprite & sprite)
 {
     window.draw(sprite.getSprite());
 }
+
 } // namespace iso

@@ -4,12 +4,15 @@
 #include "isoengine/common/hashedstring.h"
 #include "isoengine/events/commandqueue.h"
 #include "isoengine/render/animator.h"
+#include "renderscene.h"
 #include <initializer_list>
+
+#include <iostream>
 
 namespace iso
 {
 
-class GameObject : public Animator
+class GameObject : public Animator, public SceneNode
 {
     friend class CommandQueue;
     friend class Engine;
@@ -36,6 +39,12 @@ public:
 private:
     virtual void handleCommand(GameObject & sender,
                                const Command & command) {}
+
+    void drawCurrent(Window & window) const override
+    {
+        // std::cout << "drawCurrent gameobject" << std::endl;
+        window.draw(getSprite());
+    }
 
     void setCommandQueue(CommandQueue * cq)
     {

@@ -1,9 +1,11 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
-#include "isoengine/render/sprite.h"
+#include "sprite.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <string>
+
+class Drawable;
 
 namespace iso
 {

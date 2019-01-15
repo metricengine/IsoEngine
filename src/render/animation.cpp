@@ -25,4 +25,10 @@ void Animation::setFrame(Sprite & sprite, float time)
     sprite.setTextureRect(frames[currentFrame]);
 }
 
+void StaticAnimation::setFrame(Sprite & sprite, float time)
+{
+    sprite.setTexture(texture);
+    sprite.setTextureRect(frames[0]);
+}
+
 } // namespace iso

@@ -7,11 +7,8 @@
 namespace iso
 {
 
-Engine::Engine() : window{"IsoEngine"}
+Engine::Engine(std::initializer_list<HashedString> layerNames) : window{"IsoEngine"}, scene{layerNames}
 {
-    iso::Texture & texture = iso::ResourceManager::getInstance().getTexture("res/textures/dummy.png");
-    bgSprite.setTexture(texture);
-    bgSprite.setScale(0.5, 0.5);
 }
 
 void Engine::run()
@@ -50,6 +47,14 @@ void Engine::addCommandHandler(CommandHandler cmdHandler)
 
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
 {
+    scene.topLayer().addChild(gameObject);
+    gameObjects.push_back(gameObject);
+    gameObject->setCommandQueue(&commandQueue);
+}
+
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
+{
+    scene.getLayer(layerName).addChild(gameObject);
     gameObjects.push_back(gameObject);
     gameObject->setCommandQueue(&commandQueue);
 }
@@ -68,11 +73,11 @@ void Engine::handleInput()
 
             auto sceneCoords = window.getWindow().mapPixelToCoords({event.mouseButton.x, event.mouseButton.y});
 
-            iso::Animator animator;
-            animator.getSprite().setPosition({sceneCoords.x, sceneCoords.y});
-            animator.setAnimation(iso::ResourceManager::getInstance().getAnimation("crystal"));
-            animator.setAnimationSpeed((rand() % 200) / 200.f + 0.5f);
-            animators.push_back(std::move(animator));
+            // iso::Animator animator;
+            // animator.getSprite().setPosition({sceneCoords.x, sceneCoords.y});
+            // animator.setAnimation(iso::ResourceManager::getInstance().getAnimation("crystal"));
+            // animator.setAnimationSpeed((rand() % 200) / 200.f + 0.5f);
+            // animators.push_back(std::move(animator));
         }
 
         if (event.type == sf::Event::Resized) {
@@ -95,11 +100,11 @@ void Engine::handleInput()
             }
         }
 
-        if (event.type == sf::Event::MouseMoved) {
-            sf::View view = window.getView();
-            view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
-            window.setView(view);
-        }
+        // if (event.type == sf::Event::MouseMoved) {
+        //     sf::View view = window.getView();
+        //     view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
+        //     window.setView(view);
+        // }
 
         if (event.type == sf::Event::KeyPressed) {
             engineEvent.type = EventType::Key;
@@ -123,8 +128,6 @@ void Engine::update(float dt)
             if (commandQueue.objectListensToCommand(*gameObject, cmdType))
                 gameObject->handleCommand(sender, cmdType);
     }
-    for (auto & animator : animators)
-        animator.update(dt);
     for (auto gameObject : gameObjects)
         gameObject->update(dt);
 }
@@ -133,15 +136,21 @@ void Engine::render()
 {
     window.clear(sf::Color::White);
 
-    for (int i = 0; i < 2; ++i) {
-        bgSprite.setPosition({i * 512.f, 0.f});
-        window.draw(bgSprite);
-    }
+    scene.draw(window);
 
-    for (auto & animator : animators)
-        window.draw(animator.getSprite());
-    for (auto & gameObject : gameObjects)
-        window.draw(gameObject->getSprite());
+    // for (auto & layer : layers) {
+    //     window.draw(layer);
+    // }
+
+    // for (int i = 0; i < 2; ++i) {
+    //     bgSprite.setPosition({i * 512.f, 0.f});
+    //     window.draw(bgSprite);
+    // }
+
+    // for (auto & animator : animators)
+    //     window.draw(animator.getSprite());
+    // for (auto & gameObject : gameObjects)
+    //     window.draw(gameObject->getSprite());
 
     window.display();
 }

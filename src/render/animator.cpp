@@ -3,6 +3,12 @@
 namespace iso
 {
 
+void Animator::setAnimation(std::shared_ptr<Animation> animation)
+{
+    time = 0.f;
+    this->animation = animation;
+}
+
 void Animator::update(float duration)
 {
     time += duration * speed;

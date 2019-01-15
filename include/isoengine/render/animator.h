@@ -11,10 +11,11 @@ class Animator
 {
 public:
     void update(float duration);
-    void setAnimation(std::shared_ptr<Animation> animation)
+    void setAnimation(std::shared_ptr<Animation> animation);
+
+    const Sprite & getSprite() const
     {
-        time = 0.f;
-        this->animation = animation;
+        return sprite;
     }
     Sprite & getSprite()
     {
