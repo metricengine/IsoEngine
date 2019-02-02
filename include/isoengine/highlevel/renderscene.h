@@ -12,7 +12,7 @@ namespace iso
 
 class RenderScene;
 
-class SceneNode : public sf::Transformable
+class SceneNode
 {
     friend class RenderScene;
     friend class Window;
@@ -21,13 +21,29 @@ public:
     virtual ~SceneNode() {}
     void addChild(std::shared_ptr<SceneNode> child);
 
-    std::vector<std::shared_ptr<SceneNode>> children;
+    const math::Vector2f & getPosition() const
+    {
+        return position;
+    }
+
+    void setPosition(const math::Vector2f & pos)
+    {
+        position = pos;
+    }
+
+    void move(const math::Vector2f & dir)
+    {
+        position += dir;
+    }
 
 private:
-    virtual void drawCurrent(Window & window, sf::Transform transform) const {}
-    void draw(Window & window, sf::Transform transform) const;
+    virtual void drawCurrent(Window & window, math::Transform transform) const {}
+    void draw(Window & window, math::Transform transform) const;
+    math::Transform getTransform() const;
 
     SceneNode * parent = nullptr;
+    std::vector<std::shared_ptr<SceneNode>> children;
+    math::Vector2f position;
 };
 
 class RenderScene

@@ -3,11 +3,10 @@
 
 #include "isoengine/common/hashedstring.h"
 #include "isoengine/events/commandqueue.h"
+#include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
 #include "renderscene.h"
 #include <initializer_list>
-
-#include <iostream>
 
 namespace iso
 {
@@ -21,7 +20,7 @@ public:
     void setCommandTypes(std::initializer_list<HashedString> types);
     void sendCommand(std::shared_ptr<Command> command);
 
-    // math::Vector2f getPosition()
+    // const math::Vector2f & getPosition() const
     // {
     //     return getSprite().getPosition();
     // }
@@ -40,7 +39,7 @@ private:
     virtual void handleCommand(GameObject & sender,
                                const Command & command) {}
 
-    void drawCurrent(Window & window, sf::Transform transform) const override
+    void drawCurrent(Window & window, Transform transform) const override
     {
         window.draw(getSprite(), transform);
     }

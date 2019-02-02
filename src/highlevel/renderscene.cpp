@@ -10,7 +10,7 @@ void SceneNode::addChild(std::shared_ptr<SceneNode> child)
     child->parent = this;
 }
 
-void SceneNode::draw(Window & window, sf::Transform transform) const
+void SceneNode::draw(Window & window, math::Transform transform) const
 {
     transform *= getTransform();
     drawCurrent(window, transform);
@@ -19,9 +19,19 @@ void SceneNode::draw(Window & window, sf::Transform transform) const
     }
 }
 
+math::Transform SceneNode::getTransform() const
+{
+    float tx = position.x;
+    float ty = position.y;
+
+    return math::Transform({1, 0, tx,
+                            0, 1, ty,
+                            0, 0, 1});
+}
+
 void RenderScene::draw(Window & window)
 {
-    auto transform = sf::Transform::Identity;
+    math::Transform transform;
     for (const auto & layer : layers) {
         layer.draw(window, transform);
     }

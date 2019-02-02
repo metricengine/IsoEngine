@@ -1,6 +1,7 @@
 #ifndef WINDOW_H
 #define WINDOW_H
 
+#include "isoengine/math/transform.h"
 #include "sprite.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <string>
@@ -23,7 +24,7 @@ public:
     const sf::View & getView();
     void clear(sf::Color color);
     void display();
-    void draw(const Sprite & sprite, sf::Transform transform);
+    void draw(const Sprite & sprite, math::Transform transform);
     sf::RenderWindow & getWindow()
     {
         return window;
