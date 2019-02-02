@@ -2,7 +2,7 @@
 #define RENDERSCENE_H
 
 #include "isoengine/common/hashedstring.h"
-#include "isoengine/render/drawable.h"
+#include "isoengine/render/window.h"
 #include <map>
 #include <memory>
 #include <vector>
@@ -12,19 +12,22 @@ namespace iso
 
 class RenderScene;
 
-class SceneNode : public Drawable
+class SceneNode : public sf::Transformable
 {
     friend class RenderScene;
+    friend class Window;
 
 public:
+    virtual ~SceneNode() {}
     void addChild(std::shared_ptr<SceneNode> child);
 
+    std::vector<std::shared_ptr<SceneNode>> children;
+
 private:
-    virtual void drawCurrent(Window & window) const {}
-    virtual void draw(Window & window) const;
+    virtual void drawCurrent(Window & window, sf::Transform transform) const {}
+    void draw(Window & window, sf::Transform transform) const;
 
     SceneNode * parent = nullptr;
-    std::vector<std::shared_ptr<SceneNode>> children;
 };
 
 class RenderScene

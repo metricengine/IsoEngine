@@ -21,29 +21,28 @@ public:
     void setCommandTypes(std::initializer_list<HashedString> types);
     void sendCommand(std::shared_ptr<Command> command);
 
-    math::Vector2f getPosition()
-    {
-        return getSprite().getPosition();
-    }
+    // math::Vector2f getPosition()
+    // {
+    //     return getSprite().getPosition();
+    // }
 
-    void setPosition(const math::Vector2f & pos)
-    {
-        getSprite().setPosition(pos);
-    }
+    // void setPosition(const math::Vector2f & pos)
+    // {
+    //     getSprite().setPosition(pos);
+    // }
 
-    void move(const math::Vector2f & dir)
-    {
-        getSprite().setPosition(getPosition() + dir);
-    }
+    // void move(const math::Vector2f & dir)
+    // {
+    //     getSprite().setPosition(getPosition() + dir);
+    // }
 
 private:
     virtual void handleCommand(GameObject & sender,
                                const Command & command) {}
 
-    void drawCurrent(Window & window) const override
+    void drawCurrent(Window & window, sf::Transform transform) const override
     {
-        // std::cout << "drawCurrent gameobject" << std::endl;
-        window.draw(getSprite());
+        window.draw(getSprite(), transform);
     }
 
     void setCommandQueue(CommandQueue * cq)

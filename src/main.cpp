@@ -23,12 +23,12 @@ struct MovementEvent {
                 }
             }
 
-            auto posDiff = player.getPosition() - portal.getPosition();
-            if (posDiff.length() <= 5) {
-                player.sendCommand(std::make_shared<iso::Command>("close"));
-            } else {
-                player.sendCommand(std::make_shared<iso::Command>("open"));
-            }
+            // auto posDiff = player.getPosition() - portal.getPosition();
+            // if (posDiff.length() <= 5) {
+            //     player.sendCommand(std::make_shared<iso::Command>("close"));
+            // } else {
+            //     player.sendCommand(std::make_shared<iso::Command>("open"));
+            // }
         }
     }
 
@@ -100,7 +100,8 @@ int main()
 
     auto mageCrystal = std::make_shared<iso::GameObject>();
     mageCrystal->setAnimation(resManager.getAnimation("crystal"));
-    player->addChild(mageCrystal /*, {10, 10}*/); // Object and relative position, automatically update children when moving
+    player->addChild(mageCrystal);      // Object and relative position, automatically update children when moving
+    mageCrystal->setPosition({123, 8}); // Relative position
 
     // Render scene, layers
     // Empty -> one layer, default
@@ -110,6 +111,7 @@ int main()
     // engine.addGameObject(player);
     // Equivalent to the previous, no string = top layer
     engine.addGameObject(portal, "objects");
+    engine.registerGameObject(mageCrystal);
 
     for (int i = 0; i < 4; ++i) {
         auto bgTile = std::make_shared<iso::GameObject>();

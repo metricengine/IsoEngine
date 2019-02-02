@@ -23,7 +23,7 @@ public:
     const sf::View & getView();
     void clear(sf::Color color);
     void display();
-    void draw(const Sprite & sprite);
+    void draw(const Sprite & sprite, sf::Transform transform);
     sf::RenderWindow & getWindow()
     {
         return window;

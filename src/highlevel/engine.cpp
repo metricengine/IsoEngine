@@ -86,6 +86,12 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString 
     gameObject->setCommandQueue(&commandQueue);
 }
 
+void Engine::registerGameObject(std::shared_ptr<GameObject> gameObject)
+{
+    gameObjects.push_back(gameObject);
+    gameObject->setCommandQueue(&commandQueue);
+}
+
 void Engine::handleInput()
 {
     Event engineEvent;

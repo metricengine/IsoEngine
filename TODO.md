@@ -1,8 +1,12 @@
 # TODO
 - Setting size of sprite/game object
     - Seperate world coordinates from scene coordinates
+    - User should see the same amount of objects (given aspect ratio) regardless of window size
+    - Streching should not pixelate the image
+        - Use buffer render texture to draw to, display that in view
 - Relative positioning of child nodes in SceneNode
     - Change SetPosition
+    - Keep children attached to layers
 - Manage life cycle of game objects (who's the owner)
     - Remove the bunch of shared_ptrs
 - Event type handling compile time
@@ -11,6 +15,9 @@
 - Use culling in rendering
 - Make it easy to create grid
 - Implement isometric projection
+    - Use 3D coordinates for game objects
+    - Define 3D world coords -> 2D scene coords mapping
+        - Sprites use 2D
 - Randomized tiled for equilancy classes (e.g. grass, ground)
 - Engine generated dynamic tiles (e.g. water, fire)
 - Dynamic lightning
@@ -25,3 +32,5 @@
 - <https://github.com/godotengine/godot-demo-projects/tree/2.1/2d/isometric_light>
 - <https://en.sfml-dev.org/forums/index.php?topic=23751.0>
 - <https://github.com/SFML/SFML/wiki/Project:-Thor>
+- https://www.gamedev.net/blogs/entry/2250273-isometric-map-in-sfml/
+- https://stackoverflow.com/questions/50633038/sfml-pixel-manipulation-changing-the-size-of-single-character-in-window

@@ -24,6 +24,7 @@ public:
     void addCommandHandler(CommandHandler cmdHandler);
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
+    void registerGameObject(std::shared_ptr<GameObject> gameObject);
     void moveCamera(Vector2f dir);
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);

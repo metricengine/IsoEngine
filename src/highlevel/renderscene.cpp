@@ -10,18 +10,20 @@ void SceneNode::addChild(std::shared_ptr<SceneNode> child)
     child->parent = this;
 }
 
-void SceneNode::draw(Window & window) const
+void SceneNode::draw(Window & window, sf::Transform transform) const
 {
-    drawCurrent(window);
+    transform *= getTransform();
+    drawCurrent(window, transform);
     for (auto child : children) {
-        child->draw(window);
+        child->draw(window, transform);
     }
 }
 
 void RenderScene::draw(Window & window)
 {
+    auto transform = sf::Transform::Identity;
     for (const auto & layer : layers) {
-        layer.draw(window);
+        layer.draw(window, transform);
     }
 }
 

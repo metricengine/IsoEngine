@@ -42,9 +42,11 @@ void Window::display()
     window.display();
 }
 
-void Window::draw(const Sprite & sprite)
+void Window::draw(const Sprite & sprite, sf::Transform transform)
 {
-    window.draw(sprite.getSprite());
+    sf::RenderStates states;
+    states.transform = transform;
+    window.draw(sprite.getSprite(), states);
 }
 
 } // namespace iso
