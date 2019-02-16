@@ -167,7 +167,7 @@ void Engine::render()
 {
     sf::View view = window.getView();
     if (camera.following != nullptr) {
-        auto pos = camera.following->getSprite().getPosition();
+        auto pos = camera.following->getPosition();
         view.setCenter(pos.x, pos.y);
     } else {
         view.setCenter(camera.pos.x, camera.pos.y);
