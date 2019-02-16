@@ -1,12 +1,12 @@
 # TODO
 - Setting size of sprite/game object
+    - Different options for managing window size
+        - Extending vision
+        - OR streching the view
     - Seperate world coordinates from scene coordinates
     - User should see the same amount of objects (given aspect ratio) regardless of window size
     - Streching should not pixelate the image
         - Use buffer render texture to draw to, display that in view
-- Relative positioning of child nodes in SceneNode
-    - Change SetPosition
-    - Keep children attached to layers
 - Manage life cycle of game objects (who's the owner)
     - Remove the bunch of shared_ptrs
 - Event type handling compile time
