@@ -79,6 +79,12 @@ void Engine::cameraStopFollowing()
     camera.following = nullptr;
 }
 
+math::Vector2f Engine::screenToWorldCoords(const math::Vector2i & coords)
+{
+    auto res = window.getWindow().mapPixelToCoords(sf::Vector2i(coords.x, coords.y));
+    return {res.x, res.y};
+}
+
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
 {
     scene.getLayer(layerName).addChild(gameObject);

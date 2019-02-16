@@ -45,8 +45,8 @@ struct MouseEvent {
     {
         if (event.type == iso::EventType::Mouse) {
             auto obj = std::make_shared<iso::GameObject>();
-            iso::Vector2f coords(static_cast<float>(event.event.mouseButton.x), static_cast<float>(event.event.mouseButton.y));
-            obj->getSprite().setPosition(coords);
+            iso::Vector2i coords(event.event.mouseButton.x, event.event.mouseButton.y);
+            obj->getSprite().setPosition(engine.screenToWorldCoords(coords));
             obj->setAnimation(iso::ResourceManager::getInstance().getAnimation("crystal"));
             obj->setAnimationSpeed((rand() % 200) / 200.f + 0.5f);
             engine.addGameObject(obj, "objects");

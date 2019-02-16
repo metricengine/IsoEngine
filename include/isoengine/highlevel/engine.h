@@ -29,6 +29,7 @@ public:
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);
     void cameraStopFollowing();
+    math::Vector2f screenToWorldCoords(const math::Vector2i& coords);
 
 private:
     struct Camera {
