@@ -1,24 +1,35 @@
 # TODO
 - Setting size of sprite/game object
+    - Scaling sprites
     - Different options for managing window size
         - Extending vision
         - OR streching the view
     - Seperate world coordinates from scene coordinates
     - User should see the same amount of objects (given aspect ratio) regardless of window size
-    - Streching should not pixelate the image
-        - Use buffer render texture to draw to, display that in view
+    - Can set origin for objects
+        - Individually for each object OR
+            - By position or predefined type (e.g. center, top-left)
+        - Globally for default
+            - Only predefined type
 - Manage life cycle of game objects (who's the owner)
     - Remove the bunch of shared_ptrs
 - Event type handling compile time
 - Customize events (e.g. shortcuts, mouse keys), handle most common events internally
+    - E.g. move camera with arrows
+    - Some EventHandlers with default unbound keys
+    - Seperate triggers and handlers (can rebind certain handlers to new triggers)
+- Add tile support
+    - TileMap of given size using TileSize and TileSet (from textures)
+        - Creates grid system
+            - Optional grid features like edges
+        - Can manipulate with cell coordinates
+    - Randomized tiled for equilancy classes (e.g. grass, ground)
 - Seperate SFML specific implementations from abstract
 - Use culling in rendering
-- Make it easy to create grid
 - Implement isometric projection
     - Use 3D coordinates for game objects
     - Define 3D world coords -> 2D scene coords mapping
         - Sprites use 2D
-- Randomized tiled for equilancy classes (e.g. grass, ground)
 - Engine generated dynamic tiles (e.g. water, fire)
 - Dynamic lightning
 
