@@ -1,9 +1,6 @@
 # TODO
 - Setting size of sprite/game object
     - Scaling sprites
-    - Different options for managing window size
-        - Extending vision
-        - OR streching the view
     - Seperate world coordinates from scene coordinates
     - User should see the same amount of objects (given aspect ratio) regardless of window size
     - Can set origin for objects

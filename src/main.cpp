@@ -5,7 +5,10 @@
 struct MovementEvent {
     MovementEvent(iso::Engine & engine,
                   iso::GameObject & player,
-                  iso::GameObject & portal) : engine(engine), player(player), portal(portal) {}
+                  iso::GameObject & portal)
+        : engine(engine), player(player), portal(portal)
+    {
+    }
 
     void operator()(const iso::Event & event)
     {
@@ -39,7 +42,10 @@ struct MovementEvent {
 };
 
 struct MouseEvent {
-    MouseEvent(iso::Engine & engine) : engine(engine) {}
+    MouseEvent(iso::Engine & engine)
+        : engine(engine)
+    {
+    }
 
     void operator()(const iso::Event & event)
     {
@@ -105,7 +111,7 @@ int main()
 
     // Render scene, layers
     // Empty -> one layer, default
-    iso::Engine engine({"background", "objects"});
+    iso::Engine engine(iso::WindowOptions({800, 600}, iso::ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES, {4, 3}), {"background", "objects"});
 
     engine.addGameObject(player, "objects");
     // engine.addGameObject(player);

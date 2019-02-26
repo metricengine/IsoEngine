@@ -12,11 +12,38 @@ sf::Transform toSfmlTransform(const math::Transform & transform)
                          m(2, 0), m(2, 1), m(2, 2));
 }
 
-Window::Window(const std::string & title) : window(sf::VideoMode(800, 600), title)
+namespace
+{
+
+constexpr int windowStyleToSfStyle(WindowStyle style)
+{
+    switch (style) {
+    case WindowStyle::Resize:
+        return sf::Style::Resize | sf::Style::Close;
+    case WindowStyle::Static:
+        return sf::Style::Close;
+    case WindowStyle::Fullscreen:
+        return sf::Style::Fullscreen;
+    }
+}
+
+} // namespace
+
+Window::Window(const std::string & title, const math::Vector2u & size, WindowStyle style) : window(sf::VideoMode(size.x, size.y), title, windowStyleToSfStyle(style))
 {
 }
 
-bool Window::isOpen()
+math::Vector2u Window::getSize() const
+{
+    return {window.getSize().x, window.getSize().y};
+}
+
+void Window::setSize(const math::Vector2u & size)
+{
+    window.setSize({size.x, size.y});
+}
+
+bool Window::isOpen() const
 {
     return window.isOpen();
 }

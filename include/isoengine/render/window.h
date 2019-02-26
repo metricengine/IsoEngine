@@ -8,6 +8,12 @@
 
 class Drawable;
 
+enum class WindowStyle {
+    Resize,
+    Static,
+    Fullscreen
+};
+
 namespace iso
 {
 class Window
@@ -16,8 +22,10 @@ private:
     sf::RenderWindow window;
 
 public:
-    explicit Window(const std::string & title);
-    bool isOpen();
+    Window(const std::string & title, const math::Vector2u & size, WindowStyle style);
+    math::Vector2u getSize() const;
+    void setSize(const math::Vector2u & size);
+    bool isOpen() const;
     void close();
     bool pollEvent(sf::Event & event);
     void setView(sf::View view);

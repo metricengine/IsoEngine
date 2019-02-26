@@ -2,15 +2,33 @@
 #include "isoengine/common/clock.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
-#include <iostream>
+#include <exception>
 
 namespace iso
 {
 
-Engine::Engine(std::initializer_list<HashedString> layerNames) : window{"IsoEngine"}, scene{layerNames}
+Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames)
+    : scene{layerNames}
 {
-    auto center = window.getView().getCenter();
+    switch (windowOpts.resizeStrategy) {
+    case ResizeStrategy::FIXED_RES_STATIC_WINDOW:
+        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Static);
+        break;
+    case ResizeStrategy::FIXED_RES_STRETCH:
+    case ResizeStrategy::DYNAMIC_RES:
+    // case ResizeStrategy::FIXED_ASPECT_RATIO:
+    case ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES:
+        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Resize);
+        break;
+    }
+    resizeStrategy = windowOpts.resizeStrategy;
+    auto center = window->getView().getCenter();
+    camera.res = windowOpts.resolution;
     camera.pos = {center.x, center.y};
+    camera.aspectRatio = windowOpts.aspectRatio;
+    if (windowOpts.resizeStrategy == ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES && windowOpts.aspectRatio == math::Vector2u(0, 0)) {
+        throw std::invalid_argument("Aspect ratio has to be provided if a FIXED_ASPECT_RATIO resize strategy is used");
+    }
 }
 
 void Engine::run()
@@ -18,7 +36,7 @@ void Engine::run()
     Clock<std::chrono::microseconds> clock;
     float dt{};
 
-    while (window.getWindow().isOpen()) {
+    while (window->getWindow().isOpen()) {
         handleInput();
 
         dt += clock.restart() / 1000000.f;
@@ -81,7 +99,7 @@ void Engine::cameraStopFollowing()
 
 math::Vector2f Engine::screenToWorldCoords(const math::Vector2i & coords)
 {
-    auto res = window.getWindow().mapPixelToCoords(sf::Vector2i(coords.x, coords.y));
+    auto res = window->getWindow().mapPixelToCoords(sf::Vector2i(coords.x, coords.y));
     return {res.x, res.y};
 }
 
@@ -102,9 +120,9 @@ void Engine::handleInput()
 {
     Event engineEvent;
     sf::Event & event = engineEvent.event;
-    while (window.pollEvent(event)) {
+    while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
-            window.close();
+            window->close();
         }
 
         if (event.type == sf::Event::MouseButtonPressed) {
@@ -112,8 +130,22 @@ void Engine::handleInput()
         }
 
         if (event.type == sf::Event::Resized) {
-            sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
-            window.setView(sf::View(visibleArea));
+            if (resizeStrategy == ResizeStrategy::DYNAMIC_RES) {
+                sf::FloatRect visibleArea(0, 0, event.size.width, event.size.height);
+                window->setView(sf::View(visibleArea));
+            } else if (resizeStrategy == ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES) {
+                double scale = std::min((double)event.size.width / camera.aspectRatio.x, (double)event.size.height / camera.aspectRatio.y);
+
+                math::Vector2d scaledRes = {scale * camera.aspectRatio.x, scale * camera.aspectRatio.y};
+
+                if (scaledRes.x != event.size.width) {
+                    camera.res.x = (unsigned)((double)event.size.width / (double)event.size.height * (double)camera.res.y);
+                } else {
+                    camera.res.y = (unsigned)((double)event.size.height / (double)event.size.width * (double)camera.res.x);
+                }
+
+                window->setView(sf::View({0, 0, (float)camera.res.x, (float)camera.res.y}));
+            }
         }
 
         if (event.type == sf::Event::MouseWheelScrolled) {
@@ -127,9 +159,9 @@ void Engine::handleInput()
         }
 
         // if (event.type == sf::Event::MouseMoved) {
-        //     sf::View view = window.getView();
+        //     sf::View view = window->getView();
         //     view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
-        //     window.setView(view);
+        //     window->setView(view);
         // }
 
         if (event.type == sf::Event::KeyPressed) {
@@ -171,7 +203,7 @@ void Engine::update(float dt)
 
 void Engine::render()
 {
-    sf::View view = window.getView();
+    sf::View view = window->getView();
     if (camera.following != nullptr) {
         auto pos = camera.following->getPosition();
         view.setCenter(pos.x, pos.y);
@@ -179,11 +211,11 @@ void Engine::render()
         view.setCenter(camera.pos.x, camera.pos.y);
     }
     view.zoom(camera.zoom);
-    window.setView(view);
+    window->setView(view);
 
-    window.clear(sf::Color::White);
+    window->clear(sf::Color::White);
 
-    scene.draw(window);
+    scene.draw(*window);
 
     // for (auto & layer : layers) {
     //     window.draw(layer);
@@ -199,7 +231,7 @@ void Engine::render()
     // for (auto & gameObject : gameObjects)
     //     window.draw(gameObject->getSprite());
 
-    window.display();
+    window->display();
 }
 
 } // namespace iso

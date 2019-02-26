@@ -14,10 +14,31 @@ namespace iso
 using EventHandler = std::function<void(const iso::Event &)>;
 using CommandHandler = std::function<void(GameObject &, const Command &)>;
 
+enum class ResizeStrategy {
+    // Resolution is fixed and window cannot be resized, this is the default mode
+    FIXED_RES_STATIC_WINDOW,
+    // Resolution is fixed and image is stretched to fit window
+    FIXED_RES_STRETCH,
+    // Change resolution based on window size
+    DYNAMIC_RES,
+    // Stretch only until aspect ratio is preserved, don't allow resizing beyond that (for some reason that doesn't work)
+    // FIXED_ASPECT_RATIO,
+    // Stretch image until aspect ratio is preserved and expand resolution to cover the rest of window
+    FIXED_ASPECT_RATIO_EXPAND_RES
+};
+
+struct WindowOptions {
+    WindowOptions(const math::Vector2u & resolution, ResizeStrategy resizeStrategy = ResizeStrategy::FIXED_RES_STATIC_WINDOW, const math::Vector2u & aspectRatio = {}) : resizeStrategy(resizeStrategy), resolution(resolution), aspectRatio(aspectRatio) {}
+
+    ResizeStrategy resizeStrategy;
+    math::Vector2u resolution;
+    math::Vector2u aspectRatio;
+};
+
 class Engine
 {
 public:
-    Engine(std::initializer_list<HashedString> layerNames);
+    Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
     void run();
     void addEventHandler(EventHandler eventHandler);
     void registerCommand(HashedString command);
@@ -29,12 +50,14 @@ public:
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);
     void cameraStopFollowing();
-    math::Vector2f screenToWorldCoords(const math::Vector2i& coords);
+    math::Vector2f screenToWorldCoords(const math::Vector2i & coords);
 
 private:
     struct Camera {
         float zoom = 1;
         Vector2f pos;
+        Vector2u res;
+        Vector2u aspectRatio;
         const GameObject * following = nullptr;
     };
 
@@ -46,8 +69,9 @@ private:
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     CommandQueue commandQueue;
     // Rendering
+    ResizeStrategy resizeStrategy;
     Camera camera;
-    Window window;
+    std::unique_ptr<Window> window;
     RenderScene scene;
 
     void handleInput();
