@@ -2,26 +2,32 @@
 #include "isoengine/support/resourcemanager.h"
 #include <iostream>
 
-struct MovementEvent {
-    MovementEvent(iso::Engine & engine,
-                  iso::GameObject & player,
-                  iso::GameObject & portal)
+struct MovementEvent
+{
+    MovementEvent(iso::Engine& engine,
+                  iso::GameObject& player,
+                  iso::GameObject& portal)
         : engine(engine), player(player), portal(portal)
     {
     }
 
-    void operator()(const iso::Event & event)
+    void operator()(const iso::Event& event)
     {
-        if (event.type == iso::EventType::Key) {
+        if (event.type == iso::EventType::Key)
+        {
             if (event.event.key.code == sf::Keyboard::Left)
                 player.move({-5, 0});
             else if (event.event.key.code == sf::Keyboard::Right)
                 player.move({5, 0});
-            else if (event.event.key.code == sf::Keyboard::Space) {
+            else if (event.event.key.code == sf::Keyboard::Space)
+            {
                 following = !following;
-                if (following) {
+                if (following)
+                {
                     engine.cameraStopFollowing();
-                } else {
+                }
+                else
+                {
                     engine.cameraFollowObject(&player);
                 }
             }
@@ -36,20 +42,22 @@ struct MovementEvent {
     }
 
     bool following = false;
-    iso::Engine & engine;
-    iso::GameObject & player;
-    iso::GameObject & portal;
+    iso::Engine& engine;
+    iso::GameObject& player;
+    iso::GameObject& portal;
 };
 
-struct MouseEvent {
-    MouseEvent(iso::Engine & engine)
+struct MouseEvent
+{
+    MouseEvent(iso::Engine& engine)
         : engine(engine)
     {
     }
 
-    void operator()(const iso::Event & event)
+    void operator()(const iso::Event& event)
     {
-        if (event.type == iso::EventType::Mouse) {
+        if (event.type == iso::EventType::Mouse)
+        {
             auto obj = std::make_shared<iso::GameObject>();
             iso::Vector2i coords(event.event.mouseButton.x, event.event.mouseButton.y);
             obj->getSprite().setPosition(engine.screenToWorldCoords(coords));
@@ -59,12 +67,13 @@ struct MouseEvent {
         }
     }
 
-    iso::Engine & engine;
+    iso::Engine& engine;
 };
 
-struct Portal : iso::GameObject {
-    void handleCommand(iso::GameObject & sender,
-                       const iso::Command & command) override
+struct Portal : iso::GameObject
+{
+    void handleCommand(iso::GameObject& sender,
+                       const iso::Command& command) override
     {
         if (command.type == iso::HashedString("close"))
             setAnimation(iso::ResourceManager::getInstance().getAnimation("portal_closed"));
@@ -73,8 +82,9 @@ struct Portal : iso::GameObject {
     }
 };
 
-struct CentererCommandListener {
-    void operator()(iso::GameObject & sender, const iso::Command & command)
+struct CentererCommandListener
+{
+    void operator()(iso::GameObject& sender, const iso::Command& command)
     {
         if (command.type == iso::HashedString("close"))
             sender.setPosition({400, 250});
@@ -83,12 +93,12 @@ struct CentererCommandListener {
 
 int main()
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto& resManager = iso::ResourceManager::getInstance();
 
-    iso::Texture & textureCrystal = resManager.getTexture("res/textures/crystal.png");
-    iso::Texture & texturePortal = resManager.getTexture("res/textures/portal.png");
-    iso::Texture & textureMage = resManager.getTexture("res/textures/mage.png");
-    iso::Texture & textureBg = resManager.getTexture("res/textures/red_hexagon_tile.jpg");
+    iso::Texture& textureCrystal = resManager.getTexture("res/textures/crystal.png");
+    iso::Texture& texturePortal = resManager.getTexture("res/textures/portal.png");
+    iso::Texture& textureMage = resManager.getTexture("res/textures/mage.png");
+    iso::Texture& textureBg = resManager.getTexture("res/textures/red_hexagon_tile.jpg");
 
     resManager.addAnimation("crystal", iso::Animation(textureCrystal, iso::math::Vector2i(0, 0), iso::math::Vector2i(32, 32), 8, 1, true));
     resManager.addAnimation("portal_opened", iso::Animation(texturePortal, iso::math::Vector2i(224, 160), iso::math::Vector2i(32, 32), 1, 1, true));
@@ -119,7 +129,8 @@ int main()
     engine.addGameObject(portal, "objects");
     engine.registerGameObject(mageCrystal);
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 4; ++i)
+    {
         auto bgTile = std::make_shared<iso::GameObject>();
         bgTile->setAnimation(resManager.getAnimation("bg"));
         bgTile->setPosition({(i % 2) * 50.f - 25.f + player->getPosition().x, (i / 2) * 50.f - 25.f + player->getPosition().y});

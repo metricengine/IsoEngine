@@ -24,8 +24,9 @@ endif()
 
 include_directories(${PROJECT_SOURCE_DIR}/include)
 file(GLOB_RECURSE sources      src/*.cpp)
-add_executable(isoengine ${sources})
-
+# add_executable(isoengine ${sources})
+add_library(isoengine SHARED ${sources})
+# add_library(isoengine ${LIB_SOURCES} ${LIB_HEADERS} )
 
 # Detect and add SFML
 # Add directory containing FindSFML.cmake to module path
@@ -38,4 +39,6 @@ if(SFML_FOUND)
 endif()
 
 # C++ source code
-# add_subdirectory(src)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+add_subdirectory(demos)

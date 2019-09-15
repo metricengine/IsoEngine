@@ -6,3 +6,5 @@ cmake_install.cmake
 Makefile
 .idea
 /isoengine
+libisoengine.so
+bin
