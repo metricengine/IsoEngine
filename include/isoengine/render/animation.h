@@ -14,7 +14,7 @@ using namespace math;
 class Animation
 {
 public:
-    Animation(const Texture & texture, const Vector2i & firstFrame, const Vector2i & frameSize, int numFrames, float duration, bool loop);
+    Animation(const Texture & texture, const Vector2i & frameSize, const Vector2i & firstFrame, int numFrames, float duration, bool loop);
     virtual void setFrame(Sprite & sprite, float time);
 
 protected:
@@ -27,7 +27,7 @@ protected:
 class StaticAnimation : public Animation
 {
 public:
-    StaticAnimation(const Texture & texture, const Vector2i frameSize) : Animation(texture, {0, 0}, frameSize, 1, 0, false){};
+    StaticAnimation(const Texture & texture, const Vector2i frameSize, const Vector2i frameOffset = {0, 0}) : Animation(texture, frameSize, frameOffset, 1, 0, false){};
     void setFrame(Sprite & sprite, float time) override;
 };
 

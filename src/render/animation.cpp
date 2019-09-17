@@ -3,7 +3,7 @@
 namespace iso
 {
 
-Animation::Animation(const Texture & texture, const Vector2i & firstFrame, const Vector2i & frameSize, int numFrames, float duration, bool loop) : texture(texture), duration(duration), loop(loop)
+Animation::Animation(const Texture & texture, const Vector2i & frameSize, const Vector2i & firstFrame, int numFrames, float duration, bool loop) : texture(texture), duration(duration), loop(loop)
 {
     frames.resize(numFrames);
     for (int i = 0; i < numFrames; ++i)

@@ -31,3 +31,4 @@
 - Fixed, stable FPS
 - Provide timer mechanism inside the engine
 - Collision detection
+- Provide a game loop where game logic can be updated

@@ -31,6 +31,11 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
     }
 }
 
+void Engine::setGameLoop(GameLoop callback)
+{
+    gameLoop = callback;
+}
+
 void Engine::run()
 {
     Clock<std::chrono::microseconds> clock;
@@ -199,6 +204,8 @@ void Engine::update(float dt)
     }
     for (auto gameObject : gameObjects)
         gameObject->update(dt);
+    if (gameLoop)
+        gameLoop(dt);
 }
 
 void Engine::render()

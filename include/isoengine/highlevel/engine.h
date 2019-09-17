@@ -13,6 +13,7 @@ namespace iso
 {
 using EventHandler = std::function<void(const iso::Event &)>;
 using CommandHandler = std::function<void(GameObject &, const Command &)>;
+using GameLoop = std::function<void(float)>;
 
 enum class ResizeStrategy {
     // Resolution is fixed and window cannot be resized, this is the default mode
@@ -39,6 +40,7 @@ class Engine
 {
 public:
     Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
+    void setGameLoop(GameLoop callback);
     void run();
     void addEventHandler(EventHandler eventHandler);
     void registerCommand(HashedString command);
@@ -73,6 +75,7 @@ private:
     Camera camera;
     std::unique_ptr<Window> window;
     RenderScene scene;
+    GameLoop gameLoop;
 
     void handleInput();
     void update(float dt);

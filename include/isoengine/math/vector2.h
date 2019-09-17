@@ -44,6 +44,12 @@ public:
         return std::sqrt(x * x + y * y);
     }
 
+    inline Vector2<T> normalize() const
+    {
+        auto l = length();
+        return {x / l, y / l};
+    }
+
     inline Vector2<T> & operator+=(const Vector2<T> & rhs)
     {
         x += rhs.x;
