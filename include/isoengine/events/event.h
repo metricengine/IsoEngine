@@ -119,11 +119,7 @@ enum class KeyCode {
     F13,
     F14,
     F15,
-    Pause,
-    KeyCount,
-    BackSlash,
-    SemiColon,
-    Return
+    Pause
 };
 
 struct KeyEvent {

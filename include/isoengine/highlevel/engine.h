@@ -7,7 +7,6 @@
 #include "isoengine/highlevel/gameobject.h"
 #include "isoengine/highlevel/renderscene.h"
 #include "isoengine/render/window.h"
-#include <functional>
 
 namespace iso
 {
@@ -65,7 +64,7 @@ private:
     };
 
     // Model
-    const float timePerFrame = 1.f / 60;
+    const float timePerFrame = 1.f / 60.f;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     CommandQueue commandQueue;
     // Rendering

@@ -119,7 +119,7 @@ void Engine::handleInput()
             event.type == sf::Event::MouseButtonReleased ||
             event.type == sf::Event::MouseMoved) {
             auto mouseEvent = mouseEventFromSFML(event);
-            onMouse.Raise(mouseEvent);
+            onMouse.raise(mouseEvent);
         }
 
         if (event.type == sf::Event::Resized) {
@@ -151,24 +151,24 @@ void Engine::handleInput()
             }
         }
 
-        if (event.type == sf::Event::KeyPressed) {
-            constexpr float delta = 5.f;
+        // if (event.type == sf::Event::KeyPressed) {
+        //     constexpr float delta = 5.f;
 
-            if (event.key.code == sf::Keyboard::J) {
-                moveCamera({-delta, 0});
-            } else if (event.key.code == sf::Keyboard::L) {
-                moveCamera({delta, 0});
-            } else if (event.key.code == sf::Keyboard::I) {
-                moveCamera({0, -delta});
-            } else if (event.key.code == sf::Keyboard::K) {
-                moveCamera({0, delta});
-            }
-        }
+        //     if (event.key.code == sf::Keyboard::J) {
+        //         moveCamera({-delta, 0});
+        //     } else if (event.key.code == sf::Keyboard::L) {
+        //         moveCamera({delta, 0});
+        //     } else if (event.key.code == sf::Keyboard::I) {
+        //         moveCamera({0, -delta});
+        //     } else if (event.key.code == sf::Keyboard::K) {
+        //         moveCamera({0, delta});
+        //     }
+        // }
 
         if (event.type == sf::Event::KeyPressed ||
             event.type == sf::Event::KeyReleased) {
             auto keyEvent = keyEventFromSFML(event);
-            onKey.Raise(keyEvent);
+            onKey.raise(keyEvent);
         }
     }
 }
@@ -180,7 +180,7 @@ void Engine::update(float dt)
         auto & sender = *cmd.first;
         auto & cmdType = *cmd.second.get();
 
-        onCommand.Raise(sender, cmdType);
+        onCommand.raise(sender, cmdType);
         // for (auto cmdHandler : commandHandlers)
         //     cmdHandler(sender, cmdType);
         for (auto gameObject : gameObjects)
@@ -189,7 +189,7 @@ void Engine::update(float dt)
     }
     for (auto gameObject : gameObjects)
         gameObject->update(dt);
-    onUpdate.Raise(dt);
+    onUpdate.raise(dt);
 }
 
 void Engine::render()
