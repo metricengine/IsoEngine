@@ -52,7 +52,7 @@ struct Game {
     void createZombie(const iso::math::Vector2f & location);
     void moveZombies(float dt);
     void updatePlayer(float dt);
-    void onKey(const iso::Event & event);
+    void onKey(iso::KeyEvent event);
 
     std::unique_ptr<iso::Engine> engine;
     float timeElapsed = float{};
@@ -86,7 +86,7 @@ Game::Game()
     setRespawnLocations();
 
     engine->onUpdate += std::bind(&Game::loop, this, std::placeholders::_1);
-    engine->eventHandlers += std::bind(&Game::onKey, this, std::placeholders::_1);
+    engine->onKey += std::bind(&Game::onKey, this, std::placeholders::_1);
 }
 
 void Game::loop(float dt)
@@ -163,25 +163,23 @@ void Game::updatePlayer(float dt)
     playerDir = {0, 0};
 }
 
-void Game::onKey(const iso::Event & event)
+void Game::onKey(iso::KeyEvent event)
 {
-    if (event.type == iso::EventType::Key) {
-        switch (event.event.key.code) {
-        case sf::Keyboard::Left:
-            playerDir = {-1, 0};
-            break;
-        case sf::Keyboard::Up:
-            playerDir = {0, -1};
-            break;
-        case sf::Keyboard::Right:
-            playerDir = {1, 0};
-            break;
-        case sf::Keyboard::Down:
-            playerDir = {0, 1};
-            break;
-        default:
-            break;
-        }
+    switch (event.keyCode) {
+    case iso::KeyCode::Left:
+        playerDir = {-1, 0};
+        break;
+    case iso::KeyCode::Up:
+        playerDir = {0, -1};
+        break;
+    case iso::KeyCode::Right:
+        playerDir = {1, 0};
+        break;
+    case iso::KeyCode::Down:
+        playerDir = {0, 1};
+        break;
+    default:
+        break;
     }
 }
 

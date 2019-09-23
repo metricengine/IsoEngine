@@ -37,8 +37,9 @@ class Engine
 {
 public:
     // Events
-    Delegates<void(const iso::Event &)> eventHandlers;
-    Delegates<void(GameObject &, const Command &)> commandHandlers;
+    Delegates<void(GameObject &, const Command &)> onCommand;
+    Delegates<void(KeyEvent)> onKey;
+    Delegates<void(MouseEvent)> onMouse;
     Delegates<void(float)> onUpdate;
 
     // Methods

@@ -1,5 +1,6 @@
 #include "isoengine/highlevel/engine.h"
 #include "isoengine/common/clock.h"
+#include "isoengine/events/sfml_events.h"
 #include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
 #include <exception>
@@ -108,15 +109,17 @@ void Engine::registerGameObject(std::shared_ptr<GameObject> gameObject)
 
 void Engine::handleInput()
 {
-    Event engineEvent;
-    sf::Event & event = engineEvent.event;
+    sf::Event event;
     while (window->pollEvent(event)) {
         if (event.type == sf::Event::Closed) {
             window->close();
         }
 
-        if (event.type == sf::Event::MouseButtonPressed) {
-            engineEvent.type = EventType::Mouse;
+        if (event.type == sf::Event::MouseButtonPressed ||
+            event.type == sf::Event::MouseButtonReleased ||
+            event.type == sf::Event::MouseMoved) {
+            auto mouseEvent = mouseEventFromSFML(event);
+            onMouse.Raise(mouseEvent);
         }
 
         if (event.type == sf::Event::Resized) {
@@ -148,14 +151,7 @@ void Engine::handleInput()
             }
         }
 
-        // if (event.type == sf::Event::MouseMoved) {
-        //     sf::View view = window->getView();
-        //     view.setCenter(sf::Vector2f{sf::Mouse::getPosition()});
-        //     window->setView(view);
-        // }
-
         if (event.type == sf::Event::KeyPressed) {
-            engineEvent.type = EventType::Key;
             constexpr float delta = 5.f;
 
             if (event.key.code == sf::Keyboard::J) {
@@ -168,11 +164,13 @@ void Engine::handleInput()
                 moveCamera({0, delta});
             }
         }
+
+        if (event.type == sf::Event::KeyPressed ||
+            event.type == sf::Event::KeyReleased) {
+            auto keyEvent = keyEventFromSFML(event);
+            onKey.Raise(keyEvent);
+        }
     }
-    eventHandlers(engineEvent);
-    // for (auto & handler : eventHandlers) {
-    //     handler(engineEvent);
-    // }
 }
 
 void Engine::update(float dt)
@@ -182,7 +180,7 @@ void Engine::update(float dt)
         auto & sender = *cmd.first;
         auto & cmdType = *cmd.second.get();
 
-        commandHandlers(sender, cmdType);
+        onCommand.Raise(sender, cmdType);
         // for (auto cmdHandler : commandHandlers)
         //     cmdHandler(sender, cmdType);
         for (auto gameObject : gameObjects)
