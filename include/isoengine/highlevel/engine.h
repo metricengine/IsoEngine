@@ -2,18 +2,15 @@
 #define ENGINE_H
 
 #include "isoengine/events/commandqueue.h"
+#include "isoengine/events/delegates.h"
 #include "isoengine/events/event.h"
 #include "isoengine/highlevel/gameobject.h"
 #include "isoengine/highlevel/renderscene.h"
-#include "isoengine/render/animator.h"
 #include "isoengine/render/window.h"
 #include <functional>
 
 namespace iso
 {
-using EventHandler = std::function<void(const iso::Event &)>;
-using CommandHandler = std::function<void(GameObject &, const Command &)>;
-using GameLoop = std::function<void(float)>;
 
 enum class ResizeStrategy {
     // Resolution is fixed and window cannot be resized, this is the default mode
@@ -39,12 +36,15 @@ struct WindowOptions {
 class Engine
 {
 public:
+    // Events
+    Delegates<void(const iso::Event &)> eventHandlers;
+    Delegates<void(GameObject &, const Command &)> commandHandlers;
+    Delegates<void(float)> onUpdate;
+
+    // Methods
     Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
-    void setGameLoop(GameLoop callback);
     void run();
-    void addEventHandler(EventHandler eventHandler);
     void registerCommand(HashedString command);
-    void addCommandHandler(CommandHandler cmdHandler);
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
@@ -63,9 +63,6 @@ private:
         const GameObject * following = nullptr;
     };
 
-    // I/O
-    std::vector<EventHandler> eventHandlers;
-    std::vector<CommandHandler> commandHandlers;
     // Model
     const float timePerFrame = 1.f / 60;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
@@ -75,7 +72,6 @@ private:
     Camera camera;
     std::unique_ptr<Window> window;
     RenderScene scene;
-    GameLoop gameLoop;
 
     void handleInput();
     void update(float dt);

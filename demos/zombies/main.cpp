@@ -85,8 +85,8 @@ Game::Game()
 
     setRespawnLocations();
 
-    engine->setGameLoop(std::bind(&Game::loop, this, std::placeholders::_1));
-    engine->addEventHandler(std::bind(&Game::onKey, this, std::placeholders::_1));
+    engine->onUpdate += std::bind(&Game::loop, this, std::placeholders::_1);
+    engine->eventHandlers += std::bind(&Game::onKey, this, std::placeholders::_1);
 }
 
 void Game::loop(float dt)

@@ -31,11 +31,6 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
     }
 }
 
-void Engine::setGameLoop(GameLoop callback)
-{
-    gameLoop = callback;
-}
-
 void Engine::run()
 {
     Clock<std::chrono::microseconds> clock;
@@ -55,19 +50,9 @@ void Engine::run()
     }
 }
 
-void Engine::addEventHandler(EventHandler eventHandler)
-{
-    eventHandlers.push_back(eventHandler);
-}
-
 void Engine::registerCommand(HashedString command)
 {
     commandQueue.registerCommand(command);
-}
-
-void Engine::addCommandHandler(CommandHandler cmdHandler)
-{
-    commandHandlers.push_back(cmdHandler);
 }
 
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
@@ -184,9 +169,10 @@ void Engine::handleInput()
             }
         }
     }
-    for (auto & handler : eventHandlers) {
-        handler(engineEvent);
-    }
+    eventHandlers(engineEvent);
+    // for (auto & handler : eventHandlers) {
+    //     handler(engineEvent);
+    // }
 }
 
 void Engine::update(float dt)
@@ -196,16 +182,16 @@ void Engine::update(float dt)
         auto & sender = *cmd.first;
         auto & cmdType = *cmd.second.get();
 
-        for (auto cmdHandler : commandHandlers)
-            cmdHandler(sender, cmdType);
+        commandHandlers(sender, cmdType);
+        // for (auto cmdHandler : commandHandlers)
+        //     cmdHandler(sender, cmdType);
         for (auto gameObject : gameObjects)
             if (commandQueue.objectListensToCommand(*gameObject, cmdType))
                 gameObject->handleCommand(sender, cmdType);
     }
     for (auto gameObject : gameObjects)
         gameObject->update(dt);
-    if (gameLoop)
-        gameLoop(dt);
+    onUpdate.Raise(dt);
 }
 
 void Engine::render()
