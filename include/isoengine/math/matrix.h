@@ -20,7 +20,7 @@ public:
     Matrix(std::array<T, Rows * Cols> values)
     {
         data.resize(values.size());
-        for (int i = 0; i < values.size(); ++i) {
+        for (size_t i = 0; i < values.size(); ++i) {
             data[i] = values[i];
         }
     }

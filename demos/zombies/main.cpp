@@ -143,11 +143,11 @@ void Game::loadMap()
         return;
     }
 
-    for (int i = 0; i < height; ++i) {
+    for (unsigned i = 0; i < height; ++i) {
         std::string row;
         file >> row;
-        for (int j = 0; j < width; ++j) {
-            int tile = row[j] - '0';
+        for (unsigned j = 0; j < width; ++j) {
+            unsigned tile = row[j] - '0';
             if (Tile(tile) == Tile::Portal) {
                 addTile(Tile::Grass, j, i);
             }
