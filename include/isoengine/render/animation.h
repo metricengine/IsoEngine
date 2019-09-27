@@ -14,11 +14,14 @@ using namespace math;
 class Animation
 {
 public:
+    // Frames are given in a row major order
+    // numFrames.x: number of columns
+    // numFrames.y: number of rows
     Animation(
         const Texture & texture,
         const Vector2i & frameSize,
         const Vector2i & firstFrame,
-        int numFrames,
+        const Vector2i & numFrames,
         float duration,
         bool loop,
         const Vector2i & frameOffset = {0, 0});
@@ -38,7 +41,7 @@ public:
         const Texture & texture,
         const Vector2i frameSize,
         const Vector2i frameOffset = {0, 0})
-        : Animation(texture, frameSize, frameOffset, 1, 0, false){};
+        : Animation(texture, frameSize, frameOffset, {1, 1}, 0, false){};
     void setFrame(Sprite & sprite, float time) override;
 };
 

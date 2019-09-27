@@ -7,17 +7,24 @@ Animation::Animation(
     const Texture & texture,
     const Vector2i & frameSize,
     const Vector2i & firstFrame,
-    int numFrames,
+    const Vector2i & numFrames,
     float duration,
     bool loop,
     const Vector2i & frameOffset)
     : texture(texture), duration(duration), loop(loop)
 {
-    frames.resize(numFrames);
-    for (int i = 0; i < numFrames; ++i)
-        frames[i] = Recti(
-            {firstFrame.x + (frameSize.x + frameOffset.x) * i, firstFrame.y},
-            frameSize);
+    frames.resize(numFrames.x * numFrames.y);
+    int idx = 0;
+    for (int i = 0; i < numFrames.y; ++i) {
+        for (int j = 0; j < numFrames.x; ++j) {
+            frames[idx] = Recti(
+                firstFrame.x + (frameSize.x + frameOffset.x) * j,
+                firstFrame.y + (frameSize.y + frameOffset.y) * i,
+                frameSize.x,
+                frameSize.y);
+            ++idx;
+        }
+    }
 }
 
 void Animation::setFrame(Sprite & sprite, float time)

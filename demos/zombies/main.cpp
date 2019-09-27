@@ -14,19 +14,19 @@ void loadResources(iso::ResourceManager & resManager)
     auto & texturePortal = resManager.getTexture("res/textures/portalRings.png");
     auto & textureZombie = resManager.getTexture("res/textures/zombie.png");
 
-    resManager.addAnimation("mage", iso::Animation(textureMage, iso::math::Vector2i(160, 160), iso::math::Vector2i(0, 0), 1, 1, true));
+    resManager.addAnimation("mage", iso::StaticAnimation(textureMage, iso::math::Vector2i(160, 160)));
     resManager.addAnimation("wall", iso::StaticAnimation(textureWall, iso::math::Vector2i(128, 128)));
     resManager.addAnimation("grass", iso::StaticAnimation(textureGrass, iso::math::Vector2i(128, 128)));
     resManager.addAnimation("cave", iso::StaticAnimation(textureCave, iso::math::Vector2i(128, 128)));
-    resManager.addAnimation("zombie-left", iso::Animation(textureZombie, {128, 128}, {64, 64}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-left-up", iso::Animation(textureZombie, {128, 128}, {64, 320}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-up", iso::Animation(textureZombie, {128, 128}, {64, 576}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-right-up", iso::Animation(textureZombie, {128, 128}, {64, 832}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-right", iso::Animation(textureZombie, {128, 128}, {64, 1088}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-right-down", iso::Animation(textureZombie, {128, 128}, {64, 1344}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-down", iso::Animation(textureZombie, {128, 128}, {64, 1600}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {128, 128}, {64, 1856}, 4, 1, true, {128, 128}));
-    resManager.addAnimation("portal", iso::Animation(texturePortal, {32, 32}, {0, 64}, 4, 1, true));
+    resManager.addAnimation("zombie-left", iso::Animation(textureZombie, {128, 128}, {64, 64}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-left-up", iso::Animation(textureZombie, {128, 128}, {64, 320}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-up", iso::Animation(textureZombie, {128, 128}, {64, 576}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right-up", iso::Animation(textureZombie, {128, 128}, {64, 832}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right", iso::Animation(textureZombie, {128, 128}, {64, 1088}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right-down", iso::Animation(textureZombie, {128, 128}, {64, 1344}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-down", iso::Animation(textureZombie, {128, 128}, {64, 1600}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {128, 128}, {64, 1856}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("portal", iso::Animation(texturePortal, {32, 32}, {0, 0}, {4, 4}, 1, true));
 }
 
 enum class Direction {
@@ -106,7 +106,7 @@ Game::Game()
 
     // Render scene, layers
     // Empty -> one layer, default
-    engine.reset(new iso::Engine(iso::WindowOptions({spriteSize * width, spriteSize * height}, iso::ResizeStrategy::FIXED_RES_STATIC_WINDOW, {4, 3}), {"background", "objects"}));
+    engine.reset(new iso::Engine(iso::WindowOptions({spriteSize * width, spriteSize * height}, iso::ResizeStrategy::FIXED_RES_STRETCH, {4, 3}), {"background", "objects"}));
 
     // Create player sprite and add to engine
     player->setAnimation(resManager.getAnimation("mage"));
