@@ -27,9 +27,22 @@ void Sprite::setScale(float x, float y)
     sprite.setScale(x, y);
 }
 
+math::Vector2f Sprite::getSize() const
+{
+    return {sprite.getGlobalBounds().width,
+            sprite.getGlobalBounds().height};
+}
+
 math::Vector2f Sprite::getPosition() const
 {
-    return math::Vector2f(sprite.getPosition().x, sprite.getPosition().y);
+    return {sprite.getPosition().x,
+            sprite.getPosition().y};
+}
+
+math::Vector2f Sprite::getScale() const
+{
+    return {sprite.getScale().x,
+            sprite.getScale().y};
 }
 
 } // namespace iso

@@ -31,11 +31,6 @@ public:
         position = pos;
     }
 
-    void move(const math::Vector2f & dir)
-    {
-        position += dir;
-    }
-
 private:
     virtual void drawCurrent(Window & window, math::Transform transform) const {}
     void draw(Window & window, math::Transform transform) const;

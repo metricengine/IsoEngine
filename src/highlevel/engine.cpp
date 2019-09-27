@@ -30,6 +30,8 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
     if (windowOpts.resizeStrategy == ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES && windowOpts.aspectRatio == math::Vector2u(0, 0)) {
         throw std::invalid_argument("Aspect ratio has to be provided if a FIXED_ASPECT_RATIO resize strategy is used");
     }
+
+    collisionDetector = std::make_unique<CollisionDetector>();
 }
 
 void Engine::run()
@@ -99,6 +101,12 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString 
     scene.getLayer(layerName).addChild(gameObject);
     gameObjects.push_back(gameObject);
     gameObject->setCommandQueue(&commandQueue);
+}
+
+void Engine::addRigidBody(std::shared_ptr<GameObject> gameObject)
+{
+    gameObject->setCollisionDetector(collisionDetector.get());
+    collisionDetector->addRigidBody(gameObject);
 }
 
 void Engine::registerGameObject(std::shared_ptr<GameObject> gameObject)

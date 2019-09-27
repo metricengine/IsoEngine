@@ -18,14 +18,14 @@ void loadResources(iso::ResourceManager & resManager)
     resManager.addAnimation("wall", iso::StaticAnimation(textureWall, iso::math::Vector2i(128, 128)));
     resManager.addAnimation("grass", iso::StaticAnimation(textureGrass, iso::math::Vector2i(128, 128)));
     resManager.addAnimation("cave", iso::StaticAnimation(textureCave, iso::math::Vector2i(128, 128)));
-    resManager.addAnimation("zombie-left", iso::Animation(textureZombie, {256, 256}, {0, 0}, 4, 1, true));
-    resManager.addAnimation("zombie-left-up", iso::Animation(textureZombie, {256, 256}, {0, 256}, 4, 1, true));
-    resManager.addAnimation("zombie-up", iso::Animation(textureZombie, {256, 256}, {0, 512}, 4, 1, true));
-    resManager.addAnimation("zombie-right-up", iso::Animation(textureZombie, {256, 256}, {0, 768}, 4, 1, true));
-    resManager.addAnimation("zombie-right", iso::Animation(textureZombie, {256, 256}, {0, 1024}, 4, 1, true));
-    resManager.addAnimation("zombie-right-down", iso::Animation(textureZombie, {256, 256}, {0, 1280}, 4, 1, true));
-    resManager.addAnimation("zombie-down", iso::Animation(textureZombie, {256, 256}, {0, 1536}, 4, 1, true));
-    resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {256, 256}, {0, 1792}, 4, 1, true));
+    resManager.addAnimation("zombie-left", iso::Animation(textureZombie, {128, 128}, {64, 64}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-left-up", iso::Animation(textureZombie, {128, 128}, {64, 320}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-up", iso::Animation(textureZombie, {128, 128}, {64, 576}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right-up", iso::Animation(textureZombie, {128, 128}, {64, 832}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right", iso::Animation(textureZombie, {128, 128}, {64, 1088}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-right-down", iso::Animation(textureZombie, {128, 128}, {64, 1344}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-down", iso::Animation(textureZombie, {128, 128}, {64, 1600}, 4, 1, true, {128, 128}));
+    resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {128, 128}, {64, 1856}, 4, 1, true, {128, 128}));
     resManager.addAnimation("portal", iso::Animation(texturePortal, {32, 32}, {0, 64}, 4, 1, true));
 }
 
@@ -110,10 +110,11 @@ Game::Game()
 
     // Create player sprite and add to engine
     player->setAnimation(resManager.getAnimation("mage"));
-    player->setPosition({400, 250});
+    player->setPosition({400, 200});
     player->getSprite().setScale(0.2f, 0.2f);
     loadMap();
     engine->addGameObject(player, "objects");
+    engine->addRigidBody(player);
     // Equivalent to the previous, no string = top layer
     // engine.addGameObject(player);
 
@@ -182,6 +183,9 @@ void Game::addTile(Tile tile, int x, int y)
     if (tile == Tile::Cave) {
         addRespawnLocation(x, y);
     }
+    if (tile != Tile::Grass && tile != Tile::Cave) {
+        engine->addRigidBody(obj);
+    }
 }
 
 void Game::respawn()
@@ -210,6 +214,7 @@ void Game::createZombie(const iso::math::Vector2f & location)
     zombie->getSprite().setScale(0.25f, 0.25f);
     engine->addGameObject(zombie, "objects");
     zombies.emplace_back(zombie, Direction::Left);
+    engine->addRigidBody(zombie);
 }
 
 void Game::moveZombies(float dt)

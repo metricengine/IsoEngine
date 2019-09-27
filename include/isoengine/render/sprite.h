@@ -16,8 +16,9 @@ public:
     void setOrigin(const iso::math::Vector2f & vector);
     void setPosition(const iso::math::Vector2f & vector);
     void setScale(float x, float y);
-    void setSize(const iso::math::Vector2f & size);
+    math::Vector2f getSize() const;
     math::Vector2f getPosition() const;
+    math::Vector2f getScale() const;
     const sf::Sprite & getSprite() const
     {
         return sprite;

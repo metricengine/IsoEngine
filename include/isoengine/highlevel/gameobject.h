@@ -11,10 +11,13 @@
 namespace iso
 {
 
+class CollisionDetector;
+
 class GameObject : public Animator, public SceneNode
 {
     friend class CommandQueue;
     friend class Engine;
+    friend class CollisionDetector;
 
 public:
     void setCommandTypes(std::initializer_list<HashedString> types);
@@ -30,14 +33,14 @@ public:
     //     getSprite().setPosition(pos);
     // }
 
-    // void move(const math::Vector2f & dir)
-    // {
-    //     getSprite().setPosition(getPosition() + dir);
-    // }
+    void move(const math::Vector2f & dir);
 
 private:
     virtual void handleCommand(GameObject & sender,
                                const Command & command) {}
+    // override collide function to handle manual collision logic
+    // return value -> object is colliding with argument, therefore cannot move
+    virtual bool collide(const GameObject & object) { return true; }
 
     void drawCurrent(Window & window, Transform transform) const override
     {
@@ -49,8 +52,14 @@ private:
         commandQueue = cq;
     }
 
+    void setCollisionDetector(CollisionDetector * cd)
+    {
+        collisionDetector = cd;
+    }
+
     unsigned commandTypes = 0;
     CommandQueue * commandQueue = nullptr;
+    CollisionDetector * collisionDetector = nullptr;
 };
 
 } // namespace iso

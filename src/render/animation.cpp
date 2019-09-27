@@ -3,11 +3,21 @@
 namespace iso
 {
 
-Animation::Animation(const Texture & texture, const Vector2i & frameSize, const Vector2i & firstFrame, int numFrames, float duration, bool loop) : texture(texture), duration(duration), loop(loop)
+Animation::Animation(
+    const Texture & texture,
+    const Vector2i & frameSize,
+    const Vector2i & firstFrame,
+    int numFrames,
+    float duration,
+    bool loop,
+    const Vector2i & frameOffset)
+    : texture(texture), duration(duration), loop(loop)
 {
     frames.resize(numFrames);
     for (int i = 0; i < numFrames; ++i)
-        frames[i] = Recti({firstFrame.x + frameSize.x * i, firstFrame.y}, frameSize);
+        frames[i] = Recti(
+            {firstFrame.x + (frameSize.x + frameOffset.x) * i, firstFrame.y},
+            frameSize);
 }
 
 void Animation::setFrame(Sprite & sprite, float time)

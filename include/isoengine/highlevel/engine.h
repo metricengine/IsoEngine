@@ -6,6 +6,7 @@
 #include "isoengine/events/event.h"
 #include "isoengine/highlevel/gameobject.h"
 #include "isoengine/highlevel/renderscene.h"
+#include "isoengine/physics/collision_detector.h"
 #include "isoengine/render/window.h"
 
 namespace iso
@@ -47,6 +48,7 @@ public:
     void registerCommand(HashedString command);
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
+    void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
     void moveCamera(Vector2f dir);
     void zoomCamera(float scale);
@@ -71,6 +73,7 @@ private:
     ResizeStrategy resizeStrategy;
     Camera camera;
     std::unique_ptr<Window> window;
+    std::unique_ptr<CollisionDetector> collisionDetector;
     RenderScene scene;
 
     void handleInput();

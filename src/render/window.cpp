@@ -24,7 +24,8 @@ constexpr int windowStyleToSfStyle(WindowStyle style)
         return sf::Style::Close;
     case WindowStyle::Fullscreen:
         return sf::Style::Fullscreen;
-    default: return -1;  // TODO: throw an exception?
+    default:
+        return -1; // TODO: throw an exception?
     }
 }
 
