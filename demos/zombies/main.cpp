@@ -44,20 +44,20 @@ Direction getDir(const iso::math::Vector2f & dir)
 {
     float angle = std::atan2(dir.y, dir.x) * 180.f / M_PI;
     if (angle >= -22.5f && angle < 22.5f)
-        return Direction::Right;
-    if (angle >= 22.5f && angle < 67.5f)
         return Direction::Right_Up;
+    if (angle >= 22.5f && angle < 67.5f)
+        return Direction::Right_Down;
     if (angle >= 67.5f && angle < 112.5f)
-        return Direction::Up;
-    if (angle >= 112.5f && angle < 157.5f)
-        return Direction::Left_Up;
-    if (angle >= 157.5f || angle < -22.5f)
-        return Direction::Left;
-    if (angle <= -22.5f && angle > -67.5f)
-        return Direction::Left_Down;
-    if (angle <= -67.5f && angle > -112.5f)
         return Direction::Down;
-    return Direction::Right_Down;
+    if (angle >= 112.5f && angle < 157.5f)
+        return Direction::Left_Down;
+    if (angle >= 157.5f || angle < -157.5f)
+        return Direction::Left;
+    if (angle <= -112.5f && angle > -157.5f)
+        return Direction::Up;
+    if (angle <= -67.5f && angle > -112.5f)
+        return Direction::Left_Up;
+    return Direction::Right;
 }
 
 using ZombieInfo = std::pair<std::shared_ptr<iso::GameObject>, Direction>;
@@ -228,6 +228,7 @@ void Game::moveZombies(float dt)
         auto v = (playerCenter - zombie->getPosition()).normalize();
         zombie->move(v * speed);
         auto newDir = getDir(v);
+
         if (newDir != dir) {
             dir = newDir;
             if (dir == Direction::Left)
