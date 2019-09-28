@@ -40,7 +40,9 @@ private:
                                const Command & command) {}
     // override collide function to handle manual collision logic
     // return value -> object is colliding with argument, therefore cannot move
-    virtual bool collide(const GameObject & object) { return true; }
+    virtual bool collide(const GameObject * object) { return true; }
+    // overload for colliding against global bounds
+    virtual bool collide() { return true; }
 
     void drawCurrent(Window & window, Transform transform) const override
     {
