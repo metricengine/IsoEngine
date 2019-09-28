@@ -47,6 +47,8 @@ struct Game {
     unsigned spriteSize = 32;
     unsigned width = 24;
     unsigned height = 18;
+    const iso::math::Rectf playerBoundingBox = {13, 5, 10, 22};
+    const iso::math::Rectf zombieBoundingBox = {13, 5, 10, 22};
 
     float timeElapsed = float{};
     const float respawnTime = 5.f;

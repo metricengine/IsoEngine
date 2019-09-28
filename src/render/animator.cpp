@@ -7,6 +7,7 @@ void Animator::setAnimation(std::shared_ptr<Animation> animation)
 {
     time = 0.f;
     this->animation = animation;
+    update(time);
 }
 
 void Animator::update(float duration)

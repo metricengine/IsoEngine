@@ -1,8 +1,6 @@
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/highlevel/gameobject.h"
 
-#include <iostream>
-
 namespace iso
 {
 
@@ -13,11 +11,10 @@ void CollisionDetector::addRigidBody(std::shared_ptr<GameObject> object)
 
 bool CollisionDetector::checkCollisions(GameObject * o, const math::Vector2f & pos)
 {
-    auto & oSprite = o->getSprite();
-    float oLeft = pos.x;
-    float oRight = pos.x + oSprite.getSize().x;
-    float oTop = pos.y;
-    float oBottom = pos.y + oSprite.getSize().y;
+    float oLeft = pos.x + o->boundingBox.x;
+    float oRight = pos.x + o->boundingBox.x + o->boundingBox.width;
+    float oTop = pos.y + o->boundingBox.y;
+    float oBottom = pos.y + o->boundingBox.y + o->boundingBox.height;
 
     if (oLeft < globalBounds.x ||
         oRight > globalBounds.x + globalBounds.width ||
@@ -31,11 +28,10 @@ bool CollisionDetector::checkCollisions(GameObject * o, const math::Vector2f & p
 
     for (const auto & x : rigidBodies) {
         if (x.get() != o) {
-            auto & xSprite = x->getSprite();
-            float xLeft = x->getPosition().x;
-            float xRight = x->getPosition().x + xSprite.getSize().x;
-            float xTop = x->getPosition().y;
-            float xBottom = x->getPosition().y + xSprite.getSize().y;
+            float xLeft = x->getPosition().x + x->boundingBox.x;
+            float xRight = x->getPosition().x + x->boundingBox.x + x->boundingBox.width;
+            float xTop = x->getPosition().y + x->boundingBox.y;
+            float xBottom = x->getPosition().y + x->boundingBox.y + x->boundingBox.height;
 
             if (oRight > xLeft && oLeft < xRight && oBottom > xTop && oTop < xBottom) {
                 if (o->collide(x.get())) {

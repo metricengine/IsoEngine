@@ -49,6 +49,7 @@ public:
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
+    void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
     void moveCamera(Vector2f dir);
     void zoomCamera(float scale);

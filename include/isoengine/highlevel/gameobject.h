@@ -62,6 +62,7 @@ private:
     unsigned commandTypes = 0;
     CommandQueue * commandQueue = nullptr;
     CollisionDetector * collisionDetector = nullptr;
+    math::Rectf boundingBox;
 };
 
 } // namespace iso

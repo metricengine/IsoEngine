@@ -71,7 +71,7 @@ Game::Game()
     player->getSprite().setScale(0.25f, 0.25f);
     loadMap();
     engine->addGameObject(player, "objects");
-    engine->addRigidBody(player);
+    engine->addRigidBody(player, playerBoundingBox);
     // Equivalent to the previous, no string = top layer
     // engine.addGameObject(player);
 
@@ -177,7 +177,7 @@ void Game::createZombie(const iso::math::Vector2f & location)
     zombie->getSprite().setScale(0.25f, 0.25f);
     engine->addGameObject(zombie, "objects");
     zombies.emplace_back(zombie, Direction::Left);
-    engine->addRigidBody(zombie);
+    engine->addRigidBody(zombie, zombieBoundingBox);
 }
 
 void Game::moveZombies(float dt)

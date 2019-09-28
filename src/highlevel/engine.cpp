@@ -106,7 +106,15 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString 
 
 void Engine::addRigidBody(std::shared_ptr<GameObject> gameObject)
 {
+    addRigidBody(
+        gameObject,
+        math::Rectf(math::Vector2f(), gameObject->getSprite().getSize()));
+}
+
+void Engine::addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox)
+{
     gameObject->setCollisionDetector(collisionDetector.get());
+    gameObject->boundingBox = boundingBox;
     collisionDetector->addRigidBody(gameObject);
 }
 
