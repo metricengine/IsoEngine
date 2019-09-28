@@ -20,6 +20,7 @@ class SceneNode
 public:
     virtual ~SceneNode() {}
     void addChild(std::shared_ptr<SceneNode> child);
+    void removeChild(const SceneNode * child);
 
     const math::Vector2f & getPosition() const
     {

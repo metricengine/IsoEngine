@@ -47,6 +47,9 @@ Game::Game()
     loadResources(resManager);
 
     auto portalCb = std::bind(&Game::onPortal, this, _1);
+    fireballCb = [this](const Fireball * fireball, const Zombie * zombie) {
+        onFireball(fireball, zombie);
+    };
     player = std::make_shared<Player>(portalCb);
 
     // Render scene, layers
@@ -182,15 +185,26 @@ void Game::updateZombies(float dt)
 
 void Game::updateFireballs(float dt)
 {
-    for (auto & fb : fireballs) {
-        fb->update(gameSpeed, dt);
+    for (auto & fireball : fireballs) {
+        fireball->update(gameSpeed, dt);
     }
+
+    for (auto remove : fbToRemove) {
+        for (auto iter = fireballs.begin(); iter != fireballs.end(); ++iter) {
+            if (iter->get() == remove) {
+                fireballs.erase(iter);
+                break;
+            }
+        }
+    }
+
+    fbToRemove.clear();
 }
 
 void Game::shootFireball()
 {
     auto & resManager = iso::ResourceManager::getInstance();
-    auto fb = std::make_shared<Fireball>(player->getFacingDir());
+    auto fb = std::make_shared<Fireball>(player->getFacingDir(), fireballCb);
 
     fb->setPosition(player->getPosition() + player->getFacingDir() * spriteSize);
     fb->getSprite().setScale(0.5f, 0.5f);
@@ -201,24 +215,26 @@ void Game::shootFireball()
 
 void Game::onKey(iso::KeyEvent event)
 {
-    switch (event.keyCode) {
-    case iso::KeyCode::Left:
-        player->faceDirection({-1, 0});
-        break;
-    case iso::KeyCode::Up:
-        player->faceDirection({0, -1});
-        break;
-    case iso::KeyCode::Right:
-        player->faceDirection({1, 0});
-        break;
-    case iso::KeyCode::Down:
-        player->faceDirection({0, 1});
-        break;
-    case iso::KeyCode::Space:
-        shootFireball();
-        break;
-    default:
-        break;
+    if (event.eventType == iso::KeyEventType::KeyPressed) {
+        switch (event.keyCode) {
+        case iso::KeyCode::Left:
+            player->faceDirection({-1, 0});
+            break;
+        case iso::KeyCode::Up:
+            player->faceDirection({0, -1});
+            break;
+        case iso::KeyCode::Right:
+            player->faceDirection({1, 0});
+            break;
+        case iso::KeyCode::Down:
+            player->faceDirection({0, 1});
+            break;
+        case iso::KeyCode::Space:
+            shootFireball();
+            break;
+        default:
+            break;
+        }
     }
 }
 
@@ -228,5 +244,25 @@ void Game::onPortal(const Entity * portal)
         player->setPosition(portalBottom->getPosition() - iso::math::Vector2f(spriteSize, 0));
     } else {
         player->setPosition(portalTop->getPosition() + iso::math::Vector2f(spriteSize, 0));
+    }
+}
+
+void Game::onFireball(const Fireball * fireball, const Zombie * zombie)
+{
+    if (zombie != nullptr) {
+        engine->removeGameObject(zombie);
+        for (auto iter = zombies.begin(); iter != zombies.end(); ++iter) {
+            if (iter->get() == zombie) {
+                zombies.erase(iter);
+                break;
+            }
+        }
+    }
+
+    engine->removeGameObject(fireball);
+    for (auto iter = fireballs.begin(); iter != fireballs.end(); ++iter) {
+        if (iter->get() == fireball) {
+            fbToRemove.push_back(fireball);
+        }
     }
 }

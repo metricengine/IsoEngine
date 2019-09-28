@@ -48,6 +48,8 @@ public:
     void registerCommand(HashedString command);
     void addGameObject(std::shared_ptr<GameObject> gameObject);
     void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
+    void removeGameObject(const GameObject * gameObject);
+    void removeGameObject(const GameObject * gameObject, HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);

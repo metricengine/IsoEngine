@@ -66,6 +66,41 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
     gameObject->setCommandQueue(&commandQueue);
 }
 
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
+{
+    scene.getLayer(layerName).addChild(gameObject);
+    gameObjects.push_back(gameObject);
+    gameObject->setCommandQueue(&commandQueue);
+}
+
+void Engine::removeGameObject(const GameObject * gameObject)
+{
+    for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
+        if (gameObject == iter->get()) {
+            gameObjects.erase(iter);
+            break;
+        }
+    }
+    scene.topLayer().removeChild(gameObject);
+    if (gameObject->collisionDetector != nullptr) {
+        collisionDetector->removeRigidBody(gameObject);
+    }
+}
+
+void Engine::removeGameObject(const GameObject * gameObject, HashedString layerName)
+{
+    for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
+        if (gameObject == iter->get()) {
+            gameObjects.erase(iter);
+            break;
+        }
+    }
+    scene.getLayer(layerName).removeChild(gameObject);
+    if (gameObject->collisionDetector != nullptr) {
+        collisionDetector->removeRigidBody(gameObject);
+    }
+}
+
 void Engine::moveCamera(Vector2f dir)
 {
     if (camera.following) {
@@ -95,13 +130,6 @@ math::Vector2f Engine::screenToWorldCoords(const math::Vector2i & coords)
 {
     auto res = window->getWindow().mapPixelToCoords(sf::Vector2i(coords.x, coords.y));
     return {res.x, res.y};
-}
-
-void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
-{
-    scene.getLayer(layerName).addChild(gameObject);
-    gameObjects.push_back(gameObject);
-    gameObject->setCommandQueue(&commandQueue);
 }
 
 void Engine::addRigidBody(std::shared_ptr<GameObject> gameObject)

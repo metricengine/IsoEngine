@@ -35,6 +35,7 @@ private:
     void onUpdate(float dt);
     void onKey(iso::KeyEvent event);
     void onPortal(const Entity * portal);
+    void onFireball(const Fireball * fireball, const Zombie * zombie);
 
     std::unique_ptr<iso::Engine> engine;
 
@@ -52,6 +53,8 @@ private:
     std::vector<iso::math::Vector2f> respawns;
     std::vector<std::shared_ptr<Zombie>> zombies;
     std::vector<std::shared_ptr<Fireball>> fireballs;
+    std::vector<const Fireball *> fbToRemove;
+    std::function<void(const Fireball *, const Zombie *)> fireballCb;
 };
 
 #endif // GAME_H

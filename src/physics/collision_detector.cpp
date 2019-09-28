@@ -9,6 +9,16 @@ void CollisionDetector::addRigidBody(std::shared_ptr<GameObject> object)
     rigidBodies.push_back(object);
 }
 
+void CollisionDetector::removeRigidBody(const GameObject * object)
+{
+    for (auto iter = rigidBodies.begin(); iter != rigidBodies.end(); ++iter) {
+        if (iter->get() == object) {
+            rigidBodies.erase(iter);
+            break;
+        }
+    }
+}
+
 bool CollisionDetector::checkCollisions(GameObject * o, const math::Vector2f & pos)
 {
     float oLeft = pos.x + o->boundingBox.x;

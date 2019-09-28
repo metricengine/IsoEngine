@@ -98,8 +98,10 @@ void Zombie::update(float gameSpeed, float dt)
     }
 }
 
-Fireball::Fireball(iso::math::Vector2f dir)
-    : Entity(Entity::Type::Fireball), dir(dir)
+Fireball::Fireball(
+    iso::math::Vector2f dir,
+    std::function<void(const Fireball *, const Zombie *)> fbFn)
+    : Entity(Entity::Type::Fireball), dir(dir), fireballCollideFn(fbFn)
 {
     auto & resManager = iso::ResourceManager::getInstance();
     if (dir == iso::math::Vector2f(-1, 0))
@@ -116,4 +118,18 @@ void Fireball::update(float gameSpeed, float dt)
 {
     auto speed = gameSpeed * dt * 8;
     move(dir * speed);
+}
+
+bool Fireball::collide(const GameObject * object)
+{
+    auto z = dynamic_cast<const Zombie *>(object);
+    // Implicitly nullptr when it's not a zombie
+    fireballCollideFn(this, z);
+    return true;
+}
+
+bool Fireball::collide()
+{
+    fireballCollideFn(this, nullptr);
+    return true;
 }

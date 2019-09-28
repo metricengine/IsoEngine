@@ -74,10 +74,15 @@ private:
 class Fireball : public Entity
 {
 public:
-    Fireball(iso::math::Vector2f dir);
+    Fireball(
+        iso::math::Vector2f dir,
+        std::function<void(const Fireball *, const Zombie *)> fbFn);
     void update(float gameSpeed, float dt);
+    bool collide(const GameObject * object) override;
+    bool collide() override;
 
 private:
+    std::function<void(const Fireball *, const Zombie *)> fireballCollideFn;
     iso::Vector2f dir;
 };
 

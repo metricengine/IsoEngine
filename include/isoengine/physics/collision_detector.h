@@ -17,6 +17,7 @@ public:
     {
     }
     void addRigidBody(std::shared_ptr<GameObject> object);
+    void removeRigidBody(const GameObject * object);
     bool checkCollisions(GameObject * object, const math::Vector2f & pos);
 
 private:

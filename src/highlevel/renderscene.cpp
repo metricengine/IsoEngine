@@ -10,6 +10,17 @@ void SceneNode::addChild(std::shared_ptr<SceneNode> child)
     child->parent = this;
 }
 
+void SceneNode::removeChild(const SceneNode * child)
+{
+    for (auto iter = children.begin(); iter != children.end(); ++iter) {
+        if (iter->get() == child) {
+            iter->get()->parent = nullptr;
+            children.erase(iter);
+            break;
+        }
+    }
+}
+
 void SceneNode::draw(Window & window, math::Transform transform) const
 {
     transform *= getTransform();
@@ -60,7 +71,7 @@ SceneNode & RenderScene::getLayer(HashedString name)
 
 SceneNode & RenderScene::topLayer()
 {
-    return layers[0];
+    return layers.back();
 }
 
 } // namespace iso
