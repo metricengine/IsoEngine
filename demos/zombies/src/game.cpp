@@ -54,7 +54,7 @@ Game::Game()
 
     // Render scene, layers
     // Empty -> one layer, default
-    engine.reset(new iso::Engine(iso::WindowOptions({spriteSize * levelWidth, spriteSize * levelHeight}, iso::ResizeStrategy::FIXED_RES_STRETCH, {4, 3}), {"background", "objects"}));
+    engine.reset(new iso::Engine(iso::WindowOptions({Entity::SpriteSize * LevelWidth, Entity::SpriteSize * LevelHeight}, iso::ResizeStrategy::FIXED_RES_STRETCH, {4, 3}), {"background", "objects"}));
     engine->onUpdate += std::bind(&Game::onUpdate, this, _1);
     engine->onKey += std::bind(&Game::onKey, this, _1);
 
@@ -116,11 +116,12 @@ void Game::loadMap()
         return;
     }
 
-    for (unsigned i = 0; i < levelHeight; ++i) {
+    for (unsigned i = 0; i < LevelHeight; ++i) {
         std::string row;
         file >> row;
-        for (unsigned j = 0; j < levelWidth; ++j) {
+        for (unsigned j = 0; j < LevelWidth; ++j) {
             unsigned tile = row[j] - '0';
+            map[i * LevelWidth + j] = Tile(tile);
             if (Tile(tile) == Tile::Portal) {
                 addTile(Tile::Grass, j, i);
             }
@@ -153,7 +154,7 @@ void Game::addTile(Tile tile, int x, int y)
         obj->setAnimation(resManager.getAnimation("cave"));
         break;
     }
-    obj->setPosition({float(x * spriteSize), float(y * spriteSize)});
+    obj->setPosition({float(x * Entity::SpriteSize), float(y * Entity::SpriteSize)});
     if (tile != Tile::Portal) {
         obj->getSprite().setScale(0.25f, 0.25f);
     }
@@ -180,13 +181,13 @@ void Game::run()
 
 void Game::addRespawnLocation(int x, int y)
 {
-    respawns.emplace_back(float(x * spriteSize), float(y * spriteSize));
+    respawns.emplace_back(float(x * Entity::SpriteSize), float(y * Entity::SpriteSize));
 }
 
 void Game::createZombie(const iso::math::Vector2f & location)
 {
     auto & resManager = iso::ResourceManager::getInstance();
-    auto zombie = std::make_shared<Zombie>(player.get(), playerReachedCb);
+    auto zombie = std::make_shared<Zombie>(map, player.get(), playerReachedCb);
     zombie->setPosition(location);
     zombie->getSprite().setScale(0.25f, 0.25f);
     engine->addGameObject(zombie, "objects");
@@ -226,14 +227,18 @@ void Game::updateFireballs(float dt)
 
 void Game::shootFireball()
 {
+    if (!player->canShoot())
+        return;
+
     auto & resManager = iso::ResourceManager::getInstance();
     auto fb = std::make_shared<Fireball>(player->getFacingDir(), fireballCb);
 
-    fb->setPosition(player->getPosition() + player->getFacingDir() * spriteSize * 0.5f);
+    fb->setPosition(player->getPosition() + player->getFacingDir() * Entity::SpriteSize * 0.5f);
     fb->getSprite().setScale(0.5f, 0.5f);
     engine->addGameObject(fb, "objects");
     engine->addRigidBody(fb, {8, 8, 16, 16});
     fireballs.push_back(fb);
+    player->shoot();
 }
 
 void Game::onUpdate(float dt)
@@ -287,9 +292,9 @@ void Game::onKey(iso::KeyEvent event)
 void Game::onPortal(const Entity * portal)
 {
     if (portal == portalTop.get()) {
-        player->setPosition(portalBottom->getPosition() - iso::math::Vector2f(spriteSize, 0));
+        player->setPosition(portalBottom->getPosition() - iso::math::Vector2f(Entity::SpriteSize, 0));
     } else {
-        player->setPosition(portalTop->getPosition() + iso::math::Vector2f(spriteSize, 0));
+        player->setPosition(portalTop->getPosition() + iso::math::Vector2f(Entity::SpriteSize, 0));
     }
 }
 
@@ -321,8 +326,8 @@ void Game::onPlayerReached()
     gameOverText = std::make_shared<iso::SceneNodeObject<iso::Text>>();
     gameOverText->getObject().setFont(resManager.getFont("res/fonts/Arial.ttf"));
     gameOverText->getObject().setString("Game over! Press enter to restart!");
-    float x = float(levelWidth * spriteSize / 2) - gameOverText->getObject().getSize().x / 2;
-    float y = float(levelHeight * spriteSize / 2) - gameOverText->getObject().getSize().y / 2;
+    float x = float(LevelWidth * Entity::SpriteSize / 2) - gameOverText->getObject().getSize().x / 2;
+    float y = float(LevelHeight * Entity::SpriteSize / 2) - gameOverText->getObject().getSize().y / 2;
     gameOverText->setPosition({x, y});
     engine->addSceneNode(gameOverText);
 }

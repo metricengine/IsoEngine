@@ -39,7 +39,8 @@ public:
         return {x / div, y / div};
     }
 
-    inline T length() const
+    template <typename U = T>
+    inline U length() const
     {
         return std::sqrt(x * x + y * y);
     }

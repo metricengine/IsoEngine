@@ -6,13 +6,6 @@
 #include "isoengine/render/text.h"
 #include "isoengine/support/resourcemanager.h"
 
-enum class Tile {
-    Grass = 0,
-    Wall,
-    Portal,
-    Cave
-};
-
 void loadResources(iso::ResourceManager & resManager);
 
 class Game
@@ -23,6 +16,8 @@ class Game
     };
 
 public:
+    static constexpr unsigned LevelWidth = 24;
+    static constexpr unsigned LevelHeight = 18;
     Game();
     void run();
 
@@ -48,14 +43,12 @@ private:
 
     std::unique_ptr<iso::Engine> engine;
 
-    const unsigned spriteSize = 32;
-    const unsigned levelWidth = 24;
-    const unsigned levelHeight = 18;
     const iso::math::Rectf playerBoundingBox = {13, 5, 10, 22};
     const iso::math::Rectf zombieBoundingBox = {13, 5, 10, 22};
     const float respawnTime = 5.f;
     const float gameSpeed = 2000.f / 30.f;
 
+    Tile map[LevelHeight * LevelWidth];
     State state = State::Playing;
     float timeElapsed = float{};
     std::shared_ptr<Player> player;
