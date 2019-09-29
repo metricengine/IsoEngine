@@ -65,7 +65,7 @@ public:
 private:
     bool collide(const GameObject * object) override;
 
-    static constexpr float reloadTime = 2.f;
+    static constexpr float reloadTime = 0.5f;
     float reloadTimeLeft = float{};
     std::function<void(const Entity *)> portalCollide;
     iso::Vector2f dir, facingDir;
