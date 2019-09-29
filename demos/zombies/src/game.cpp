@@ -229,7 +229,7 @@ void Game::shootFireball()
     auto & resManager = iso::ResourceManager::getInstance();
     auto fb = std::make_shared<Fireball>(player->getFacingDir(), fireballCb);
 
-    fb->setPosition(player->getPosition() + player->getFacingDir() * spriteSize);
+    fb->setPosition(player->getPosition() + player->getFacingDir() * spriteSize * 0.5f);
     fb->getSprite().setScale(0.5f, 0.5f);
     engine->addGameObject(fb, "objects");
     engine->addRigidBody(fb, {8, 8, 16, 16});
