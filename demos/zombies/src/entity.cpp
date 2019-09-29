@@ -54,13 +54,17 @@ bool Player::collide(const GameObject * object)
 {
     auto e = dynamic_cast<const Entity *>(object);
     if (e->type == Type::Portal) {
-        portalCollideFunction(e);
+        portalCollide(e);
     }
     return true;
 }
 
-Zombie::Zombie(Player * player)
-    : Entity(Entity::Type::Zombie), player(player)
+Zombie::Zombie(
+    Player * player,
+    std::function<void()> playerReached)
+    : Entity(Entity::Type::Zombie),
+      player(player),
+      playerReached(playerReached)
 {
     auto & resManager = iso::ResourceManager::getInstance();
     dir = {-1, 0};
@@ -98,10 +102,18 @@ void Zombie::update(float gameSpeed, float dt)
     }
 }
 
+bool Zombie::collide(const GameObject * object)
+{
+    if (auto player = dynamic_cast<const Player *>(object)) {
+        playerReached();
+    }
+    return true;
+}
+
 Fireball::Fireball(
     iso::math::Vector2f dir,
-    std::function<void(const Fireball *, const Zombie *)> fbFn)
-    : Entity(Entity::Type::Fireball), dir(dir), fireballCollideFn(fbFn)
+    std::function<void(const Fireball *, const Zombie *)> fbCollide)
+    : Entity(Entity::Type::Fireball), dir(dir), fbCollide(fbCollide)
 {
     auto & resManager = iso::ResourceManager::getInstance();
     if (dir == iso::math::Vector2f(-1, 0))
@@ -124,12 +136,12 @@ bool Fireball::collide(const GameObject * object)
 {
     auto z = dynamic_cast<const Zombie *>(object);
     // Implicitly nullptr when it's not a zombie
-    fireballCollideFn(this, z);
+    fbCollide(this, z);
     return true;
 }
 
 bool Fireball::collide()
 {
-    fireballCollideFn(this, nullptr);
+    fbCollide(this, nullptr);
     return true;
 }

@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "isoengine/highlevel/engine.h"
+#include "isoengine/render/text.h"
 #include "isoengine/support/resourcemanager.h"
 
 enum class Tile {
@@ -16,11 +17,18 @@ void loadResources(iso::ResourceManager & resManager);
 
 class Game
 {
+    enum class State {
+        Playing,
+        Over
+    };
+
 public:
     Game();
     void run();
 
 private:
+    void clear();
+    void reset();
     void loadMap();
     void addTile(Tile tile, int x, int y);
     void addRespawnLocation(int x, int y);
@@ -36,18 +44,20 @@ private:
     void onKey(iso::KeyEvent event);
     void onPortal(const Entity * portal);
     void onFireball(const Fireball * fireball, const Zombie * zombie);
+    void onPlayerReached();
 
     std::unique_ptr<iso::Engine> engine;
 
-    unsigned spriteSize = 32;
-    unsigned levelWidth = 24;
-    unsigned levelHeight = 18;
+    const unsigned spriteSize = 32;
+    const unsigned levelWidth = 24;
+    const unsigned levelHeight = 18;
     const iso::math::Rectf playerBoundingBox = {13, 5, 10, 22};
     const iso::math::Rectf zombieBoundingBox = {13, 5, 10, 22};
-
-    float timeElapsed = float{};
     const float respawnTime = 5.f;
     const float gameSpeed = 2000.f / 30.f;
+
+    State state = State::Playing;
+    float timeElapsed = float{};
     std::shared_ptr<Player> player;
     std::shared_ptr<Entity> portalTop, portalBottom;
     std::vector<iso::math::Vector2f> respawns;
@@ -55,6 +65,9 @@ private:
     std::vector<std::shared_ptr<Fireball>> fireballs;
     std::vector<const Fireball *> fbToRemove;
     std::function<void(const Fireball *, const Zombie *)> fireballCb;
+    std::function<void()> playerReachedCb;
+
+    std::shared_ptr<iso::SceneNodeObject<iso::Text>> gameOverText;
 };
 
 #endif // GAME_H

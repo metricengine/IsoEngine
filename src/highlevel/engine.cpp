@@ -61,33 +61,34 @@ void Engine::registerCommand(HashedString command)
 
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
 {
-    scene.topLayer().addChild(gameObject);
-    gameObjects.push_back(gameObject);
-    gameObject->setCommandQueue(&commandQueue);
+    addGameObject(gameObject, scene.topLayer());
 }
 
 void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
 {
-    scene.getLayer(layerName).addChild(gameObject);
+    addGameObject(gameObject, scene.getLayer(layerName));
+}
+
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, SceneNode & layer)
+{
+    addSceneNode(gameObject, layer);
     gameObjects.push_back(gameObject);
     gameObject->setCommandQueue(&commandQueue);
 }
 
 void Engine::removeGameObject(const GameObject * gameObject)
 {
-    for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
-        if (gameObject == iter->get()) {
-            gameObjects.erase(iter);
-            break;
-        }
-    }
-    scene.topLayer().removeChild(gameObject);
-    if (gameObject->collisionDetector != nullptr) {
-        collisionDetector->removeRigidBody(gameObject);
-    }
+    removeGameObject(gameObject, scene.topLayer());
 }
 
 void Engine::removeGameObject(const GameObject * gameObject, HashedString layerName)
+{
+    removeGameObject(gameObject, scene.getLayer(layerName));
+}
+
+void Engine::removeGameObject(
+    const GameObject * gameObject,
+    SceneNode & layer)
 {
     for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
         if (gameObject == iter->get()) {
@@ -95,10 +96,40 @@ void Engine::removeGameObject(const GameObject * gameObject, HashedString layerN
             break;
         }
     }
-    scene.getLayer(layerName).removeChild(gameObject);
+    removeSceneNode(gameObject, layer);
     if (gameObject->collisionDetector != nullptr) {
         collisionDetector->removeRigidBody(gameObject);
     }
+}
+
+void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode)
+{
+    addSceneNode(sceneNode, scene.topLayer());
+}
+
+void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer)
+{
+    addSceneNode(sceneNode, scene.getLayer(layer));
+}
+
+void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, SceneNode & layer)
+{
+    layer.addChild(sceneNode);
+}
+
+void Engine::removeSceneNode(const SceneNode * sceneNode)
+{
+    removeSceneNode(sceneNode, scene.topLayer());
+}
+
+void Engine::removeSceneNode(const SceneNode * sceneNode, HashedString layer)
+{
+    removeSceneNode(sceneNode, scene.getLayer(layer));
+}
+
+void Engine::removeSceneNode(const SceneNode * sceneNode, SceneNode & layer)
+{
+    layer.removeChild(sceneNode);
 }
 
 void Engine::moveCamera(Vector2f dir)
@@ -226,8 +257,7 @@ void Engine::update(float dt)
         auto & cmdType = *cmd.second.get();
 
         onCommand.raise(sender, cmdType);
-        // for (auto cmdHandler : commandHandlers)
-        //     cmdHandler(sender, cmdType);
+
         for (auto gameObject : gameObjects)
             if (commandQueue.objectListensToCommand(*gameObject, cmdType))
                 gameObject->handleCommand(sender, cmdType);

@@ -46,10 +46,17 @@ public:
     Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
     void run();
     void registerCommand(HashedString command);
-    void addGameObject(std::shared_ptr<GameObject> gameObject);
-    void addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layer);
+    void addGameObject(
+        std::shared_ptr<GameObject> gameObject);
+    void addGameObject(
+        std::shared_ptr<GameObject> gameObject,
+        HashedString layer);
     void removeGameObject(const GameObject * gameObject);
     void removeGameObject(const GameObject * gameObject, HashedString layer);
+    void addSceneNode(std::shared_ptr<SceneNode> sceneNode);
+    void addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer);
+    void removeSceneNode(const SceneNode * sceneNode);
+    void removeSceneNode(const SceneNode * sceneNode, HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
@@ -67,6 +74,19 @@ private:
         Vector2u aspectRatio;
         const GameObject * following = nullptr;
     };
+
+    void addGameObject(
+        std::shared_ptr<GameObject> gameObject,
+        SceneNode & layer);
+    void removeGameObject(
+        const GameObject * gameObject,
+        SceneNode & layer);
+    void addSceneNode(
+        std::shared_ptr<SceneNode> sceneNode,
+        SceneNode & layer);
+    void removeSceneNode(
+        const SceneNode * sceneNode,
+        SceneNode & layer);
 
     // Model
     const float timePerFrame = 1.f / 60.f;

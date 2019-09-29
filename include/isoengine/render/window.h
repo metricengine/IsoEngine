@@ -2,11 +2,9 @@
 #define WINDOW_H
 
 #include "isoengine/math/transform.h"
-#include "sprite.h"
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <string>
-
-class Drawable;
 
 enum class WindowStyle {
     Resize,
@@ -16,11 +14,12 @@ enum class WindowStyle {
 
 namespace iso
 {
+
+class Sprite;
+class Text;
+
 class Window
 {
-private:
-    sf::RenderWindow window;
-
 public:
     Window(const std::string & title, const math::Vector2u & size, WindowStyle style);
     math::Vector2u getSize() const;
@@ -33,10 +32,15 @@ public:
     void clear(sf::Color color);
     void display();
     void draw(const Sprite & sprite, math::Transform transform);
+    void draw(const Text & text, math::Transform transform);
     sf::RenderWindow & getWindow()
     {
         return window;
     }
+
+private:
+    sf::RenderWindow window;
+    sf::Font font;
 };
 } // namespace iso
 

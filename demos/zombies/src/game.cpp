@@ -43,46 +43,67 @@ void loadResources(iso::ResourceManager & resManager)
 
 Game::Game()
 {
-    auto & resManager = iso::ResourceManager::getInstance();
-    loadResources(resManager);
-
-    auto portalCb = std::bind(&Game::onPortal, this, _1);
     fireballCb = [this](const Fireball * fireball, const Zombie * zombie) {
         onFireball(fireball, zombie);
     };
-    player = std::make_shared<Player>(portalCb);
+    playerReachedCb = [this]() {
+        onPlayerReached();
+    };
 
     // Render scene, layers
     // Empty -> one layer, default
     engine.reset(new iso::Engine(iso::WindowOptions({spriteSize * levelWidth, spriteSize * levelHeight}, iso::ResizeStrategy::FIXED_RES_STRETCH, {4, 3}), {"background", "objects"}));
+    engine->onUpdate += std::bind(&Game::onUpdate, this, _1);
+    engine->onKey += std::bind(&Game::onKey, this, _1);
+
+    auto & resManager = iso::ResourceManager::getInstance();
+    loadResources(resManager);
+    loadMap();
+    reset();
+}
+
+void Game::clear()
+{
+    for (auto fireball : fireballs) {
+        engine->removeGameObject(fireball.get());
+    }
+    for (auto & zombie : zombies) {
+        engine->removeGameObject(zombie.get());
+    }
+    if (player != nullptr) {
+        engine->removeGameObject(player.get());
+    }
+
+    fireballs.clear();
+    fbToRemove.clear();
+    zombies.clear();
+    player.reset();
+
+    state = State::Playing;
+    timeElapsed = float{};
+
+    if (gameOverText != nullptr) {
+        engine->removeSceneNode(gameOverText.get());
+        gameOverText.reset();
+    }
+}
+
+void Game::reset()
+{
+    clear();
+
+    auto & resManager = iso::ResourceManager::getInstance();
+    auto portalCb = std::bind(&Game::onPortal, this, _1);
+    player = std::make_shared<Player>(portalCb);
 
     // Create player sprite and add to engine
     player->setAnimation(resManager.getAnimation("mage-left"));
     player->setPosition({400, 200});
     player->getSprite().setScale(0.25f, 0.25f);
-    loadMap();
     engine->addGameObject(player, "objects");
     engine->addRigidBody(player, playerBoundingBox);
     // Equivalent to the previous, no string = top layer
     // engine.addGameObject(player);
-
-    // Can use lambdas instead
-    engine->onUpdate += std::bind(&Game::onUpdate, this, _1);
-    engine->onKey += std::bind(&Game::onKey, this, _1);
-}
-
-void Game::onUpdate(float dt)
-{
-    timeElapsed += dt;
-
-    if (timeElapsed >= respawnTime) {
-        timeElapsed -= respawnTime;
-        respawn();
-    }
-
-    updatePlayer(dt);
-    updateZombies(dt);
-    updateFireballs(dt);
 }
 
 void Game::loadMap()
@@ -163,7 +184,7 @@ void Game::addRespawnLocation(int x, int y)
 void Game::createZombie(const iso::math::Vector2f & location)
 {
     auto & resManager = iso::ResourceManager::getInstance();
-    auto zombie = std::make_shared<Zombie>(player.get());
+    auto zombie = std::make_shared<Zombie>(player.get(), playerReachedCb);
     zombie->setPosition(location);
     zombie->getSprite().setScale(0.25f, 0.25f);
     engine->addGameObject(zombie, "objects");
@@ -213,6 +234,24 @@ void Game::shootFireball()
     fireballs.push_back(fb);
 }
 
+void Game::onUpdate(float dt)
+{
+    if (state == State::Over) {
+        return;
+    }
+
+    timeElapsed += dt;
+
+    if (timeElapsed >= respawnTime) {
+        timeElapsed -= respawnTime;
+        respawn();
+    }
+
+    updatePlayer(dt);
+    updateZombies(dt);
+    updateFireballs(dt);
+}
+
 void Game::onKey(iso::KeyEvent event)
 {
     if (event.eventType == iso::KeyEventType::KeyPressed) {
@@ -231,6 +270,11 @@ void Game::onKey(iso::KeyEvent event)
             break;
         case iso::KeyCode::Space:
             shootFireball();
+            break;
+        case iso::KeyCode::Enter:
+            if (state == State::Over) {
+                reset();
+            }
             break;
         default:
             break;
@@ -265,4 +309,18 @@ void Game::onFireball(const Fireball * fireball, const Zombie * zombie)
             fbToRemove.push_back(fireball);
         }
     }
+}
+
+void Game::onPlayerReached()
+{
+    auto & resManager = iso::ResourceManager::getInstance();
+
+    state = State::Over;
+    gameOverText = std::make_shared<iso::SceneNodeObject<iso::Text>>();
+    gameOverText->getObject().setFont(resManager.getFont("res/fonts/Arial.ttf"));
+    gameOverText->getObject().setString("Game over! Press enter to restart!");
+    float x = float(levelWidth * spriteSize / 2) - gameOverText->getObject().getSize().x / 2;
+    float y = float(levelHeight * spriteSize / 2) - gameOverText->getObject().getSize().y / 2;
+    gameOverText->setPosition({x, y});
+    engine->addSceneNode(gameOverText);
 }

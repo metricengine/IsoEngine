@@ -1,4 +1,6 @@
 #include "isoengine/render/window.h"
+#include "isoengine/render/sprite.h"
+#include "isoengine/render/text.h"
 #include <SFML/Window/Event.hpp>
 
 namespace iso
@@ -85,6 +87,13 @@ void Window::draw(const Sprite & sprite, math::Transform transform)
     sf::RenderStates states;
     states.transform = toSfmlTransform(transform);
     window.draw(sprite.getSprite(), states);
+}
+
+void Window::draw(const Text & text, math::Transform transform)
+{
+    sf::RenderStates states;
+    states.transform = toSfmlTransform(transform);
+    window.draw(text.getText(), states);
 }
 
 } // namespace iso

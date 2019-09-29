@@ -5,7 +5,7 @@
 #include "isoengine/events/commandqueue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
-#include "renderscene.h"
+#include "scenenode.h"
 #include <initializer_list>
 
 namespace iso
