@@ -75,7 +75,15 @@ Zombie::Zombie(
 void Zombie::update(float gameSpeed, float dt)
 {
     auto & resManager = iso::ResourceManager::getInstance();
-    auto speed = gameSpeed * dt;
+
+    moveTime += dt;
+    if (moveTime < AnimationTime) {
+        return;
+    }
+
+    moveTime -= AnimationTime;
+    auto speed = gameSpeed * 0.1f;
+
     auto playerCenter = player->getPosition();
     auto v = (playerCenter - getPosition()).normalize();
     move(v * speed);

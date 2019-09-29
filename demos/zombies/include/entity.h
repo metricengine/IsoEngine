@@ -61,6 +61,8 @@ private:
 class Zombie : public Entity
 {
 public:
+    static constexpr float AnimationTime = 0.5f;
+
     Zombie(
         Player * player,
         std::function<void()> playerReached);
@@ -71,6 +73,7 @@ private:
     bool collide(const GameObject * object) override;
     std::function<void()> playerReached;
 
+    float moveTime = AnimationTime - 0.15f;
     Player * player;
     iso::Vector2f dir;
     Direction animationDir;
