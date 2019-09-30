@@ -98,19 +98,27 @@ Direction getDir(const Vector2f & dir)
 void Player::update(float gameSpeed, float dt)
 {
     auto & resManager = iso::ResourceManager::getInstance();
-    auto speed = gameSpeed * dt * 4;
+    auto speed = gameSpeed * dt;
     move(dir * speed);
 
     reloadTimeLeft = std::max(0.f, reloadTimeLeft - dt);
 
     if (dir == Vector2f(-1, 0))
         setAnimation(resManager.getAnimation("mage-left"));
+    else if (dir == Vector2f(-1, -1))
+        setAnimation(resManager.getAnimation("mage-left-up"));
     else if (dir == Vector2f(0, -1))
         setAnimation(resManager.getAnimation("mage-up"));
+    else if (dir == Vector2f(1, -1))
+        setAnimation(resManager.getAnimation("mage-right-up"));
     else if (dir == Vector2f(1, 0))
         setAnimation(resManager.getAnimation("mage-right"));
+    else if (dir == Vector2f(1, 1))
+        setAnimation(resManager.getAnimation("mage-right-down"));
     else if (dir == Vector2f(0, 1))
         setAnimation(resManager.getAnimation("mage-down"));
+    else if (dir == Vector2f(-1, 1))
+        setAnimation(resManager.getAnimation("mage-left-down"));
 
     dir = {0, 0};
 }
@@ -214,12 +222,21 @@ Fireball::Fireball(
     auto & resManager = iso::ResourceManager::getInstance();
     if (dir == Vector2f(-1, 0))
         setAnimation(resManager.getAnimation("fb-left"));
+    else if (dir == Vector2f(-1, -1))
+        setAnimation(resManager.getAnimation("fb-left-up"));
     else if (dir == Vector2f(0, -1))
         setAnimation(resManager.getAnimation("fb-up"));
+    else if (dir == Vector2f(1, -1))
+        setAnimation(resManager.getAnimation("fb-right-up"));
     else if (dir == Vector2f(1, 0))
         setAnimation(resManager.getAnimation("fb-right"));
+    else if (dir == Vector2f(1, 1))
+        setAnimation(resManager.getAnimation("fb-right-down"));
     else if (dir == Vector2f(0, 1))
         setAnimation(resManager.getAnimation("fb-down"));
+    else if (dir == Vector2f(-1, 1))
+        setAnimation(resManager.getAnimation("fb-left-down"));
+    dir = dir.normalize();
 }
 
 void Fireball::update(float gameSpeed, float dt)

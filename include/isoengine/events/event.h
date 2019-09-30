@@ -132,6 +132,13 @@ struct MouseEvent {
     int x, y;
 };
 
+namespace Keyboard
+{
+
+bool isKeyPressed(KeyCode key);
+
+} // namespace Keyboard
+
 } // namespace iso
 
 #endif // EVENT_H

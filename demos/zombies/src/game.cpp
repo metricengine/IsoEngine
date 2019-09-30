@@ -33,14 +33,22 @@ void loadResources(iso::ResourceManager & resManager)
     resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {128, 128}, {64, 1856}, {4, 1}, as, true, {128, 128}));
 
     resManager.addAnimation("mage-left", iso::Animation(textureMage, {128, 128}, {64, 64}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-left-up", iso::Animation(textureMage, {128, 128}, {64, 320}, {4, 1}, 1, true, {128, 128}));
     resManager.addAnimation("mage-up", iso::Animation(textureMage, {128, 128}, {64, 576}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-right-up", iso::Animation(textureMage, {128, 128}, {64, 832}, {4, 1}, 1, true, {128, 128}));
     resManager.addAnimation("mage-right", iso::Animation(textureMage, {128, 128}, {64, 1088}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-right-down", iso::Animation(textureMage, {128, 128}, {64, 1344}, {4, 1}, 1, true, {128, 128}));
     resManager.addAnimation("mage-down", iso::Animation(textureMage, {128, 128}, {64, 1600}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-left-down", iso::Animation(textureMage, {128, 128}, {64, 1856}, {4, 1}, 1, true, {128, 128}));
 
     resManager.addAnimation("fb-left", iso::Animation(textureFireball, {64, 64}, {0, 0}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-left-up", iso::Animation(textureFireball, {64, 64}, {0, 64}, {8, 1}, 1, true));
     resManager.addAnimation("fb-up", iso::Animation(textureFireball, {64, 64}, {0, 128}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-right-up", iso::Animation(textureFireball, {64, 64}, {0, 192}, {8, 1}, 1, true));
     resManager.addAnimation("fb-right", iso::Animation(textureFireball, {64, 64}, {0, 256}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-right-down", iso::Animation(textureFireball, {64, 64}, {0, 320}, {8, 1}, 1, true));
     resManager.addAnimation("fb-down", iso::Animation(textureFireball, {64, 64}, {0, 384}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-left-down", iso::Animation(textureFireball, {64, 64}, {0, 448}, {8, 1}, 1, true));
 }
 
 Game::Game()
@@ -196,6 +204,25 @@ void Game::createZombie(const iso::math::Vector2f & location)
 
 void Game::updatePlayer(float dt)
 {
+    iso::math::Vector2f newDir;
+    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Left)) {
+        newDir += {-1, 0};
+    }
+    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Up)) {
+        newDir += {0, -1};
+    }
+    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Right)) {
+        newDir += {1, 0};
+    }
+    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Down)) {
+        newDir += {0, 1};
+    }
+    if (newDir != iso::math::Vector2f()) {
+        player->faceDirection(newDir);
+    }
+    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Space)) {
+        shootFireball();
+    }
     player->update(gameSpeed, dt);
 }
 
@@ -261,21 +288,6 @@ void Game::onKey(iso::KeyEvent event)
 {
     if (event.eventType == iso::KeyEventType::KeyPressed) {
         switch (event.keyCode) {
-        case iso::KeyCode::Left:
-            player->faceDirection({-1, 0});
-            break;
-        case iso::KeyCode::Up:
-            player->faceDirection({0, -1});
-            break;
-        case iso::KeyCode::Right:
-            player->faceDirection({1, 0});
-            break;
-        case iso::KeyCode::Down:
-            player->faceDirection({0, 1});
-            break;
-        case iso::KeyCode::Space:
-            shootFireball();
-            break;
         case iso::KeyCode::Enter:
             if (state == State::Over) {
                 reset();
