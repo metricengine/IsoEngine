@@ -186,7 +186,6 @@ void Game::addRespawnLocation(int x, int y)
 
 void Game::createZombie(const iso::math::Vector2f & location)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
     auto zombie = std::make_shared<Zombie>(map, player.get(), playerReachedCb);
     zombie->setPosition(location);
     zombie->getSprite().setScale(0.25f, 0.25f);
@@ -230,7 +229,6 @@ void Game::shootFireball()
     if (!player->canShoot())
         return;
 
-    auto & resManager = iso::ResourceManager::getInstance();
     auto fb = std::make_shared<Fireball>(player->getFacingDir(), fireballCb);
 
     fb->setPosition(player->getPosition() + player->getFacingDir() * Entity::SpriteSize * 0.5f);

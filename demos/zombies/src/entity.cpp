@@ -12,7 +12,7 @@ using iso::math::Vector2i;
 namespace
 {
 
-bool isValid(int x, int y, const Tile * map)
+bool isValid(unsigned x, unsigned y, const Tile * map)
 {
     if (x < 0 || y < 0 || x >= Game::LevelWidth || y >= Game::LevelHeight) {
         return false;
@@ -200,7 +200,7 @@ void Zombie::update(float gameSpeed, float dt)
 
 bool Zombie::collide(const GameObject * object)
 {
-    if (auto player = dynamic_cast<const Player *>(object)) {
+    if (dynamic_cast<const Player *>(object)) {
         playerReached();
     }
     return true;

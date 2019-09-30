@@ -84,14 +84,14 @@ public:
     void update(float gameSpeed, float dt);
 
 private:
-    bool collide(const GameObject * object) override;
-    std::function<void()> playerReached;
-
     const Tile * map;
     float moveTime = AnimationTime - 0.15f;
     Player * player;
     iso::Vector2f dir;
     Direction animationDir;
+
+    bool collide(const GameObject * object) override;
+    std::function<void()> playerReached;
 };
 
 class Fireball : public Entity
@@ -105,8 +105,8 @@ public:
     bool collide() override;
 
 private:
-    std::function<void(const Fireball *, const Zombie *)> fbCollide;
     iso::Vector2f dir;
+    std::function<void(const Fireball *, const Zombie *)> fbCollide;
 };
 
 #endif // ENTITY_H
