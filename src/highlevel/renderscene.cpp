@@ -14,7 +14,7 @@ math::Transform SceneNode::getTransform() const
                             0, 0, 1});
 }
 
-void RenderScene::draw(Window & window)
+void RenderScene::draw(render::Window & window)
 {
     math::Transform transform;
     for (const auto & layer : layers) {

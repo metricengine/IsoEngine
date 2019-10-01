@@ -13,7 +13,7 @@ namespace iso
 
 class CollisionDetector;
 
-class GameObject : public Animator, public SceneNode
+class GameObject : public render::Animator, public SceneNode
 {
     friend class CommandQueue;
     friend class Engine;
@@ -44,7 +44,7 @@ private:
     // overload for colliding against global bounds
     virtual bool collide() { return true; }
 
-    void drawCurrent(Window & window, Transform transform) const override
+    void drawCurrent(render::Window & window, math::Transform transform) const override
     {
         window.draw(getSprite(), transform);
     }

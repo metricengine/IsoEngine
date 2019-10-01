@@ -60,7 +60,7 @@ private:
     std::function<void(const Fireball *, const Zombie *)> fireballCb;
     std::function<void()> playerReachedCb;
 
-    std::shared_ptr<iso::SceneNodeObject<iso::Text>> gameOverText;
+    std::shared_ptr<iso::SceneNodeObject<iso::render::Text>> gameOverText;
 };
 
 #endif // GAME_H

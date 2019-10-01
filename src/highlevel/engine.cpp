@@ -12,13 +12,13 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
 {
     switch (windowOpts.resizeStrategy) {
     case ResizeStrategy::FIXED_RES_STATIC_WINDOW:
-        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Static);
+        window = std::make_unique<render::Window>("IsoEngine", windowOpts.resolution, WindowStyle::Static);
         break;
     case ResizeStrategy::FIXED_RES_STRETCH:
     case ResizeStrategy::DYNAMIC_RES:
     // case ResizeStrategy::FIXED_ASPECT_RATIO:
     case ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES:
-        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Resize);
+        window = std::make_unique<render::Window>("IsoEngine", windowOpts.resolution, WindowStyle::Resize);
         break;
     }
     resizeStrategy = windowOpts.resizeStrategy;
@@ -131,7 +131,7 @@ void Engine::removeSceneNode(const SceneNode * sceneNode, SceneNode & layer)
     layer.removeChild(sceneNode);
 }
 
-void Engine::moveCamera(Vector2f dir)
+void Engine::moveCamera(math::Vector2f dir)
 {
     if (camera.following) {
         return;

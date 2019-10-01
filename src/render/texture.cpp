@@ -1,6 +1,6 @@
 #include "isoengine/render/texture.h"
 
-namespace iso
+namespace iso::render
 {
 
 bool Texture::loadFromFile(const std::string & filename)

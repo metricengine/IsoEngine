@@ -20,7 +20,7 @@ void SceneNode::removeChild(const SceneNode * child)
     }
 }
 
-void SceneNode::draw(Window & window, math::Transform transform) const
+void SceneNode::draw(render::Window & window, math::Transform transform) const
 {
     transform *= getTransform();
     drawCurrent(window, transform);

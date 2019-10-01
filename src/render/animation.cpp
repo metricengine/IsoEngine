@@ -1,6 +1,6 @@
 #include "isoengine/render/animation.h"
 
-namespace iso
+namespace iso::render
 {
 
 Animation::Animation(

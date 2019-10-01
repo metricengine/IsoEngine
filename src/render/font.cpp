@@ -1,6 +1,6 @@
 #include "isoengine/render/font.h"
 
-namespace iso
+namespace iso::render
 {
 
 bool Font::loadFromFile(const std::string & filename)

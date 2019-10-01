@@ -60,7 +60,7 @@ public:
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
-    void moveCamera(Vector2f dir);
+    void moveCamera(math::Vector2f dir);
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);
     void cameraStopFollowing();
@@ -69,9 +69,9 @@ public:
 private:
     struct Camera {
         float zoom = 1;
-        Vector2f pos;
-        Vector2u res;
-        Vector2u aspectRatio;
+        math::Vector2f pos;
+        math::Vector2u res;
+        math::Vector2u aspectRatio;
         const GameObject * following = nullptr;
     };
 
@@ -95,7 +95,7 @@ private:
     // Rendering
     ResizeStrategy resizeStrategy;
     Camera camera;
-    std::unique_ptr<Window> window;
+    std::unique_ptr<render::Window> window;
     std::unique_ptr<CollisionDetector> collisionDetector;
     RenderScene scene;
 

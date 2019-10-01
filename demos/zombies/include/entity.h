@@ -57,8 +57,8 @@ public:
     }
 
     void update(float gameSpeed, float dt);
-    const iso::Vector2f & getFacingDir() const;
-    void faceDirection(const iso::Vector2f & v);
+    const iso::math::Vector2f & getFacingDir() const;
+    void faceDirection(const iso::math::Vector2f & v);
     bool canShoot() const;
     void shoot();
 
@@ -68,7 +68,7 @@ private:
     static constexpr float reloadTime = 0.5f;
     float reloadTimeLeft = float{};
     std::function<void(const Entity *)> portalCollide;
-    iso::Vector2f dir, facingDir;
+    iso::math::Vector2f dir, facingDir;
 };
 
 class Zombie : public Entity
@@ -87,7 +87,7 @@ private:
     const Tile * map;
     float moveTime = AnimationTime - 0.15f;
     Player * player;
-    iso::Vector2f dir;
+    iso::math::Vector2f dir;
     Direction animationDir;
 
     bool collide(const GameObject * object) override;
@@ -105,7 +105,7 @@ public:
     bool collide() override;
 
 private:
-    iso::Vector2f dir;
+    iso::math::Vector2f dir;
     std::function<void(const Fireball *, const Zombie *)> fbCollide;
 };
 

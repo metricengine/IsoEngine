@@ -12,7 +12,7 @@ class RenderScene
 public:
     RenderScene(std::initializer_list<HashedString> layerNames);
 
-    void draw(Window & window);
+    void draw(render::Window & window);
     SceneNode & getLayer(HashedString name);
     SceneNode & topLayer();
 

@@ -4,7 +4,7 @@
 #include "animation.h"
 #include <memory>
 
-namespace iso
+namespace iso::render
 {
 
 class Animator

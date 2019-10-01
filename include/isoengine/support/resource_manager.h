@@ -18,16 +18,16 @@ class ResourceManager
 {
 public:
     static ResourceManager & getInstance();
-    Texture & getTexture(const HashedString & filename);
-    Font & getFont(const HashedString & filename);
-    void addAnimation(const HashedString & name, Animation animation);
-    Ptr<Animation> getAnimation(const HashedString & name);
+    iso::render::Texture & getTexture(const HashedString & filename);
+    iso::render::Font & getFont(const HashedString & filename);
+    void addAnimation(const HashedString & name, iso::render::Animation animation);
+    Ptr<iso::render::Animation> getAnimation(const HashedString & name);
 
 private:
     ResourceManager() = default;
-    std::unordered_map<size_t, Texture> textures;
-    std::unordered_map<size_t, Font> fonts;
-    std::unordered_map<size_t, Ptr<Animation>> animations;
+    std::unordered_map<size_t, iso::render::Texture> textures;
+    std::unordered_map<size_t, iso::render::Font> fonts;
+    std::unordered_map<size_t, Ptr<iso::render::Animation>> animations;
 };
 
 } // namespace iso
