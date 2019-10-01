@@ -4,9 +4,9 @@
 #include "entity.h"
 #include "isoengine/highlevel/engine.h"
 #include "isoengine/render/text.h"
-#include "isoengine/support/resourcemanager.h"
+#include "isoengine/support/resource_manager.h"
 
-void loadResources(iso::ResourceManager & resManager);
+void loadResources(iso::support::ResourceManager & resManager);
 
 class Game
 {

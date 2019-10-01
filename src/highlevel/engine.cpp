@@ -1,7 +1,6 @@
 #include "isoengine/highlevel/engine.h"
 #include "isoengine/common/clock.h"
 #include "isoengine/events/sfml_events.h"
-#include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
 #include <exception>
 

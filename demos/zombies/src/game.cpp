@@ -1,4 +1,5 @@
 #include "game.h"
+#include "isoengine/support/resource_manager.h"
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -6,7 +7,7 @@
 
 using namespace std::placeholders;
 
-void loadResources(iso::ResourceManager & resManager)
+void loadResources(iso::support::ResourceManager & resManager)
 {
     auto & textureWall = resManager.getTexture("res/textures/wall.jpg");
     auto & textureGrass = resManager.getTexture("res/textures/grass.jpg");
@@ -66,7 +67,7 @@ Game::Game()
     engine->onUpdate += std::bind(&Game::onUpdate, this, _1);
     engine->onKey += std::bind(&Game::onKey, this, _1);
 
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     loadResources(resManager);
     loadMap();
     reset();
@@ -102,7 +103,7 @@ void Game::reset()
 {
     clear();
 
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     auto portalCb = std::bind(&Game::onPortal, this, _1);
     player = std::make_shared<Player>(portalCb);
 
@@ -140,7 +141,7 @@ void Game::loadMap()
 
 void Game::addTile(Tile tile, int x, int y)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     auto obj = std::make_shared<Entity>(Entity::Type::Tile);
     switch (tile) {
     case Tile::Grass:
@@ -330,7 +331,7 @@ void Game::onFireball(const Fireball * fireball, const Zombie * zombie)
 
 void Game::onPlayerReached()
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
 
     state = State::Over;
     gameOverText = std::make_shared<iso::SceneNodeObject<iso::Text>>();

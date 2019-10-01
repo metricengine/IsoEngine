@@ -8,7 +8,7 @@
 #include <memory>
 #include <unordered_map>
 
-namespace iso
+namespace iso::support
 {
 
 template <typename T>

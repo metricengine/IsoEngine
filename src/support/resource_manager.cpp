@@ -1,8 +1,8 @@
-#include "isoengine/support/resourcemanager.h"
+#include "isoengine/support/resource_manager.h"
 #include "isoengine/common/utils.h"
 #include <exception>
 
-namespace iso
+namespace iso::support
 {
 
 ResourceManager & ResourceManager::getInstance()
