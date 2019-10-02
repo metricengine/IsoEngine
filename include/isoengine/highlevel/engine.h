@@ -1,7 +1,7 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "isoengine/events/commandqueue.h"
+#include "isoengine/events/command_queue.h"
 #include "isoengine/events/delegates.h"
 #include "isoengine/events/event.h"
 #include "isoengine/highlevel/gameobject.h"

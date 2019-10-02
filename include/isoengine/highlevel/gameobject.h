@@ -2,7 +2,7 @@
 #define GAMEOBJECT_H
 
 #include "isoengine/common/hashedstring.h"
-#include "isoengine/events/commandqueue.h"
+#include "isoengine/events/command_queue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
 #include "scenenode.h"
