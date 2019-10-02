@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "isoengine/highlevel/gameobject.h"
+#include "isoengine/game_object.h"
 #include <functional>
 
 enum class Tile {

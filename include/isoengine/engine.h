@@ -4,7 +4,7 @@
 #include "isoengine/events/command_queue.h"
 #include "isoengine/events/delegates.h"
 #include "isoengine/events/event.h"
-#include "isoengine/highlevel/gameobject.h"
+#include "isoengine/game_object.h"
 #include "isoengine/render/render_scene.h"
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/render/window.h"

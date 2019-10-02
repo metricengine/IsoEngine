@@ -1,4 +1,4 @@
-#include "isoengine/highlevel/gameobject.h"
+#include "isoengine/game_object.h"
 #include "isoengine/physics/collision_detector.h"
 
 namespace iso

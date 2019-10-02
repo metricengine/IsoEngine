@@ -2,7 +2,7 @@
 #define GAME_H
 
 #include "entity.h"
-#include "isoengine/highlevel/engine.h"
+#include "isoengine/engine.h"
 #include "isoengine/render/text.h"
 #include "isoengine/support/resource_manager.h"
 

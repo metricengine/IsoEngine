@@ -1,6 +1,6 @@
 #include "isoengine/events/command_queue.h"
 #include "isoengine/debug/utils.h"
-#include "isoengine/highlevel/gameobject.h"
+#include "isoengine/game_object.h"
 #include <iostream>
 
 namespace iso::events
