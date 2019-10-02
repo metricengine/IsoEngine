@@ -96,7 +96,7 @@ private:
     ResizeStrategy resizeStrategy;
     Camera camera;
     std::unique_ptr<render::Window> window;
-    std::unique_ptr<CollisionDetector> collisionDetector;
+    std::unique_ptr<physics::CollisionDetector> collisionDetector;
     RenderScene scene;
 
     void handleInput();

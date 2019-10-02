@@ -30,7 +30,7 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
         throw std::invalid_argument("Aspect ratio has to be provided if a FIXED_ASPECT_RATIO resize strategy is used");
     }
 
-    collisionDetector = std::make_unique<CollisionDetector>(
+    collisionDetector = std::make_unique<physics::CollisionDetector>(
         math::Rectf(0, 0, windowOpts.resolution.x, windowOpts.resolution.y));
 }
 

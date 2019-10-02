@@ -8,16 +8,21 @@
 #include "scenenode.h"
 #include <initializer_list>
 
-namespace iso
+namespace iso::physics
 {
 
 class CollisionDetector;
+
+}
+
+namespace iso
+{
 
 class GameObject : public render::Animator, public SceneNode
 {
     friend class CommandQueue;
     friend class Engine;
-    friend class CollisionDetector;
+    friend class physics::CollisionDetector;
 
 public:
     void setCommandTypes(std::initializer_list<HashedString> types);
@@ -54,14 +59,14 @@ private:
         commandQueue = cq;
     }
 
-    void setCollisionDetector(CollisionDetector * cd)
+    void setCollisionDetector(physics::CollisionDetector * cd)
     {
         collisionDetector = cd;
     }
 
     unsigned commandTypes = 0;
     CommandQueue * commandQueue = nullptr;
-    CollisionDetector * collisionDetector = nullptr;
+    physics::CollisionDetector * collisionDetector = nullptr;
     math::Rectf boundingBox;
 };
 

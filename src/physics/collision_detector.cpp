@@ -1,7 +1,7 @@
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/highlevel/gameobject.h"
 
-namespace iso
+namespace iso::physics
 {
 
 void CollisionDetector::addRigidBody(std::shared_ptr<GameObject> object)

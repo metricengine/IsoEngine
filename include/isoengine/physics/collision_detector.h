@@ -5,10 +5,12 @@
 #include <memory>
 #include <vector>
 
-namespace iso
-{
-
+namespace iso {
 class GameObject;
+}
+
+namespace iso::physics
+{
 
 class CollisionDetector
 {
