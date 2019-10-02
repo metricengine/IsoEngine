@@ -1,10 +1,10 @@
 #ifndef RENDERSCENE_H
 #define RENDERSCENE_H
 
-#include "scenenode.h"
+#include "isoengine/render/scene_node.h"
 #include <map>
 
-namespace iso
+namespace iso::render
 {
 
 class RenderScene

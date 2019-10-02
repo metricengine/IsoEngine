@@ -334,7 +334,7 @@ void Game::onPlayerReached()
     auto & resManager = iso::support::ResourceManager::getInstance();
 
     state = State::Over;
-    gameOverText = std::make_shared<iso::SceneNodeObject<iso::render::Text>>();
+    gameOverText = std::make_shared<iso::render::SceneNodeObject<iso::render::Text>>();
     gameOverText->getObject().setFont(resManager.getFont("res/fonts/Arial.ttf"));
     gameOverText->getObject().setString("Game over! Press enter to restart!");
     float x = float(LevelWidth * Entity::SpriteSize / 2) - gameOverText->getObject().getSize().x / 2;

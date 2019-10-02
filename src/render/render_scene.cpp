@@ -1,7 +1,7 @@
-#include "isoengine/highlevel/renderscene.h"
+#include "isoengine/render/render_scene.h"
 #include "isoengine/common/utils.h"
 
-namespace iso
+namespace iso::render
 {
 
 math::Transform SceneNode::getTransform() const

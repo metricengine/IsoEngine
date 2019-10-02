@@ -5,7 +5,7 @@
 #include "isoengine/events/delegates.h"
 #include "isoengine/events/event.h"
 #include "isoengine/highlevel/gameobject.h"
-#include "isoengine/highlevel/renderscene.h"
+#include "isoengine/render/render_scene.h"
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/render/window.h"
 
@@ -53,10 +53,10 @@ public:
         HashedString layer);
     void removeGameObject(const GameObject * gameObject);
     void removeGameObject(const GameObject * gameObject, HashedString layer);
-    void addSceneNode(std::shared_ptr<SceneNode> sceneNode);
-    void addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer);
-    void removeSceneNode(const SceneNode * sceneNode);
-    void removeSceneNode(const SceneNode * sceneNode, HashedString layer);
+    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode);
+    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, HashedString layer);
+    void removeSceneNode(const render::SceneNode * sceneNode);
+    void removeSceneNode(const render::SceneNode * sceneNode, HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
@@ -77,16 +77,16 @@ private:
 
     void addGameObject(
         std::shared_ptr<GameObject> gameObject,
-        SceneNode & layer);
+        render::SceneNode & layer);
     void removeGameObject(
         const GameObject * gameObject,
-        SceneNode & layer);
+        render::SceneNode & layer);
     void addSceneNode(
-        std::shared_ptr<SceneNode> sceneNode,
-        SceneNode & layer);
+        std::shared_ptr<render::SceneNode> sceneNode,
+        render::SceneNode & layer);
     void removeSceneNode(
-        const SceneNode * sceneNode,
-        SceneNode & layer);
+        const render::SceneNode * sceneNode,
+        render::SceneNode & layer);
 
     // Model
     const float timePerFrame = 1.f / 60.f;
@@ -97,7 +97,7 @@ private:
     Camera camera;
     std::unique_ptr<render::Window> window;
     std::unique_ptr<physics::CollisionDetector> collisionDetector;
-    RenderScene scene;
+    render::RenderScene scene;
 
     void handleInput();
     void update(float dt);

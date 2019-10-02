@@ -5,7 +5,7 @@
 #include "isoengine/events/command_queue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
-#include "scenenode.h"
+#include "isoengine/render/scene_node.h"
 #include <initializer_list>
 
 namespace iso::physics
@@ -18,7 +18,7 @@ class CollisionDetector;
 namespace iso
 {
 
-class GameObject : public render::Animator, public SceneNode
+class GameObject : public render::Animator, public render::SceneNode
 {
     friend class events::CommandQueue;
     friend class Engine;

@@ -1,6 +1,6 @@
-#include "isoengine/highlevel/scenenode.h"
+#include "isoengine/render/scene_node.h"
 
-namespace iso
+namespace iso::render
 {
 
 void SceneNode::addChild(std::shared_ptr<SceneNode> child)

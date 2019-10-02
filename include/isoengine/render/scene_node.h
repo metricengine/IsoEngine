@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 
-namespace iso
+namespace iso::render
 {
 
 class RenderScene;

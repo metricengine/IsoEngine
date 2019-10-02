@@ -68,7 +68,7 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString 
     addGameObject(gameObject, scene.getLayer(layerName));
 }
 
-void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, SceneNode & layer)
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, render::SceneNode & layer)
 {
     addSceneNode(gameObject, layer);
     gameObjects.push_back(gameObject);
@@ -87,7 +87,7 @@ void Engine::removeGameObject(const GameObject * gameObject, HashedString layerN
 
 void Engine::removeGameObject(
     const GameObject * gameObject,
-    SceneNode & layer)
+    render::SceneNode & layer)
 {
     for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
         if (gameObject == iter->get()) {
@@ -101,32 +101,32 @@ void Engine::removeGameObject(
     }
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode)
 {
     addSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, HashedString layer)
 {
     addSceneNode(sceneNode, scene.getLayer(layer));
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, SceneNode & layer)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, render::SceneNode & layer)
 {
     layer.addChild(sceneNode);
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode)
 {
     removeSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode, HashedString layer)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode, HashedString layer)
 {
     removeSceneNode(sceneNode, scene.getLayer(layer));
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode, SceneNode & layer)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode, render::SceneNode & layer)
 {
     layer.removeChild(sceneNode);
 }
