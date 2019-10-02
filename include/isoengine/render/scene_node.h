@@ -1,7 +1,7 @@
 #ifndef SCENENODE_H
 #define SCENENODE_H
 
-#include "isoengine/common/hashedstring.h"
+#include "isoengine/support/hashed_string.h"
 #include "isoengine/render/window.h"
 #include <memory>
 #include <vector>

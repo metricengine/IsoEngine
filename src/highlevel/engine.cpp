@@ -1,5 +1,5 @@
 #include "isoengine/highlevel/engine.h"
-#include "isoengine/common/clock.h"
+#include "isoengine/support/clock.h"
 #include "isoengine/events/sfml_events.h"
 #include <SFML/Graphics.hpp>
 #include <exception>
@@ -7,7 +7,7 @@
 namespace iso
 {
 
-Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames)
+Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<support::HashedString> layerNames)
     : scene{layerNames}
 {
     switch (windowOpts.resizeStrategy) {
@@ -36,7 +36,7 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
 
 void Engine::run()
 {
-    Clock<std::chrono::microseconds> clock;
+    support::Clock<std::chrono::microseconds> clock;
     float dt{};
 
     while (window->getWindow().isOpen()) {
@@ -53,7 +53,7 @@ void Engine::run()
     }
 }
 
-void Engine::registerCommand(HashedString command)
+void Engine::registerCommand(support::HashedString command)
 {
     commandQueue.registerCommand(command);
 }
@@ -63,7 +63,7 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
     addGameObject(gameObject, scene.topLayer());
 }
 
-void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, support::HashedString layerName)
 {
     addGameObject(gameObject, scene.getLayer(layerName));
 }
@@ -80,7 +80,7 @@ void Engine::removeGameObject(const GameObject * gameObject)
     removeGameObject(gameObject, scene.topLayer());
 }
 
-void Engine::removeGameObject(const GameObject * gameObject, HashedString layerName)
+void Engine::removeGameObject(const GameObject * gameObject, support::HashedString layerName)
 {
     removeGameObject(gameObject, scene.getLayer(layerName));
 }
@@ -106,7 +106,7 @@ void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode)
     addSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, HashedString layer)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, support::HashedString layer)
 {
     addSceneNode(sceneNode, scene.getLayer(layer));
 }
@@ -121,7 +121,7 @@ void Engine::removeSceneNode(const render::SceneNode * sceneNode)
     removeSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::removeSceneNode(const render::SceneNode * sceneNode, HashedString layer)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode, support::HashedString layer)
 {
     removeSceneNode(sceneNode, scene.getLayer(layer));
 }

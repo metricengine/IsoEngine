@@ -1,7 +1,7 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-#include "isoengine/common/hashedstring.h"
+#include "isoengine/support/hashed_string.h"
 #include "isoengine/render/animation.h"
 #include "isoengine/render/font.h"
 #include "isoengine/render/texture.h"

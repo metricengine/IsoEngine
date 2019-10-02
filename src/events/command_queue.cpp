@@ -1,5 +1,5 @@
 #include "isoengine/events/command_queue.h"
-#include "isoengine/common/utils.h"
+#include "isoengine/debug/utils.h"
 #include "isoengine/highlevel/gameobject.h"
 #include <iostream>
 
@@ -14,10 +14,10 @@ void CommandQueue::pushCommand(GameObject * sender,
     queue.push(std::make_pair(sender, command));
 }
 
-unsigned CommandQueue::generateCommandTypes(std::initializer_list<HashedString> types) const
+unsigned CommandQueue::generateCommandTypes(std::initializer_list<support::HashedString> types) const
 {
     unsigned value = 0;
-    for (HashedString type : types) {
+    for (support::HashedString type : types) {
         auto it = commandIDs.find(type);
         // ASSERT(it != commandIDs.end(),
         //        stringify("The command type was not registered: ", it->first.getCStr()).c_str());
@@ -26,7 +26,7 @@ unsigned CommandQueue::generateCommandTypes(std::initializer_list<HashedString> 
     return value;
 }
 
-void CommandQueue::registerCommand(HashedString command)
+void CommandQueue::registerCommand(support::HashedString command)
 {
     unsigned commandValue = 1 << commandIDs.size();
     commandIDs.insert(std::make_pair(command, commandValue));

@@ -1,5 +1,5 @@
 #include "isoengine/render/render_scene.h"
-#include "isoengine/common/utils.h"
+#include "isoengine/debug/utils.h"
 
 namespace iso::render
 {
@@ -22,7 +22,7 @@ void RenderScene::draw(render::Window & window)
     }
 }
 
-RenderScene::RenderScene(std::initializer_list<HashedString> layerNames)
+RenderScene::RenderScene(std::initializer_list<support::HashedString> layerNames)
 {
     layers.reserve(layerNames.size() == 0 ? 1 : layerNames.size());
     for (auto layerName : layerNames) {
@@ -34,7 +34,7 @@ RenderScene::RenderScene(std::initializer_list<HashedString> layerNames)
     }
 }
 
-SceneNode & RenderScene::getLayer(HashedString name)
+SceneNode & RenderScene::getLayer(support::HashedString name)
 {
     auto iter = layerRefs.find(name);
     if (iter == layerRefs.end()) {

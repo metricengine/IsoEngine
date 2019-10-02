@@ -4,7 +4,7 @@
 #include "isoengine/math/hash.h"
 #include <cstdlib>
 
-namespace iso
+namespace iso::support
 {
 
 template <size_t N>

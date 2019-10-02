@@ -4,7 +4,7 @@
 namespace iso
 {
 
-void GameObject::setCommandTypes(std::initializer_list<HashedString> types)
+void GameObject::setCommandTypes(std::initializer_list<support::HashedString> types)
 {
     if (commandQueue)
         commandTypes = commandQueue->generateCommandTypes(types);

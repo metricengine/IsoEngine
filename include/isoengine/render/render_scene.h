@@ -10,15 +10,15 @@ namespace iso::render
 class RenderScene
 {
 public:
-    RenderScene(std::initializer_list<HashedString> layerNames);
+    RenderScene(std::initializer_list<support::HashedString> layerNames);
 
     void draw(render::Window & window);
-    SceneNode & getLayer(HashedString name);
+    SceneNode & getLayer(support::HashedString name);
     SceneNode & topLayer();
 
 private:
     std::vector<SceneNode> layers;
-    std::map<HashedString, SceneNode *> layerRefs;
+    std::map<support::HashedString, SceneNode *> layerRefs;
 };
 
 } // namespace iso

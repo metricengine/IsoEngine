@@ -43,20 +43,20 @@ public:
     events::Delegates<void(float)> onUpdate;
 
     // Methods
-    Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
+    Engine(const WindowOptions & windowOpts, std::initializer_list<support::HashedString> layerNames = {});
     void run();
-    void registerCommand(HashedString command);
+    void registerCommand(support::HashedString command);
     void addGameObject(
         std::shared_ptr<GameObject> gameObject);
     void addGameObject(
         std::shared_ptr<GameObject> gameObject,
-        HashedString layer);
+        support::HashedString layer);
     void removeGameObject(const GameObject * gameObject);
-    void removeGameObject(const GameObject * gameObject, HashedString layer);
+    void removeGameObject(const GameObject * gameObject, support::HashedString layer);
     void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode);
-    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, HashedString layer);
+    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, support::HashedString layer);
     void removeSceneNode(const render::SceneNode * sceneNode);
-    void removeSceneNode(const render::SceneNode * sceneNode, HashedString layer);
+    void removeSceneNode(const render::SceneNode * sceneNode, support::HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);

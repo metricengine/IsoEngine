@@ -1,7 +1,7 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "isoengine/common/hashedstring.h"
+#include "isoengine/support/hashed_string.h"
 #include "isoengine/events/command_queue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
@@ -25,7 +25,7 @@ class GameObject : public render::Animator, public render::SceneNode
     friend class physics::CollisionDetector;
 
 public:
-    void setCommandTypes(std::initializer_list<HashedString> types);
+    void setCommandTypes(std::initializer_list<support::HashedString> types);
     void sendCommand(std::shared_ptr<events::Command> command);
 
     // const math::Vector2f & getPosition() const

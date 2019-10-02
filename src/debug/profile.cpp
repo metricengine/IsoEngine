@@ -1,5 +1,5 @@
-#include "isoengine/common/debug/profile.h"
-#include "isoengine/common/consoletable.h"
+#include "isoengine/debug/profile.h"
+#include "isoengine/debug/console_table.h"
 #include <array>
 #include <set>
 #include <sstream>
