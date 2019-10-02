@@ -1,7 +1,7 @@
 #include "isoengine/events/event.h"
 #include <SFML/Window/Keyboard.hpp>
 
-namespace iso::Keyboard
+namespace iso::events::Keyboard
 {
 
 bool isKeyPressed(KeyCode key)

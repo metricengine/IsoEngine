@@ -37,10 +37,10 @@ class Engine
 {
 public:
     // Events
-    Delegates<void(GameObject &, const Command &)> onCommand;
-    Delegates<void(KeyEvent)> onKey;
-    Delegates<void(MouseEvent)> onMouse;
-    Delegates<void(float)> onUpdate;
+    events::Delegates<void(GameObject &, const events::Command &)> onCommand;
+    events::Delegates<void(events::KeyEvent)> onKey;
+    events::Delegates<void(events::MouseEvent)> onMouse;
+    events::Delegates<void(float)> onUpdate;
 
     // Methods
     Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
@@ -91,7 +91,7 @@ private:
     // Model
     const float timePerFrame = 1.f / 60.f;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
-    CommandQueue commandQueue;
+    events::CommandQueue commandQueue;
     // Rendering
     ResizeStrategy resizeStrategy;
     Camera camera;

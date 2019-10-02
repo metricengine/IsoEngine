@@ -20,13 +20,13 @@ namespace iso
 
 class GameObject : public render::Animator, public SceneNode
 {
-    friend class CommandQueue;
+    friend class events::CommandQueue;
     friend class Engine;
     friend class physics::CollisionDetector;
 
 public:
     void setCommandTypes(std::initializer_list<HashedString> types);
-    void sendCommand(std::shared_ptr<Command> command);
+    void sendCommand(std::shared_ptr<events::Command> command);
 
     // const math::Vector2f & getPosition() const
     // {
@@ -42,7 +42,7 @@ public:
 
 private:
     virtual void handleCommand(GameObject & sender,
-                               const Command & command) {}
+                               const events::Command & command) {}
     // override collide function to handle manual collision logic
     // return value -> object is colliding with argument, therefore cannot move
     virtual bool collide(const GameObject * object) { return true; }
@@ -54,7 +54,7 @@ private:
         window.draw(getSprite(), transform);
     }
 
-    void setCommandQueue(CommandQueue * cq)
+    void setCommandQueue(events::CommandQueue * cq)
     {
         commandQueue = cq;
     }
@@ -65,7 +65,7 @@ private:
     }
 
     unsigned commandTypes = 0;
-    CommandQueue * commandQueue = nullptr;
+    events::CommandQueue * commandQueue = nullptr;
     physics::CollisionDetector * collisionDetector = nullptr;
     math::Rectf boundingBox;
 };

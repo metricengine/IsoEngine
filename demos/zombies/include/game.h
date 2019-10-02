@@ -36,7 +36,7 @@ private:
 
     // Events
     void onUpdate(float dt);
-    void onKey(iso::KeyEvent event);
+    void onKey(iso::events::KeyEvent event);
     void onPortal(const Entity * portal);
     void onFireball(const Fireball * fireball, const Zombie * zombie);
     void onPlayerReached();

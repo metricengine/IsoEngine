@@ -3,7 +3,7 @@
 #include "isoengine/highlevel/gameobject.h"
 #include <iostream>
 
-namespace iso
+namespace iso::events
 {
 
 void CommandQueue::pushCommand(GameObject * sender,

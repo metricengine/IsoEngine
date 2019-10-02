@@ -8,9 +8,12 @@
 
 namespace iso
 {
-
 class Engine;
 class GameObject;
+}
+
+namespace iso::events
+{
 
 struct Command {
     HashedString type;
@@ -21,7 +24,7 @@ using SenderCommand = std::pair<GameObject *, std::shared_ptr<Command>>;
 
 class CommandQueue
 {
-    friend class Engine;
+    friend class iso::Engine;
 
     struct HSComparator {
         bool operator()(const HashedString & lhs, const HashedString & rhs) const

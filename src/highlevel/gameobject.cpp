@@ -10,7 +10,7 @@ void GameObject::setCommandTypes(std::initializer_list<HashedString> types)
         commandTypes = commandQueue->generateCommandTypes(types);
 }
 
-void GameObject::sendCommand(std::shared_ptr<Command> command)
+void GameObject::sendCommand(std::shared_ptr<events::Command> command)
 {
     if (commandQueue)
         commandQueue->pushCommand(this, command);

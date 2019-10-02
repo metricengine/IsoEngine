@@ -206,22 +206,22 @@ void Game::createZombie(const iso::math::Vector2f & location)
 void Game::updatePlayer(float dt)
 {
     iso::math::Vector2f newDir;
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Left)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Left)) {
         newDir += {-1, 0};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Up)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Up)) {
         newDir += {0, -1};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Right)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Right)) {
         newDir += {1, 0};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Down)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Down)) {
         newDir += {0, 1};
     }
     if (newDir != iso::math::Vector2f()) {
         player->faceDirection(newDir);
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Space)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Space)) {
         shootFireball();
     }
     player->update(gameSpeed, dt);
@@ -285,11 +285,11 @@ void Game::onUpdate(float dt)
     updateFireballs(dt);
 }
 
-void Game::onKey(iso::KeyEvent event)
+void Game::onKey(iso::events::KeyEvent event)
 {
-    if (event.eventType == iso::KeyEventType::KeyPressed) {
+    if (event.eventType == iso::events::KeyEventType::KeyPressed) {
         switch (event.keyCode) {
-        case iso::KeyCode::Enter:
+        case iso::events::KeyCode::Enter:
             if (state == State::Over) {
                 reset();
             }

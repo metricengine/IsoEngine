@@ -193,7 +193,7 @@ void Engine::handleInput()
         if (event.type == sf::Event::MouseButtonPressed ||
             event.type == sf::Event::MouseButtonReleased ||
             event.type == sf::Event::MouseMoved) {
-            auto mouseEvent = mouseEventFromSFML(event);
+            auto mouseEvent = events::mouseEventFromSFML(event);
             onMouse.raise(mouseEvent);
         }
 
@@ -242,7 +242,7 @@ void Engine::handleInput()
 
         if (event.type == sf::Event::KeyPressed ||
             event.type == sf::Event::KeyReleased) {
-            auto keyEvent = keyEventFromSFML(event);
+            auto keyEvent = events::keyEventFromSFML(event);
             onKey.raise(keyEvent);
         }
     }
