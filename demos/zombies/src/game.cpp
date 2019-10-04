@@ -1,4 +1,5 @@
 #include "game.h"
+#include "isoengine/support/resource_manager.h"
 #include <cmath>
 #include <fstream>
 #include <iostream>
@@ -6,7 +7,7 @@
 
 using namespace std::placeholders;
 
-void loadResources(iso::ResourceManager & resManager)
+void loadResources(iso::support::ResourceManager & resManager)
 {
     auto & textureWall = resManager.getTexture("res/textures/wall.jpg");
     auto & textureGrass = resManager.getTexture("res/textures/grass.jpg");
@@ -16,39 +17,39 @@ void loadResources(iso::ResourceManager & resManager)
     auto & textureMage = resManager.getTexture("res/textures/magician.png");
     auto & textureFireball = resManager.getTexture("res/textures/fireball.png");
 
-    resManager.addAnimation("wall", iso::StaticAnimation(textureWall, iso::math::Vector2i(128, 128)));
-    resManager.addAnimation("grass", iso::StaticAnimation(textureGrass, iso::math::Vector2i(128, 128)));
-    resManager.addAnimation("cave", iso::StaticAnimation(textureCave, iso::math::Vector2i(128, 128)));
-    resManager.addAnimation("portal", iso::Animation(texturePortal, {32, 32}, {0, 0}, {4, 4}, 1, true));
+    resManager.addAnimation("wall", iso::render::StaticAnimation(textureWall, iso::math::Vector2i(128, 128)));
+    resManager.addAnimation("grass", iso::render::StaticAnimation(textureGrass, iso::math::Vector2i(128, 128)));
+    resManager.addAnimation("cave", iso::render::StaticAnimation(textureCave, iso::math::Vector2i(128, 128)));
+    resManager.addAnimation("portal", iso::render::Animation(texturePortal, {32, 32}, {0, 0}, {4, 4}, 1, true));
 
     float as = Zombie::AnimationTime;
 
-    resManager.addAnimation("zombie-left", iso::Animation(textureZombie, {128, 128}, {64, 64}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-left-up", iso::Animation(textureZombie, {128, 128}, {64, 320}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-up", iso::Animation(textureZombie, {128, 128}, {64, 576}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-right-up", iso::Animation(textureZombie, {128, 128}, {64, 832}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-right", iso::Animation(textureZombie, {128, 128}, {64, 1088}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-right-down", iso::Animation(textureZombie, {128, 128}, {64, 1344}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-down", iso::Animation(textureZombie, {128, 128}, {64, 1600}, {4, 1}, as, true, {128, 128}));
-    resManager.addAnimation("zombie-left-down", iso::Animation(textureZombie, {128, 128}, {64, 1856}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-left", iso::render::Animation(textureZombie, {128, 128}, {64, 64}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-left-up", iso::render::Animation(textureZombie, {128, 128}, {64, 320}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-up", iso::render::Animation(textureZombie, {128, 128}, {64, 576}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-right-up", iso::render::Animation(textureZombie, {128, 128}, {64, 832}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-right", iso::render::Animation(textureZombie, {128, 128}, {64, 1088}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-right-down", iso::render::Animation(textureZombie, {128, 128}, {64, 1344}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-down", iso::render::Animation(textureZombie, {128, 128}, {64, 1600}, {4, 1}, as, true, {128, 128}));
+    resManager.addAnimation("zombie-left-down", iso::render::Animation(textureZombie, {128, 128}, {64, 1856}, {4, 1}, as, true, {128, 128}));
 
-    resManager.addAnimation("mage-left", iso::Animation(textureMage, {128, 128}, {64, 64}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-left-up", iso::Animation(textureMage, {128, 128}, {64, 320}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-up", iso::Animation(textureMage, {128, 128}, {64, 576}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-right-up", iso::Animation(textureMage, {128, 128}, {64, 832}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-right", iso::Animation(textureMage, {128, 128}, {64, 1088}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-right-down", iso::Animation(textureMage, {128, 128}, {64, 1344}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-down", iso::Animation(textureMage, {128, 128}, {64, 1600}, {4, 1}, 1, true, {128, 128}));
-    resManager.addAnimation("mage-left-down", iso::Animation(textureMage, {128, 128}, {64, 1856}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-left", iso::render::Animation(textureMage, {128, 128}, {64, 64}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-left-up", iso::render::Animation(textureMage, {128, 128}, {64, 320}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-up", iso::render::Animation(textureMage, {128, 128}, {64, 576}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-right-up", iso::render::Animation(textureMage, {128, 128}, {64, 832}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-right", iso::render::Animation(textureMage, {128, 128}, {64, 1088}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-right-down", iso::render::Animation(textureMage, {128, 128}, {64, 1344}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-down", iso::render::Animation(textureMage, {128, 128}, {64, 1600}, {4, 1}, 1, true, {128, 128}));
+    resManager.addAnimation("mage-left-down", iso::render::Animation(textureMage, {128, 128}, {64, 1856}, {4, 1}, 1, true, {128, 128}));
 
-    resManager.addAnimation("fb-left", iso::Animation(textureFireball, {64, 64}, {0, 0}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-left-up", iso::Animation(textureFireball, {64, 64}, {0, 64}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-up", iso::Animation(textureFireball, {64, 64}, {0, 128}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-right-up", iso::Animation(textureFireball, {64, 64}, {0, 192}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-right", iso::Animation(textureFireball, {64, 64}, {0, 256}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-right-down", iso::Animation(textureFireball, {64, 64}, {0, 320}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-down", iso::Animation(textureFireball, {64, 64}, {0, 384}, {8, 1}, 1, true));
-    resManager.addAnimation("fb-left-down", iso::Animation(textureFireball, {64, 64}, {0, 448}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-left", iso::render::Animation(textureFireball, {64, 64}, {0, 0}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-left-up", iso::render::Animation(textureFireball, {64, 64}, {0, 64}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-up", iso::render::Animation(textureFireball, {64, 64}, {0, 128}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-right-up", iso::render::Animation(textureFireball, {64, 64}, {0, 192}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-right", iso::render::Animation(textureFireball, {64, 64}, {0, 256}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-right-down", iso::render::Animation(textureFireball, {64, 64}, {0, 320}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-down", iso::render::Animation(textureFireball, {64, 64}, {0, 384}, {8, 1}, 1, true));
+    resManager.addAnimation("fb-left-down", iso::render::Animation(textureFireball, {64, 64}, {0, 448}, {8, 1}, 1, true));
 }
 
 Game::Game()
@@ -66,7 +67,7 @@ Game::Game()
     engine->onUpdate += std::bind(&Game::onUpdate, this, _1);
     engine->onKey += std::bind(&Game::onKey, this, _1);
 
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     loadResources(resManager);
     loadMap();
     reset();
@@ -102,7 +103,7 @@ void Game::reset()
 {
     clear();
 
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     auto portalCb = std::bind(&Game::onPortal, this, _1);
     player = std::make_shared<Player>(portalCb);
 
@@ -140,7 +141,7 @@ void Game::loadMap()
 
 void Game::addTile(Tile tile, int x, int y)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     auto obj = std::make_shared<Entity>(Entity::Type::Tile);
     switch (tile) {
     case Tile::Grass:
@@ -205,22 +206,22 @@ void Game::createZombie(const iso::math::Vector2f & location)
 void Game::updatePlayer(float dt)
 {
     iso::math::Vector2f newDir;
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Left)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Left)) {
         newDir += {-1, 0};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Up)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Up)) {
         newDir += {0, -1};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Right)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Right)) {
         newDir += {1, 0};
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Down)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Down)) {
         newDir += {0, 1};
     }
     if (newDir != iso::math::Vector2f()) {
         player->faceDirection(newDir);
     }
-    if (iso::Keyboard::isKeyPressed(iso::KeyCode::Space)) {
+    if (iso::events::Keyboard::isKeyPressed(iso::events::KeyCode::Space)) {
         shootFireball();
     }
     player->update(gameSpeed, dt);
@@ -284,11 +285,11 @@ void Game::onUpdate(float dt)
     updateFireballs(dt);
 }
 
-void Game::onKey(iso::KeyEvent event)
+void Game::onKey(iso::events::KeyEvent event)
 {
-    if (event.eventType == iso::KeyEventType::KeyPressed) {
+    if (event.eventType == iso::events::KeyEventType::KeyPressed) {
         switch (event.keyCode) {
-        case iso::KeyCode::Enter:
+        case iso::events::KeyCode::Enter:
             if (state == State::Over) {
                 reset();
             }
@@ -330,10 +331,10 @@ void Game::onFireball(const Fireball * fireball, const Zombie * zombie)
 
 void Game::onPlayerReached()
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
 
     state = State::Over;
-    gameOverText = std::make_shared<iso::SceneNodeObject<iso::Text>>();
+    gameOverText = std::make_shared<iso::render::SceneNodeObject<iso::render::Text>>();
     gameOverText->getObject().setFont(resManager.getFont("res/fonts/Arial.ttf"));
     gameOverText->getObject().setString("Game over! Press enter to restart!");
     float x = float(LevelWidth * Entity::SpriteSize / 2) - gameOverText->getObject().getSize().x / 2;

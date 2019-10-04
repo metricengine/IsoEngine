@@ -4,7 +4,7 @@
 #include <SFML/Graphics/Font.hpp>
 #include <string>
 
-namespace iso
+namespace iso::render
 {
 
 class Font

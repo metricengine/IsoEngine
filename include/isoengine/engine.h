@@ -1,11 +1,11 @@
 #ifndef ENGINE_H
 #define ENGINE_H
 
-#include "isoengine/events/commandqueue.h"
+#include "isoengine/events/command_queue.h"
 #include "isoengine/events/delegates.h"
 #include "isoengine/events/event.h"
-#include "isoengine/highlevel/gameobject.h"
-#include "isoengine/highlevel/renderscene.h"
+#include "isoengine/game_object.h"
+#include "isoengine/render/render_scene.h"
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/render/window.h"
 
@@ -37,30 +37,30 @@ class Engine
 {
 public:
     // Events
-    Delegates<void(GameObject &, const Command &)> onCommand;
-    Delegates<void(KeyEvent)> onKey;
-    Delegates<void(MouseEvent)> onMouse;
-    Delegates<void(float)> onUpdate;
+    events::Delegates<void(GameObject &, const events::Command &)> onCommand;
+    events::Delegates<void(events::KeyEvent)> onKey;
+    events::Delegates<void(events::MouseEvent)> onMouse;
+    events::Delegates<void(float)> onUpdate;
 
     // Methods
-    Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames = {});
+    Engine(const WindowOptions & windowOpts, std::initializer_list<support::HashedString> layerNames = {});
     void run();
-    void registerCommand(HashedString command);
+    void registerCommand(support::HashedString command);
     void addGameObject(
         std::shared_ptr<GameObject> gameObject);
     void addGameObject(
         std::shared_ptr<GameObject> gameObject,
-        HashedString layer);
+        support::HashedString layer);
     void removeGameObject(const GameObject * gameObject);
-    void removeGameObject(const GameObject * gameObject, HashedString layer);
-    void addSceneNode(std::shared_ptr<SceneNode> sceneNode);
-    void addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer);
-    void removeSceneNode(const SceneNode * sceneNode);
-    void removeSceneNode(const SceneNode * sceneNode, HashedString layer);
+    void removeGameObject(const GameObject * gameObject, support::HashedString layer);
+    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode);
+    void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, support::HashedString layer);
+    void removeSceneNode(const render::SceneNode * sceneNode);
+    void removeSceneNode(const render::SceneNode * sceneNode, support::HashedString layer);
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
-    void moveCamera(Vector2f dir);
+    void moveCamera(math::Vector2f dir);
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);
     void cameraStopFollowing();
@@ -69,35 +69,35 @@ public:
 private:
     struct Camera {
         float zoom = 1;
-        Vector2f pos;
-        Vector2u res;
-        Vector2u aspectRatio;
+        math::Vector2f pos;
+        math::Vector2u res;
+        math::Vector2u aspectRatio;
         const GameObject * following = nullptr;
     };
 
     void addGameObject(
         std::shared_ptr<GameObject> gameObject,
-        SceneNode & layer);
+        render::SceneNode & layer);
     void removeGameObject(
         const GameObject * gameObject,
-        SceneNode & layer);
+        render::SceneNode & layer);
     void addSceneNode(
-        std::shared_ptr<SceneNode> sceneNode,
-        SceneNode & layer);
+        std::shared_ptr<render::SceneNode> sceneNode,
+        render::SceneNode & layer);
     void removeSceneNode(
-        const SceneNode * sceneNode,
-        SceneNode & layer);
+        const render::SceneNode * sceneNode,
+        render::SceneNode & layer);
 
     // Model
     const float timePerFrame = 1.f / 60.f;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
-    CommandQueue commandQueue;
+    events::CommandQueue commandQueue;
     // Rendering
     ResizeStrategy resizeStrategy;
     Camera camera;
-    std::unique_ptr<Window> window;
-    std::unique_ptr<CollisionDetector> collisionDetector;
-    RenderScene scene;
+    std::unique_ptr<render::Window> window;
+    std::unique_ptr<physics::CollisionDetector> collisionDetector;
+    render::RenderScene scene;
 
     void handleInput();
     void update(float dt);

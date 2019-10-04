@@ -1,6 +1,6 @@
 #include "isoengine/render/animator.h"
 
-namespace iso
+namespace iso::render
 {
 
 void Animator::setAnimation(std::shared_ptr<Animation> animation)

@@ -7,7 +7,7 @@
 #include "isoengine/render/texture.h"
 #include <vector>
 
-namespace iso
+namespace iso::render
 {
 using namespace math;
 

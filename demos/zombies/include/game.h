@@ -2,11 +2,11 @@
 #define GAME_H
 
 #include "entity.h"
-#include "isoengine/highlevel/engine.h"
+#include "isoengine/engine.h"
 #include "isoengine/render/text.h"
-#include "isoengine/support/resourcemanager.h"
+#include "isoengine/support/resource_manager.h"
 
-void loadResources(iso::ResourceManager & resManager);
+void loadResources(iso::support::ResourceManager & resManager);
 
 class Game
 {
@@ -36,7 +36,7 @@ private:
 
     // Events
     void onUpdate(float dt);
-    void onKey(iso::KeyEvent event);
+    void onKey(iso::events::KeyEvent event);
     void onPortal(const Entity * portal);
     void onFireball(const Fireball * fireball, const Zombie * zombie);
     void onPlayerReached();
@@ -60,7 +60,7 @@ private:
     std::function<void(const Fireball *, const Zombie *)> fireballCb;
     std::function<void()> playerReachedCb;
 
-    std::shared_ptr<iso::SceneNodeObject<iso::Text>> gameOverText;
+    std::shared_ptr<iso::render::SceneNodeObject<iso::render::Text>> gameOverText;
 };
 
 #endif // GAME_H

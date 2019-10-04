@@ -1,16 +1,16 @@
-#include "isoengine/highlevel/gameobject.h"
+#include "isoengine/game_object.h"
 #include "isoengine/physics/collision_detector.h"
 
 namespace iso
 {
 
-void GameObject::setCommandTypes(std::initializer_list<HashedString> types)
+void GameObject::setCommandTypes(std::initializer_list<support::HashedString> types)
 {
     if (commandQueue)
         commandTypes = commandQueue->generateCommandTypes(types);
 }
 
-void GameObject::sendCommand(std::shared_ptr<Command> command)
+void GameObject::sendCommand(std::shared_ptr<events::Command> command)
 {
     if (commandQueue)
         commandQueue->pushCommand(this, command);

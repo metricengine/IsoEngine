@@ -1,7 +1,7 @@
 #include "isoengine/render/text.h"
 #include <SFML/Graphics/Font.hpp>
 
-namespace iso
+namespace iso::render
 {
 
 Text::Text(const std::string & string)

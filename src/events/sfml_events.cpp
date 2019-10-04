@@ -1,7 +1,7 @@
 #include "isoengine/events/sfml_events.h"
 #include <SFML/Window/Event.hpp>
 
-namespace iso
+namespace iso::events
 {
 
 KeyEvent keyEventFromSFML(const sf::Event & event)

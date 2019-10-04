@@ -1,7 +1,7 @@
 #ifndef EVENT_H
 #define EVENT_H
 
-namespace iso
+namespace iso::events
 {
 
 enum class KeyEventType {

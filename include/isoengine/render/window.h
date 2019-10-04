@@ -2,6 +2,8 @@
 #define WINDOW_H
 
 #include "isoengine/math/transform.h"
+#include "isoengine/render/sprite.h"
+#include "isoengine/render/text.h"
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <string>
@@ -12,18 +14,15 @@ enum class WindowStyle {
     Fullscreen
 };
 
-namespace iso
+namespace iso::render
 {
-
-class Sprite;
-class Text;
 
 class Window
 {
 public:
-    Window(const std::string & title, const math::Vector2u & size, WindowStyle style);
-    math::Vector2u getSize() const;
-    void setSize(const math::Vector2u & size);
+    Window(const std::string & title, const iso::math::Vector2u & size, WindowStyle style);
+    iso::math::Vector2u getSize() const;
+    void setSize(const iso::math::Vector2u & size);
     bool isOpen() const;
     void close();
     bool pollEvent(sf::Event & event);
@@ -31,8 +30,8 @@ public:
     const sf::View & getView();
     void clear(sf::Color color);
     void display();
-    void draw(const Sprite & sprite, math::Transform transform);
-    void draw(const Text & text, math::Transform transform);
+    void draw(const Sprite & sprite, iso::math::Transform transform);
+    void draw(const Text & text, iso::math::Transform transform);
     sf::RenderWindow & getWindow()
     {
         return window;

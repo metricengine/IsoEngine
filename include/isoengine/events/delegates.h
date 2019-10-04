@@ -4,6 +4,9 @@
 #include <functional>
 #include <vector>
 
+namespace iso::events
+{
+
 template <class T>
 class Delegates
 {
@@ -36,5 +39,7 @@ public:
 private:
     std::vector<Func> handlers;
 };
+
+}
 
 #endif // DELEGATES_H

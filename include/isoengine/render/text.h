@@ -6,7 +6,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include <string>
 
-namespace iso
+namespace iso::render
 {
 
 class Font;

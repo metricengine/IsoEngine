@@ -1,25 +1,24 @@
-#include "isoengine/highlevel/engine.h"
-#include "isoengine/common/clock.h"
+#include "isoengine/engine.h"
+#include "isoengine/support/clock.h"
 #include "isoengine/events/sfml_events.h"
-#include "isoengine/support/resourcemanager.h"
 #include <SFML/Graphics.hpp>
 #include <exception>
 
 namespace iso
 {
 
-Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedString> layerNames)
+Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<support::HashedString> layerNames)
     : scene{layerNames}
 {
     switch (windowOpts.resizeStrategy) {
     case ResizeStrategy::FIXED_RES_STATIC_WINDOW:
-        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Static);
+        window = std::make_unique<render::Window>("IsoEngine", windowOpts.resolution, WindowStyle::Static);
         break;
     case ResizeStrategy::FIXED_RES_STRETCH:
     case ResizeStrategy::DYNAMIC_RES:
     // case ResizeStrategy::FIXED_ASPECT_RATIO:
     case ResizeStrategy::FIXED_ASPECT_RATIO_EXPAND_RES:
-        window = std::make_unique<Window>("IsoEngine", windowOpts.resolution, WindowStyle::Resize);
+        window = std::make_unique<render::Window>("IsoEngine", windowOpts.resolution, WindowStyle::Resize);
         break;
     }
     resizeStrategy = windowOpts.resizeStrategy;
@@ -31,13 +30,13 @@ Engine::Engine(const WindowOptions & windowOpts, std::initializer_list<HashedStr
         throw std::invalid_argument("Aspect ratio has to be provided if a FIXED_ASPECT_RATIO resize strategy is used");
     }
 
-    collisionDetector = std::make_unique<CollisionDetector>(
+    collisionDetector = std::make_unique<physics::CollisionDetector>(
         math::Rectf(0, 0, windowOpts.resolution.x, windowOpts.resolution.y));
 }
 
 void Engine::run()
 {
-    Clock<std::chrono::microseconds> clock;
+    support::Clock<std::chrono::microseconds> clock;
     float dt{};
 
     while (window->getWindow().isOpen()) {
@@ -54,7 +53,7 @@ void Engine::run()
     }
 }
 
-void Engine::registerCommand(HashedString command)
+void Engine::registerCommand(support::HashedString command)
 {
     commandQueue.registerCommand(command);
 }
@@ -64,12 +63,12 @@ void Engine::addGameObject(std::shared_ptr<GameObject> gameObject)
     addGameObject(gameObject, scene.topLayer());
 }
 
-void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, HashedString layerName)
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, support::HashedString layerName)
 {
     addGameObject(gameObject, scene.getLayer(layerName));
 }
 
-void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, SceneNode & layer)
+void Engine::addGameObject(std::shared_ptr<GameObject> gameObject, render::SceneNode & layer)
 {
     addSceneNode(gameObject, layer);
     gameObjects.push_back(gameObject);
@@ -81,14 +80,14 @@ void Engine::removeGameObject(const GameObject * gameObject)
     removeGameObject(gameObject, scene.topLayer());
 }
 
-void Engine::removeGameObject(const GameObject * gameObject, HashedString layerName)
+void Engine::removeGameObject(const GameObject * gameObject, support::HashedString layerName)
 {
     removeGameObject(gameObject, scene.getLayer(layerName));
 }
 
 void Engine::removeGameObject(
     const GameObject * gameObject,
-    SceneNode & layer)
+    render::SceneNode & layer)
 {
     for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
         if (gameObject == iter->get()) {
@@ -102,37 +101,37 @@ void Engine::removeGameObject(
     }
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode)
 {
     addSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, HashedString layer)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, support::HashedString layer)
 {
     addSceneNode(sceneNode, scene.getLayer(layer));
 }
 
-void Engine::addSceneNode(std::shared_ptr<SceneNode> sceneNode, SceneNode & layer)
+void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, render::SceneNode & layer)
 {
     layer.addChild(sceneNode);
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode)
 {
     removeSceneNode(sceneNode, scene.topLayer());
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode, HashedString layer)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode, support::HashedString layer)
 {
     removeSceneNode(sceneNode, scene.getLayer(layer));
 }
 
-void Engine::removeSceneNode(const SceneNode * sceneNode, SceneNode & layer)
+void Engine::removeSceneNode(const render::SceneNode * sceneNode, render::SceneNode & layer)
 {
     layer.removeChild(sceneNode);
 }
 
-void Engine::moveCamera(Vector2f dir)
+void Engine::moveCamera(math::Vector2f dir)
 {
     if (camera.following) {
         return;
@@ -194,7 +193,7 @@ void Engine::handleInput()
         if (event.type == sf::Event::MouseButtonPressed ||
             event.type == sf::Event::MouseButtonReleased ||
             event.type == sf::Event::MouseMoved) {
-            auto mouseEvent = mouseEventFromSFML(event);
+            auto mouseEvent = events::mouseEventFromSFML(event);
             onMouse.raise(mouseEvent);
         }
 
@@ -243,7 +242,7 @@ void Engine::handleInput()
 
         if (event.type == sf::Event::KeyPressed ||
             event.type == sf::Event::KeyReleased) {
-            auto keyEvent = keyEventFromSFML(event);
+            auto keyEvent = events::keyEventFromSFML(event);
             onKey.raise(keyEvent);
         }
     }

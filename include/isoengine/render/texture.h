@@ -5,14 +5,11 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <string>
 
-namespace iso
+namespace iso::render
 {
 
 class Texture
 {
-private:
-    sf::Texture texture;
-
 public:
     Texture() = default;
 
@@ -26,6 +23,9 @@ public:
     {
         return texture;
     }
+
+private:
+    sf::Texture texture;
 };
 
 } // namespace iso

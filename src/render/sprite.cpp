@@ -1,6 +1,6 @@
 #include "isoengine/render/sprite.h"
 
-namespace iso
+namespace iso::render
 {
 void Sprite::setOrigin(const iso::math::Vector2f & vector)
 {
@@ -12,7 +12,7 @@ void Sprite::setPosition(const iso::math::Vector2f & vector)
     sprite.setPosition(vector.x, vector.y);
 }
 
-void Sprite::setTexture(const iso::Texture & texture)
+void Sprite::setTexture(const Texture & texture)
 {
     sprite.setTexture(texture.getTexture());
 }

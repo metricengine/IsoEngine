@@ -1,27 +1,32 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "isoengine/common/hashedstring.h"
-#include "isoengine/events/commandqueue.h"
+#include "isoengine/support/hashed_string.h"
+#include "isoengine/events/command_queue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
-#include "scenenode.h"
+#include "isoengine/render/scene_node.h"
 #include <initializer_list>
 
-namespace iso
+namespace iso::physics
 {
 
 class CollisionDetector;
 
-class GameObject : public Animator, public SceneNode
+}
+
+namespace iso
 {
-    friend class CommandQueue;
+
+class GameObject : public render::Animator, public render::SceneNode
+{
+    friend class events::CommandQueue;
     friend class Engine;
-    friend class CollisionDetector;
+    friend class physics::CollisionDetector;
 
 public:
-    void setCommandTypes(std::initializer_list<HashedString> types);
-    void sendCommand(std::shared_ptr<Command> command);
+    void setCommandTypes(std::initializer_list<support::HashedString> types);
+    void sendCommand(std::shared_ptr<events::Command> command);
 
     // const math::Vector2f & getPosition() const
     // {
@@ -37,31 +42,31 @@ public:
 
 private:
     virtual void handleCommand(GameObject & sender,
-                               const Command & command) {}
+                               const events::Command & command) {}
     // override collide function to handle manual collision logic
     // return value -> object is colliding with argument, therefore cannot move
     virtual bool collide(const GameObject * object) { return true; }
     // overload for colliding against global bounds
     virtual bool collide() { return true; }
 
-    void drawCurrent(Window & window, Transform transform) const override
+    void drawCurrent(render::Window & window, math::Transform transform) const override
     {
         window.draw(getSprite(), transform);
     }
 
-    void setCommandQueue(CommandQueue * cq)
+    void setCommandQueue(events::CommandQueue * cq)
     {
         commandQueue = cq;
     }
 
-    void setCollisionDetector(CollisionDetector * cd)
+    void setCollisionDetector(physics::CollisionDetector * cd)
     {
         collisionDetector = cd;
     }
 
     unsigned commandTypes = 0;
-    CommandQueue * commandQueue = nullptr;
-    CollisionDetector * collisionDetector = nullptr;
+    events::CommandQueue * commandQueue = nullptr;
+    physics::CollisionDetector * collisionDetector = nullptr;
     math::Rectf boundingBox;
 };
 
