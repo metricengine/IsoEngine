@@ -25,11 +25,6 @@ public:
         }
     }
 
-    void operator()(Args... args)
-    {
-        raise(args...);
-    }
-
     Delegates & operator+=(const Func & f)
     {
         handlers.push_back(f);

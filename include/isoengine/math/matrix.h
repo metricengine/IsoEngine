@@ -17,16 +17,13 @@ public:
     {
         data.resize(Rows * Cols, value);
     }
+
     Matrix(std::array<T, Rows * Cols> values)
     {
         data.resize(values.size());
         for (size_t i = 0; i < values.size(); ++i) {
             data[i] = values[i];
         }
-    }
-
-    const std::vector<T> & getData()
-    {
     }
 
     int rows() const
