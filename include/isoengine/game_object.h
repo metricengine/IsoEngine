@@ -1,18 +1,17 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
 
-#include "isoengine/support/hashed_string.h"
 #include "isoengine/events/command_queue.h"
 #include "isoengine/math/transform.h"
 #include "isoengine/render/animator.h"
 #include "isoengine/render/scene_node.h"
+#include "isoengine/support/hashed_string.h"
 #include <initializer_list>
 
 namespace iso::physics
 {
 
 class CollisionDetector;
-
 }
 
 namespace iso

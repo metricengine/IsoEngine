@@ -34,16 +34,14 @@ class CommandQueue
     };
 
 public:
-    void pushCommand(GameObject * sender,
-                     std::shared_ptr<Command> command);
+    void pushCommand(GameObject * sender, std::shared_ptr<Command> command);
     bool isEmpty() const { return queue.empty(); }
     unsigned generateCommandTypes(std::initializer_list<support::HashedString> types) const;
 
 private:
     void registerCommand(support::HashedString command);
     SenderCommand popCommand();
-    bool objectListensToCommand(const GameObject & object,
-                                const Command & cmd) const;
+    bool objectListensToCommand(const GameObject & object, const Command & cmd) const;
     size_t size() { return queue.size(); }
 
     std::queue<SenderCommand> queue;
