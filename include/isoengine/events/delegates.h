@@ -15,16 +15,18 @@ class Delegates<R(Args...)>
     using Func = std::function<R(Args...)>;
 
 public:
-    void raise(Args... args)
+    template <typename... T>
+    void raise(T &&... args)
     {
         for (auto & handler : handlers) {
-            handler(args...);
+            handler(std::forward<T>(args)...);
         }
     }
 
-    void operator()(Args... args)
+    template <typename... T>
+    void operator()(T &&... args)
     {
-        raise(args...);
+        raise(std::forward<T>(args)...);
     }
 
     Delegates & operator+=(const Func & f)
