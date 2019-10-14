@@ -8,7 +8,7 @@ namespace sf
 class Event;
 }
 
-namespace iso
+namespace iso::events
 {
 
 KeyEvent keyEventFromSFML(const sf::Event & event);

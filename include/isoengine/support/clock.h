@@ -3,7 +3,7 @@
 
 #include <chrono>
 
-namespace iso
+namespace iso::support
 {
 
 template <typename Duration = std::chrono::seconds>

@@ -5,13 +5,13 @@
 #include "texture.h"
 #include <SFML/Graphics/Sprite.hpp>
 
-namespace iso
+namespace iso::render
 {
 
 class Sprite
 {
 public:
-    void setTexture(const iso::Texture & texture);
+    void setTexture(const Texture & texture);
     void setTextureRect(const iso::math::Recti & rect);
     void setOrigin(const iso::math::Vector2f & vector);
     void setPosition(const iso::math::Vector2f & vector);

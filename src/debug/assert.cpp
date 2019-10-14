@@ -1,4 +1,4 @@
-#include "isoengine/common/debug/assert.h"
+#include "isoengine/debug/assert.h"
 #include <sstream>
 
 AssertFailure::AssertFailure(const char * expression, const char * file, int line, const char * message)

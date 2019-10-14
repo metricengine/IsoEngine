@@ -1,6 +1,6 @@
 #include "entity.h"
 #include "game.h"
-#include "isoengine/support/resourcemanager.h"
+#include "isoengine/support/resource_manager.h"
 #include <deque>
 #include <set>
 
@@ -97,7 +97,7 @@ Direction getDir(const Vector2f & dir)
 
 void Player::update(float gameSpeed, float dt)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     auto speed = gameSpeed * dt;
     move(dir * speed);
 
@@ -162,7 +162,7 @@ Zombie::Zombie(
       player(player),
       playerReached(playerReached)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     dir = {-1, 0};
     animationDir = Direction::Left;
     setAnimation(resManager.getAnimation("zombie-left"));
@@ -170,7 +170,7 @@ Zombie::Zombie(
 
 void Zombie::update(float gameSpeed, float dt)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
 
     moveTime += dt;
     if (moveTime < AnimationTime) {
@@ -219,7 +219,7 @@ Fireball::Fireball(
     std::function<void(const Fireball *, const Zombie *)> fbCollide)
     : Entity(Entity::Type::Fireball), dir(dir), fbCollide(fbCollide)
 {
-    auto & resManager = iso::ResourceManager::getInstance();
+    auto & resManager = iso::support::ResourceManager::getInstance();
     if (dir == Vector2f(-1, 0))
         setAnimation(resManager.getAnimation("fb-left"));
     else if (dir == Vector2f(-1, -1))

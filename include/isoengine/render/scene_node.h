@@ -1,12 +1,12 @@
 #ifndef SCENENODE_H
 #define SCENENODE_H
 
-#include "isoengine/common/hashedstring.h"
+#include "isoengine/support/hashed_string.h"
 #include "isoengine/render/window.h"
 #include <memory>
 #include <vector>
 
-namespace iso
+namespace iso::render
 {
 
 class RenderScene;
@@ -32,8 +32,8 @@ public:
     }
 
 private:
-    virtual void drawCurrent(Window & window, math::Transform transform) const {}
-    void draw(Window & window, math::Transform transform) const;
+    virtual void drawCurrent(render::Window & window, math::Transform transform) const {}
+    void draw(render::Window & window, math::Transform transform) const;
     math::Transform getTransform() const;
 
     SceneNode * parent = nullptr;
@@ -60,7 +60,7 @@ public:
     }
 
 private:
-    void drawCurrent(Window & window, math::Transform transform) const override
+    void drawCurrent(render::Window & window, math::Transform transform) const override
     {
         window.draw(object, transform);
     }

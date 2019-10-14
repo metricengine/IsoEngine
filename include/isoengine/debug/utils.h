@@ -7,8 +7,8 @@
 
 #include <sstream>
 
-#include "debug/assert.h"
-#include "debug/profile.h"
+#include "isoengine/debug/assert.h"
+#include "isoengine/debug/profile.h"
 
 #define PROFILE_FUNCTION _PROFILE_FUNCTION
 #define PROFILE_BLOCK(name) _PROFILE_BLOCK(name)

@@ -1,8 +1,8 @@
-#include "isoengine/support/resourcemanager.h"
-#include "isoengine/common/utils.h"
+#include "isoengine/support/resource_manager.h"
+#include "isoengine/debug/utils.h"
 #include <exception>
 
-namespace iso
+namespace iso::support
 {
 
 ResourceManager & ResourceManager::getInstance()
@@ -11,39 +11,39 @@ ResourceManager & ResourceManager::getInstance()
     return instance;
 }
 
-Texture & ResourceManager::getTexture(const HashedString & filename)
+iso::render::Texture & ResourceManager::getTexture(const HashedString & filename)
 {
-    auto iter = textures.insert(std::make_pair(filename.getHash(), Texture{}));
+    auto iter = textures.insert(std::make_pair(filename.getHash(), iso::render::Texture{}));
     // If already exists, return
     if (!iter.second)
         return iter.first->second;
     // Inserted new, load
-    Texture & texture = iter.first->second;
+    iso::render::Texture & texture = iter.first->second;
     if (!texture.loadFromFile(std::string(filename.getCStr())))
         throw std::invalid_argument("ResourceManager::getTexture(): invalid filename");
     return texture;
 }
 
-Font & ResourceManager::getFont(const HashedString & filename)
+iso::render::Font & ResourceManager::getFont(const HashedString & filename)
 {
-    auto iter = fonts.insert(std::make_pair(filename.getHash(), Font{}));
+    auto iter = fonts.insert(std::make_pair(filename.getHash(), iso::render::Font{}));
     // If already exists, return
     if (!iter.second)
         return iter.first->second;
     // Inserted new, load
-    Font & font = iter.first->second;
+    iso::render::Font & font = iter.first->second;
     if (!font.loadFromFile(std::string(filename.getCStr())))
         throw std::invalid_argument("ResourceManager::getFont(): invalid filename");
     return font;
 }
 
-void ResourceManager::addAnimation(const HashedString & name, Animation animation)
+void ResourceManager::addAnimation(const HashedString & name, iso::render::Animation animation)
 {
-    auto iter = animations.insert(std::make_pair(name, std::make_shared<Animation>(animation)));
+    auto iter = animations.insert(std::make_pair(name, std::make_shared<iso::render::Animation>(animation)));
     ASSERT(iter.second, "ResourceManager::addAnimation duplicated animation name");
 }
 
-Ptr<Animation> ResourceManager::getAnimation(const HashedString & name)
+Ptr<iso::render::Animation> ResourceManager::getAnimation(const HashedString & name)
 {
     auto iter = animations.find(name.getHash());
     if (iter == animations.end())

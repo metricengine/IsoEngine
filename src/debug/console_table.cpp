@@ -1,4 +1,4 @@
-#include "isoengine/common/consoletable.h"
+#include "isoengine/debug/console_table.h"
 #include <algorithm>
 #include <exception>
 #include <iomanip>

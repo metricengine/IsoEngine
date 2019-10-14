@@ -3,10 +3,10 @@
 #include "isoengine/render/text.h"
 #include <SFML/Window/Event.hpp>
 
-namespace iso
+namespace iso::render
 {
 
-sf::Transform toSfmlTransform(const math::Transform & transform)
+sf::Transform toSfmlTransform(const iso::math::Transform & transform)
 {
     const auto & m = transform.getMatrix();
     return sf::Transform(m(0, 0), m(0, 1), m(0, 2),
@@ -33,16 +33,16 @@ constexpr int windowStyleToSfStyle(WindowStyle style)
 
 } // namespace
 
-Window::Window(const std::string & title, const math::Vector2u & size, WindowStyle style) : window(sf::VideoMode(size.x, size.y), title, windowStyleToSfStyle(style))
+Window::Window(const std::string & title, const iso::math::Vector2u & size, WindowStyle style) : window(sf::VideoMode(size.x, size.y), title, windowStyleToSfStyle(style))
 {
 }
 
-math::Vector2u Window::getSize() const
+iso::math::Vector2u Window::getSize() const
 {
     return {window.getSize().x, window.getSize().y};
 }
 
-void Window::setSize(const math::Vector2u & size)
+void Window::setSize(const iso::math::Vector2u & size)
 {
     window.setSize({size.x, size.y});
 }
@@ -82,14 +82,14 @@ void Window::display()
     window.display();
 }
 
-void Window::draw(const Sprite & sprite, math::Transform transform)
+void Window::draw(const Sprite & sprite, iso::math::Transform transform)
 {
     sf::RenderStates states;
     states.transform = toSfmlTransform(transform);
     window.draw(sprite.getSprite(), states);
 }
 
-void Window::draw(const Text & text, math::Transform transform)
+void Window::draw(const Text & text, iso::math::Transform transform)
 {
     sf::RenderStates states;
     states.transform = toSfmlTransform(transform);

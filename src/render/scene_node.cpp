@@ -1,6 +1,6 @@
-#include "isoengine/highlevel/scenenode.h"
+#include "isoengine/render/scene_node.h"
 
-namespace iso
+namespace iso::render
 {
 
 void SceneNode::addChild(std::shared_ptr<SceneNode> child)
@@ -20,7 +20,7 @@ void SceneNode::removeChild(const SceneNode * child)
     }
 }
 
-void SceneNode::draw(Window & window, math::Transform transform) const
+void SceneNode::draw(render::Window & window, math::Transform transform) const
 {
     transform *= getTransform();
     drawCurrent(window, transform);
