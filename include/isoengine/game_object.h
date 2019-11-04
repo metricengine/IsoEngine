@@ -12,6 +12,7 @@ namespace iso::physics
 {
 
 class CollisionDetector;
+
 }
 
 namespace iso
@@ -37,7 +38,7 @@ public:
     //     getSprite().setPosition(pos);
     // }
 
-    void move(const math::Vector2f & dir);
+    virtual void move(const math::Vector2f & dir, float speed = 1.f);
 
 private:
     virtual void handleCommand(GameObject & sender,

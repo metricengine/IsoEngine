@@ -28,6 +28,6 @@ private:
     TimePoint lastUpdateTime;
 };
 
-} // namespace iso
+} // namespace iso::support
 
 #endif // CLOCK_H

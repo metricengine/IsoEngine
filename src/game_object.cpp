@@ -16,9 +16,9 @@ void GameObject::sendCommand(std::shared_ptr<events::Command> command)
         commandQueue->pushCommand(this, command);
 }
 
-void GameObject::move(const math::Vector2f & dir)
+void GameObject::move(const math::Vector2f & dir, float speed)
 {
-    auto newPos = getPosition() + dir;
+    auto newPos = getPosition() + dir * speed;
 
     if (collisionDetector == nullptr ||
         collisionDetector->checkCollisions(this, newPos) == false) {

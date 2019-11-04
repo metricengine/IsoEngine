@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "isoengine/game_object.h"
+#include "isoengine/directed_game_object.h"
 #include <functional>
 
 enum class Tile {
@@ -11,20 +11,7 @@ enum class Tile {
     Cave
 };
 
-enum class Direction {
-    Left,
-    Left_Up,
-    Up,
-    Right_Up,
-    Right,
-    Right_Down,
-    Down,
-    Left_Down
-};
-
-Direction getDir(const iso::math::Vector2f & dir);
-
-class Entity : public iso::GameObject
+class Entity : public iso::DirectedGameObject
 {
 public:
     static constexpr unsigned SpriteSize = 32;
@@ -49,13 +36,7 @@ public:
 class Player : public Entity
 {
 public:
-    Player(std::function<void(const Entity *)> portalCollide)
-        : Entity(Entity::Type::Mage),
-          portalCollide(portalCollide)
-    {
-        facingDir = {-1, 0};
-    }
-
+    Player(std::function<void(const Entity *)> portalCollide);
     void update(float gameSpeed, float dt);
     const iso::math::Vector2f & getFacingDir() const;
     void faceDirection(const iso::math::Vector2f & v);
@@ -87,8 +68,6 @@ private:
     const Tile * map;
     float moveTime = AnimationTime - 0.15f;
     Player * player;
-    iso::math::Vector2f dir;
-    Direction animationDir;
 
     bool collide(const GameObject * object) override;
     std::function<void()> playerReached;
@@ -105,7 +84,6 @@ public:
     bool collide() override;
 
 private:
-    iso::math::Vector2f dir;
     std::function<void(const Fireball *, const Zombie *)> fbCollide;
 };
 

@@ -1,10 +1,10 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 
-#include "isoengine/support/hashed_string.h"
 #include "isoengine/render/animation.h"
 #include "isoengine/render/font.h"
 #include "isoengine/render/texture.h"
+#include "isoengine/support/hashed_string.h"
 #include <memory>
 #include <unordered_map>
 
@@ -30,6 +30,6 @@ private:
     std::unordered_map<size_t, Ptr<iso::render::Animation>> animations;
 };
 
-} // namespace iso
+} // namespace iso::support
 
 #endif

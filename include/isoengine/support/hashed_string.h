@@ -56,6 +56,6 @@ private:
     const char * rawStr;
 };
 
-} // namespace iso
+} // namespace iso::support
 
 #endif // HASHEDSTRING_H

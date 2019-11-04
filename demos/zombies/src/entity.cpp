@@ -75,51 +75,31 @@ Vector2f BFS(const Vector2f & orig, const Vector2f & target, const Tile * map)
 
 } // namespace
 
-Direction getDir(const Vector2f & dir)
+Player::Player(std::function<void(const Entity *)> portalCollide)
+    : Entity(Entity::Type::Mage), portalCollide(portalCollide)
 {
-    float angle = std::atan2(dir.y, dir.x) * 180.f / M_PI;
-    if (angle >= -22.5f && angle < 22.5f)
-        return Direction::Right_Up;
-    if (angle >= 22.5f && angle < 67.5f)
-        return Direction::Right_Down;
-    if (angle >= 67.5f && angle < 112.5f)
-        return Direction::Down;
-    if (angle >= 112.5f && angle < 157.5f)
-        return Direction::Left_Down;
-    if (angle >= 157.5f || angle < -157.5f)
-        return Direction::Left;
-    if (angle <= -112.5f && angle > -157.5f)
-        return Direction::Up;
-    if (angle <= -67.5f && angle > -112.5f)
-        return Direction::Left_Up;
-    return Direction::Right;
+    auto & resManager = iso::support::ResourceManager::getInstance();
+    facingDir = {-1, 0};
+    setAnimations({resManager.getAnimation("mage-right"),
+                   resManager.getAnimation("mage-right-up"),
+                   resManager.getAnimation("mage-up"),
+                   resManager.getAnimation("mage-left-up"),
+                   resManager.getAnimation("mage-left"),
+                   resManager.getAnimation("mage-left-down"),
+                   resManager.getAnimation("mage-down"),
+                   resManager.getAnimation("mage-right-down")});
+    move(facingDir, 0.f);
 }
 
 void Player::update(float gameSpeed, float dt)
 {
     auto & resManager = iso::support::ResourceManager::getInstance();
     auto speed = gameSpeed * dt;
-    move(dir * speed);
+    if (dir.x != 0 || dir.y != 0) {
+        move(dir, speed);
+    }
 
     reloadTimeLeft = std::max(0.f, reloadTimeLeft - dt);
-
-    if (dir == Vector2f(-1, 0))
-        setAnimation(resManager.getAnimation("mage-left"));
-    else if (dir == Vector2f(-1, -1))
-        setAnimation(resManager.getAnimation("mage-left-up"));
-    else if (dir == Vector2f(0, -1))
-        setAnimation(resManager.getAnimation("mage-up"));
-    else if (dir == Vector2f(1, -1))
-        setAnimation(resManager.getAnimation("mage-right-up"));
-    else if (dir == Vector2f(1, 0))
-        setAnimation(resManager.getAnimation("mage-right"));
-    else if (dir == Vector2f(1, 1))
-        setAnimation(resManager.getAnimation("mage-right-down"));
-    else if (dir == Vector2f(0, 1))
-        setAnimation(resManager.getAnimation("mage-down"));
-    else if (dir == Vector2f(-1, 1))
-        setAnimation(resManager.getAnimation("mage-left-down"));
-
     dir = {0, 0};
 }
 
@@ -163,9 +143,15 @@ Zombie::Zombie(
       playerReached(playerReached)
 {
     auto & resManager = iso::support::ResourceManager::getInstance();
-    dir = {-1, 0};
-    animationDir = Direction::Left;
-    setAnimation(resManager.getAnimation("zombie-left"));
+    setAnimations({resManager.getAnimation("zombie-right"),
+                   resManager.getAnimation("zombie-right-up"),
+                   resManager.getAnimation("zombie-up"),
+                   resManager.getAnimation("zombie-left-up"),
+                   resManager.getAnimation("zombie-left"),
+                   resManager.getAnimation("zombie-left-down"),
+                   resManager.getAnimation("zombie-down"),
+                   resManager.getAnimation("zombie-right-down")});
+    move(Vector2f(-1.f, 0.f), 0.f);
 }
 
 void Zombie::update(float gameSpeed, float dt)
@@ -181,29 +167,7 @@ void Zombie::update(float gameSpeed, float dt)
     auto speed = gameSpeed * 0.1f;
 
     auto v = BFS(getPosition(), player->getPosition(), map);
-
-    move(v * speed);
-    auto newDir = getDir(v);
-
-    if (newDir != animationDir) {
-        animationDir = newDir;
-        if (animationDir == Direction::Left)
-            setAnimation(resManager.getAnimation("zombie-left"));
-        else if (animationDir == Direction::Up)
-            setAnimation(resManager.getAnimation("zombie-left-up"));
-        else if (animationDir == Direction::Left_Up)
-            setAnimation(resManager.getAnimation("zombie-up"));
-        else if (animationDir == Direction::Right)
-            setAnimation(resManager.getAnimation("zombie-right-up"));
-        else if (animationDir == Direction::Right_Up)
-            setAnimation(resManager.getAnimation("zombie-right"));
-        else if (animationDir == Direction::Right_Down)
-            setAnimation(resManager.getAnimation("zombie-right-down"));
-        else if (animationDir == Direction::Down)
-            setAnimation(resManager.getAnimation("zombie-down"));
-        else
-            setAnimation(resManager.getAnimation("zombie-left-down"));
-    }
+    move(v, speed);
 }
 
 bool Zombie::collide(const GameObject * object)
@@ -217,32 +181,24 @@ bool Zombie::collide(const GameObject * object)
 Fireball::Fireball(
     Vector2f dir,
     std::function<void(const Fireball *, const Zombie *)> fbCollide)
-    : Entity(Entity::Type::Fireball), dir(dir), fbCollide(fbCollide)
+    : Entity(Entity::Type::Fireball), fbCollide(fbCollide)
 {
     auto & resManager = iso::support::ResourceManager::getInstance();
-    if (dir == Vector2f(-1, 0))
-        setAnimation(resManager.getAnimation("fb-left"));
-    else if (dir == Vector2f(-1, -1))
-        setAnimation(resManager.getAnimation("fb-left-up"));
-    else if (dir == Vector2f(0, -1))
-        setAnimation(resManager.getAnimation("fb-up"));
-    else if (dir == Vector2f(1, -1))
-        setAnimation(resManager.getAnimation("fb-right-up"));
-    else if (dir == Vector2f(1, 0))
-        setAnimation(resManager.getAnimation("fb-right"));
-    else if (dir == Vector2f(1, 1))
-        setAnimation(resManager.getAnimation("fb-right-down"));
-    else if (dir == Vector2f(0, 1))
-        setAnimation(resManager.getAnimation("fb-down"));
-    else if (dir == Vector2f(-1, 1))
-        setAnimation(resManager.getAnimation("fb-left-down"));
-    dir = dir.normalize();
+    setAnimations({resManager.getAnimation("fb-right"),
+                   resManager.getAnimation("fb-right-up"),
+                   resManager.getAnimation("fb-up"),
+                   resManager.getAnimation("fb-left-up"),
+                   resManager.getAnimation("fb-left"),
+                   resManager.getAnimation("fb-left-down"),
+                   resManager.getAnimation("fb-down"),
+                   resManager.getAnimation("fb-right-down")});
+    move(dir, 0.f);
 }
 
 void Fireball::update(float gameSpeed, float dt)
 {
     auto speed = gameSpeed * dt * 8;
-    move(dir * speed);
+    move(facingDirection(), speed);
 }
 
 bool Fireball::collide(const GameObject * object)
