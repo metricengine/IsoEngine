@@ -1,6 +1,6 @@
 # Demo: Souls
 
-- Deadline: end of 2019
+- Deadline: end of February 2020
 
 ## Gameplay
 
