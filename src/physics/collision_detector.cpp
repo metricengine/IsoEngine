@@ -1,5 +1,6 @@
 #include "isoengine/physics/collision_detector.h"
 #include "isoengine/game_object.h"
+#include "isoengine/math/isometric.h"
 
 namespace iso::physics
 {
@@ -21,17 +22,29 @@ void CollisionDetector::removeRigidBody(const GameObject * object)
 
 bool CollisionDetector::checkCollisions(GameObject * o, const math::Vector2f & pos)
 {
-    float oLeft = pos.x + o->boundingBox.x;
-    float oRight = pos.x + o->boundingBox.x + o->boundingBox.width;
-    float oTop = pos.y + o->boundingBox.y;
-    float oBottom = pos.y + o->boundingBox.y + o->boundingBox.height;
+    float oLeft = pos.x + o->boundingBox.left();
+    float oRight = pos.x + o->boundingBox.right();
+    float oTop = pos.y + o->boundingBox.top();
+    float oBottom = pos.y + o->boundingBox.bottom();
 
-    if (oLeft < globalBounds.x ||
-        oRight > globalBounds.x + globalBounds.width ||
-        oTop < globalBounds.y ||
-        oBottom > globalBounds.y + globalBounds.height) {
+    // if ((globalBounds != math::Rectf{}) &&
+    //     (oLeft < globalBounds.x ||
+    //      oRight > globalBounds.x + globalBounds.width ||
+    //      oTop < globalBounds.y ||
+    //      oBottom > globalBounds.y + globalBounds.height)) {
 
-        if (o->collide()) {
+    //     if (o->collide()) {
+    //         return true;
+    //     }
+    // }
+
+    if (usingBoard) {
+        auto boardPos = getBoardPosition(pos);
+
+        // std::cout << "boardPos.x " << boardPos.x << "\n";
+        // std::cout << "boardPos.y " << boardPos.y << "\n";
+
+        if (collisionBoard[boardPos.y * boardSize.x + boardPos.x]) {
             return true;
         }
     }
@@ -51,6 +64,37 @@ bool CollisionDetector::checkCollisions(GameObject * o, const math::Vector2f & p
         }
     }
     return false;
+}
+
+void CollisionDetector::setBoard(bool useBoard, math::Vector2i size, const math::Vector2i & tile)
+{
+    usingBoard = useBoard;
+
+    if (useBoard) {
+        boardSize = size;
+        tileSize = tile;
+
+        if (collisionBoard)
+            delete[] collisionBoard;
+
+        collisionBoard = new bool[size.x * size.y];
+        std::fill(collisionBoard, collisionBoard + (size.x * size.y), false);
+    }
+}
+
+void CollisionDetector::setTileRigidness(bool rigid, size_t row, size_t col)
+{
+    collisionBoard[row * boardSize.x + col] = rigid;
+}
+
+math::Vector2i CollisionDetector::getBoardPosition(const math::Vector2f & screenPos)
+{
+    auto worldPos = toIso(screenPos);
+
+    auto x = int(worldPos.x / tileSize.x);
+    auto y = int(worldPos.y / tileSize.y);
+
+    return { x, y };
 }
 
 } // namespace iso

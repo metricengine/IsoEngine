@@ -33,7 +33,7 @@ public:
 
 private:
     virtual void drawCurrent(render::Window & window, math::Transform transform) const {}
-    void draw(render::Window & window, math::Transform transform) const;
+    void draw(render::Window & window, math::Transform transform, bool presort = false) const;
     math::Transform getTransform() const;
 
     SceneNode * parent = nullptr;

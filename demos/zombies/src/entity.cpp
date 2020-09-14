@@ -93,7 +93,6 @@ Player::Player(std::function<void(const Entity *)> portalCollide)
 
 void Player::update(float gameSpeed, float dt)
 {
-    auto & resManager = iso::support::ResourceManager::getInstance();
     auto speed = gameSpeed * dt;
     if (dir.x != 0 || dir.y != 0) {
         move(dir, speed);
@@ -156,8 +155,6 @@ Zombie::Zombie(
 
 void Zombie::update(float gameSpeed, float dt)
 {
-    auto & resManager = iso::support::ResourceManager::getInstance();
-
     moveTime += dt;
     if (moveTime < AnimationTime) {
         return;

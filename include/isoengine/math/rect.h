@@ -17,6 +17,36 @@ public:
         : x{topLeft.x}, y{topLeft.y}, width{size.x}, height{size.y} {}
     Rect(T x, T y, T width, T height)
         : x(x), y(y), width(width), height(height) {}
+
+    bool operator==(const Rect<T> & rhs) const
+    {
+        return x == rhs.x && y == rhs.y && width == rhs.width && height == rhs.height;
+    }
+
+    bool operator!=(const Rect<T> & rhs) const
+    {
+        return !(*this == rhs);
+    }
+
+    const T & left() const
+    {
+        return x;
+    }
+
+    const T & top() const
+    {
+        return x;
+    }
+
+    T right()
+    {
+        return x + width;
+    }
+
+    T bottom()
+    {
+        return y + height;
+    }
 };
 
 using Recti = Rect<int>;

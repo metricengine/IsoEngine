@@ -53,13 +53,20 @@ public:
         support::HashedString layer);
     void removeGameObject(const GameObject * gameObject);
     void removeGameObject(const GameObject * gameObject, support::HashedString layer);
+
+    void setBoard(bool isomorphic, const math::Vector2i & boardSize, const math::Vector2i & tileSize);
+    void setBoardPosition(const std::shared_ptr<GameObject> & gameObject, const math::Vector2f & pos);
+    void setTileRigidness(bool rigid, size_t col, size_t row);
+
     void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode);
     void addSceneNode(std::shared_ptr<render::SceneNode> sceneNode, support::HashedString layer);
     void removeSceneNode(const render::SceneNode * sceneNode);
     void removeSceneNode(const render::SceneNode * sceneNode, support::HashedString layer);
+
     void addRigidBody(std::shared_ptr<GameObject> gameObject);
     void addRigidBody(std::shared_ptr<GameObject> gameObject, const math::Rectf & boundingBox);
     void registerGameObject(std::shared_ptr<GameObject> gameObject);
+
     void moveCamera(math::Vector2f dir);
     void zoomCamera(float scale);
     void cameraFollowObject(const GameObject * obj);
@@ -92,6 +99,8 @@ private:
     const float timePerFrame = 1.f / 60.f;
     std::vector<std::shared_ptr<GameObject>> gameObjects;
     events::CommandQueue commandQueue;
+    math::Vector2i tileSize;
+
     // Rendering
     ResizeStrategy resizeStrategy;
     Camera camera;

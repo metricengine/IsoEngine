@@ -19,6 +19,11 @@ void Text::setString(const std::string & string)
     text.setString(string);
 }
 
+void Text::setCharacterSize(int size)
+{
+    text.setCharacterSize(size);
+}
+
 std::string Text::getString() const
 {
     return text.getString();

@@ -1,6 +1,7 @@
 #include "isoengine/engine.h"
 #include "isoengine/support/clock.h"
 #include "isoengine/events/sfml_events.h"
+#include "isoengine/math/isometric.h"
 #include <SFML/Graphics.hpp>
 #include <exception>
 
@@ -89,6 +90,7 @@ void Engine::removeGameObject(
     const GameObject * gameObject,
     render::SceneNode & layer)
 {
+    // TODO: remove from board (if using one)
     for (auto iter = gameObjects.begin(); iter != gameObjects.end(); ++iter) {
         if (gameObject == iter->get()) {
             gameObjects.erase(iter);
@@ -99,6 +101,26 @@ void Engine::removeGameObject(
     if (gameObject->collisionDetector != nullptr) {
         collisionDetector->removeRigidBody(gameObject);
     }
+}
+
+void Engine::setBoard(bool isomorphic, const math::Vector2i & boardSize, const math::Vector2i & tileSize)
+{
+    collisionDetector->setBoard(true, boardSize, tileSize);
+    this->tileSize = tileSize;
+    scene.setBoard(boardSize);
+}
+
+void Engine::setBoardPosition(const std::shared_ptr<GameObject> & gameObject, const math::Vector2f & pos)
+{
+    auto screenPos = math::fromIso({pos.x * tileSize.x, pos.y * tileSize.y});
+    gameObject->setPosition(screenPos);
+    // TODO: this is not very usable: have to explicitly add to board always
+    // How could it be generalized?
+}
+
+void Engine::setTileRigidness(bool rigid, size_t col, size_t row)
+{
+    collisionDetector->setTileRigidness(rigid, col, row);
 }
 
 void Engine::addSceneNode(std::shared_ptr<render::SceneNode> sceneNode)
@@ -142,7 +164,7 @@ void Engine::moveCamera(math::Vector2f dir)
 
 void Engine::zoomCamera(float scale)
 {
-    // TODO: reasonable constaints
+    // TODO: reasonable constraints
     camera.zoom *= scale;
 }
 
@@ -190,12 +212,12 @@ void Engine::handleInput()
             window->close();
         }
 
-        if (event.type == sf::Event::MouseButtonPressed ||
-            event.type == sf::Event::MouseButtonReleased ||
-            event.type == sf::Event::MouseMoved) {
-            auto mouseEvent = events::mouseEventFromSFML(event);
-            onMouse.raise(mouseEvent);
-        }
+        // if (event.type == sf::Event::MouseButtonPressed ||
+        //     event.type == sf::Event::MouseButtonReleased ||
+        //     event.type == sf::Event::MouseMoved) {
+        //     auto mouseEvent = events::mouseEventFromSFML(event);
+        //     onMouse.raise(mouseEvent);
+        // }
 
         if (event.type == sf::Event::Resized) {
             if (resizeStrategy == ResizeStrategy::DYNAMIC_RES) {
@@ -245,6 +267,16 @@ void Engine::handleInput()
             auto keyEvent = events::keyEventFromSFML(event);
             onKey.raise(keyEvent);
         }
+    }
+
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        events::MouseEvent mouseEvent;
+        sf::Vector2i localPosition = sf::Mouse::getPosition(window->getWindow());
+
+        mouseEvent.eventType = events::MouseEventType::MouseButtonPressed;
+        mouseEvent.x = localPosition.x;
+        mouseEvent.y = localPosition.y;
+        onMouse.raise(mouseEvent);
     }
 }
 

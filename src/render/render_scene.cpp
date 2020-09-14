@@ -17,8 +17,17 @@ math::Transform SceneNode::getTransform() const
 void RenderScene::draw(render::Window & window)
 {
     math::Transform transform;
+
+    // if (useBoard) {
+    //     // for (int i = 0; i < boardSize.y; ++i) {
+    //     //     for (int j = 0; j < boardSize.x; ++j) {
+    //     //         sceneBoard[i * boardSize.x + j].draw(window, transform);
+    //     //     }
+    //     // }
+    // } else {
+    // }
     for (const auto & layer : layers) {
-        layer.draw(window, transform);
+        layer.draw(window, transform, useBoard);
     }
 }
 
@@ -46,6 +55,27 @@ SceneNode & RenderScene::getLayer(support::HashedString name)
 SceneNode & RenderScene::topLayer()
 {
     return layers.back();
+}
+
+void RenderScene::setBoard(const math::Vector2i & size)
+{
+    useBoard = true;
+    boardSize = size;
+
+    if (sceneBoard != nullptr) {
+        delete[] sceneBoard;
+    }
+
+    sceneBoard = new SceneNode[size.x * size.y];
+}
+
+SceneNode & RenderScene::getBoardCell(int row, int col)
+{
+    if (!useBoard) {
+        throw std::runtime_error("RenderScene::getBoardCell: board is not initailized");
+    }
+
+    return sceneBoard[row * boardSize.x + col];
 }
 
 } // namespace iso

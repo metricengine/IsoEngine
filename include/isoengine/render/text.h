@@ -17,6 +17,7 @@ public:
     Text(const std::string & string = "");
     void setFont(const Font & font);
     void setString(const std::string & string);
+    void setCharacterSize(int size);
     std::string getString() const;
     const sf::Text & getText() const;
     math::Vector2f getSize() const;

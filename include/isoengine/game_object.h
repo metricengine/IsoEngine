@@ -68,6 +68,9 @@ private:
     events::CommandQueue * commandQueue = nullptr;
     physics::CollisionDetector * collisionDetector = nullptr;
     math::Rectf boundingBox;
+
+    // TODO: I don't know if I like it here
+    math::Vector2i boardPos;
 };
 
 } // namespace iso
